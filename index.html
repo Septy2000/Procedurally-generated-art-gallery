@@ -2,13 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Procedurally Generated Art Gallery</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="script" href="./script.js">
 </head>
-<body>
-    <div>buan</div>
+<body> 
+    <header>
+        <nav>
+            <ul class="nav__bar">   
+                <li><a href="#">Main Page</a></li>
+                <li><a href="#">About Algorithms</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="#"><button>Contact</button></a>
+    </header>
+    <div>
+        
+
+        <canvas id="canvas1"></canvas>  
+        <form class="form__seed" action="#" method="post">
+            <label for=""><em>Seed</em></label>
+            
+            <input type="text" id="seed">
+        </form>
+    </div>
+
+    
+    
+    <script src="script.js"></script>
 </body>
 </html>
