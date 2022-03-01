@@ -51,10 +51,10 @@ export function draw() {
 
             const iterations = julia(z, complex, 2)
             
-            ctx.fillStyle = color_RGB(iterations, 1, 1, 1)
+            // ctx.fillStyle = color_RGB(iterations, 1, 1, 1)
             // ctx.fillStyle = color_HEX(iterations, colors)
             // ctx.fillStyle = console.log(color_HSL(iterations));
-            // ctx.fillStyle = color_RGB2(iterations);
+            ctx.fillStyle = color_HSL(iterations);
             ctx.beginPath();
             ctx.fillRect(i, j, 1, 1);
             // ctx.fillRect(i, canvas.height - j - 1, 1, 1);
@@ -70,9 +70,8 @@ function color_RGB(iterations, r_weight, g_weight, b_weight)  {
 
 }
 
-function color_HEX(iterations, colors ) {
-    // console.log(iterations);
-    return colors[(iterations < MAX_ITERATIONS) ? 0 : (iterations % colors.length - 1) + 1]
+function color_HEX(iterations, colors) {
+    return colors[(iterations === MAX_ITERATIONS) ? 0 : (iterations % colors.length - 1) + 1]
 }
 
 function getBaseLog(x, y) {
@@ -80,10 +79,11 @@ function getBaseLog(x, y) {
   }
 
 
-function color_RGB2(iterations) {
-    let h = parseInt(255 * iterations / MAX_ITERATIONS);
-    let s = 255
-    let v = ((iterations < MAX_ITERATIONS) ? 255 : 0);
-    return `rgb(${h},${s},${v})`
+  function color_HSL(iterations) {
+    if (iterations === MAX_ITERATIONS) {
+        return `black`;
+    }
+    let h = parseInt(360 * iterations / MAX_ITERATIONS);
+    return `hsl(${h},50%,50%)`
 }
 
