@@ -72,11 +72,6 @@ function color_HEX(iterations, colors) {
     return colors[(iterations === MAX_ITERATIONS) ? 0 : (iterations % colors.length - 1) + 1]
 }
 
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
-  }
-
-
 function color_HSL(iterations) {
     if (iterations === MAX_ITERATIONS) {
         return `black`;

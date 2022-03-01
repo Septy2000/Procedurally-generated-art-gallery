@@ -14,30 +14,41 @@
                 <li><a href="#">About Algorithms</a></li>
             </ul>
         </nav>
-        <a class="cta" href="#"><button id="generator">Generate</button></a>
     </header>
 
-    <div class="container">
-        <div class="flex__container">
+    <div id="container">
+        <div id="flex__container">
             <canvas id="canvas1"></canvas>  
-            <div id="menu__wrap">
+            <div id="menu__frame">
                 <div id="menu">
-                    <label for="alg__select">Select algorithm</label>
-                    <select name="Algorithm" id="alg__select">
-                        <optgroup label="2D Algorithms">
-                            <option value="mandelbrot">Mandelbrot Set</option>
-                            <option value="julia">Julia Set</option>
-                            <option value="perlin">Perlin Noise</option>
-                        </optgroup>
-                        <optgroup label="3D Algorithms">
-                            <option value="None">3D to come ;)</option>
-                        </optgroup>
-                    </select>
+                    <div id="menu__static">
+                        <label for="alg__select">Select algorithm</label>
+                        <select id="alg__select" name="Algorithm" >
+                            <optgroup label="2D Algorithms">
+                                <option value="mandelbrot">Mandelbrot Set</option>
+                                <option value="julia">Julia Set</option>
+                                <option value="perlin">Perlin Noise</option>
+                            </optgroup>
+                            <optgroup label="3D Algorithms">
+                                <option value="None">3D to come ;)</option>
+                            </optgroup>
+                        </select>
+                        <br>
+                        <label for="seed__input">Seed</label>
+                        <br>
+                        <input id="seed__input" type="text">
+                    </div>
+                    
+                    <div id="menu__alg">
 
-                    <br>
+                    </div>
 
-                    <label for="seed__input">Seed</label>
-                    <input id="seed__input" type="text">
+                    <div id="buttons__bar" >
+                        <button id="generator">Generate</button>
+                        <button id="save__button">Save Image</button>
+                        <!-- <button id="reset">Reset</button> -->
+                        <!-- <button></button> -->
+                    </div>
             </div>
             
             </div>

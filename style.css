@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:500');
 /* Used to override default browser settings*/
 * {
+    font-weight: 500;
+    font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,10 +10,8 @@
 }
 /* #24252a */
 li, a, button {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: #fffdf0;
+    font-size: 20px;
+    color: #282d30;
 }
 
 header {
@@ -22,9 +22,6 @@ header {
     margin-bottom: 75px;
 }
 
-.nav__bar {
-    list-style:decimal;
-}
 .nav__bar li {
     display: inline-block;
     padding: 0px 20px;
@@ -39,66 +36,89 @@ header {
 }
 
 .nav__bar li a:hover {
-    color: rgb(253, 228, 228);
+    color: rgb(131, 121, 121);
 }
 
 button {
-    padding: 9px 25px;
+    display: inline-block;
+    width: 40%;;
+    font-size: 14px;
+    color: #fffdf0;
+    padding: 5px 5px;
     background-color: rgba(0, 136, 169, 1);
     border: none;
-    border-radius: 50px;
+    border-radius: 28px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
+
 }
 
 button:hover {
     background-color: rgba(0, 136, 169, 0.8);
 }
 
+button:active {
+    background-color: rgba(179, 8, 185, 0.788);
+
+}
 
 
 
-.container {
-    height: auto;
+#container {
+    background-color: #92929b;
+    border-radius: 10px;
     width: 1200px;
-    padding: 20px;
+    padding: 10px;
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid black;
 }
 
-.flex__container {
-    display: flex;   
+#flex__container {
+    background-color: #92929b;
+    display: flex;
+    width: 100%;   
 }
 
-#menu__wrap {
-    flex: 1;
-    margin-left: 20px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-    /* border: 10px black; */
+#menu__frame {
+    overflow: hidden;
+    border-radius: 0px 10px 10px 0px;
+    margin-left: 10px;
+    width: 100%;
 }
 
 #menu {
     display:flex;
     flex-direction: column;
     padding: 10px;
+    height: 100%;
+
 }
 
+#menu * {
+    position: relative;
+    flex: 1;
+}
 
+#menu__static * {
+    width: 100%;
+}
 
+#menu__alg {
+    height: 100px;
+}
 
-
+#buttons__bar {
+    flex: 0 1 0%;
+    padding: 10px;
+    text-align: center;
+}
 
 canvas {
+    border-radius: 10px 0px 0px 10px;
     width: 852px;
     height: 480px;
     background: white;
     float: left;
-    /* margin-top: auto;
-    margin-left: auto;
-    margin-right: auto; */
     display: block;
 }
 

@@ -3,10 +3,10 @@ canvas.width = 1920;
 canvas.height = 1080;
 const ctx = canvas.getContext("2d");
 
-const MAX_ITERATIONS = random(50, 50);
+const MAX_ITERATIONS = random(100, 100);
 
-const RE_MIN = -2, RE_MAX = 1;
-const IM_MIN = -1, IM_MAX = 1;
+const RE_MIN = -2, RE_MAX = 2;
+const IM_MIN = -1.5, IM_MAX = 1.5;
 
 const COLORS_NUMBER = 5;
 
@@ -20,7 +20,7 @@ function random(lower_bound, upper_bound) {
 function julia(z, c, power) {
     // let z = {x: 0.3, y: 0.01 };
     let n = 0;
-    let z_powered; 
+    let z_powered, z_next; 
     do {
         z_powered = {
             x: Math.pow(z.x, power) - Math.pow(z.y, power),
@@ -31,9 +31,10 @@ function julia(z, c, power) {
             x: z_powered.x + c.x,
             y: z_powered.y + c.y
         }
+        z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
         n += 1;
-    } while (Math.abs(z.x + z.y) <= 2 && n < MAX_ITERATIONS);
-    return n;
+    } while (Math.abs(z_next) <= 2 && n < MAX_ITERATIONS);
+return n;
 }
 
 export function draw() {
@@ -45,8 +46,8 @@ export function draw() {
                 y: IM_MIN + (j / canvas.height) * (IM_MAX - IM_MIN)
             }
             let complex = {
-                x: 0.285,
-                y: 0.01
+                x: -0.54,
+                y: 0.54
             }
 
             const iterations = julia(z, complex, 2)
@@ -57,7 +58,6 @@ export function draw() {
             ctx.fillStyle = color_HSL(iterations);
             ctx.beginPath();
             ctx.fillRect(i, j, 1, 1);
-            // ctx.fillRect(i, canvas.height - j - 1, 1, 1);
             ctx.closePath();
         }
     }
@@ -73,11 +73,6 @@ function color_RGB(iterations, r_weight, g_weight, b_weight)  {
 function color_HEX(iterations, colors) {
     return colors[(iterations === MAX_ITERATIONS) ? 0 : (iterations % colors.length - 1) + 1]
 }
-
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
-  }
-
 
   function color_HSL(iterations) {
     if (iterations === MAX_ITERATIONS) {
