@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #b9bbd4;
+    background-color: #e4e5e9;
 }
 /* #24252a */
 li, a, button {
@@ -65,16 +65,17 @@ button:active {
 
 
 #container {
-    background-color: #92929b;
+    background-color: #818185;
     border-radius: 10px;
     width: 1200px;
     padding: 10px;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 20px 20px 50px grey;
 }
 
 #flex__container {
-    background-color: #92929b;
+    background-color: #818185;
     display: flex;
     width: 100%;   
 }
@@ -115,9 +116,10 @@ button:active {
 
 canvas {
     border-radius: 10px 0px 0px 10px;
-    width: 852px;
-    height: 480px;
+    width: 800px;
+    height: 600px;
     background: white;
+    /* box-shadow: 1px 1px 20px red; */
     float: left;
     display: block;
 }
