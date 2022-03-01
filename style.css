@@ -28,15 +28,16 @@ header {
 
 }
 
-.nav__bar li a {
-    transition: all 0.3s ease 0s;
+.nav__bar a {
+    transition: all 0.3s;
 }
-.nav__bar li a:link {
+.nav__bar a:link {
     text-decoration: none;
 }
 
-.nav__bar li a:hover {
-    color: rgb(131, 121, 121);
+.nav__bar a:hover {
+    color: grey;
+    text-decoration: underline grey;
 }
 
 button {
