@@ -3,7 +3,7 @@ canvas.width = 1920;
 canvas.height = 1080;
 const ctx = canvas.getContext("2d");
 
-const MAX_ITERATIONS = random(80,80);
+const MAX_ITERATIONS = random(80, 80);
 
 const RE_MIN = -2, RE_MAX = 1;
 const IM_MIN = -1, IM_MAX = 1;
@@ -16,50 +16,6 @@ function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
 
-
-// function mandelbrot(c) {
-//     let z = {x: 0, y: 0 };
-//     let iteration = 0;
-//     let p; 
-//     let d;
-//     do {
-//         p = {
-//             x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
-//             y: 2 * z.x * z.y
-//         }
-
-//         z = {
-//             x: p.x + c.x,
-//             y: p.y + c.y
-//         }
-
-//         d = Math.sqrt(Math.pow(z.x, 2) + Math.pow(z.y, 2))
-//         iteration += 1;
-//     } while (Math.abs(d) <= 2 && iteration < MAX_ITERATIONS);
-//     return [iteration, Math.abs(d) <= 2];
-// }
-
-// function draw() {
-//     const colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`)
-//     for (let i = 0; i < canvas.width; i++) {
-//         for (let j = 0; j < canvas.height / 2; j++) {
-//             complex = {
-//                 x: i * ((REAL_MAX - REAL_MIN) / canvas.width) + REAL_MIN,
-//                 y: j * ((IMAGINARY_MAX - IMAGINARY_MIN) / canvas.height) + IMAGINARY_MIN
-//             }
-//             const [iterations, isMandelbrotSet] = mandelbrot(complex)
-            
-//             ctx.fillStyle = color_RGB(isMandelbrotSet, iterations, 1, 1)
-//             // ctx.fillStyle = color_HEX(isMandelbrotSet, iterations, colors)
-//             ctx.beginPath();
-//             ctx.fillRect(i, j, 1, 1);
-//             ctx.fillRect(i, canvas.height - j - 1, 1, 1);
-//             ctx.closePath();
-//         }
-//     }
-// }
-
-// function formula(z) 
 
 function mandelbrot(c, power) {
     let z = {x: 0, y: 0 };
@@ -77,14 +33,14 @@ function mandelbrot(c, power) {
         }
         n += 1;
     } while (Math.abs(z.x + z.y) <= 2 && n < MAX_ITERATIONS);
-    return n + 1 - Math.log(Math.log(getBaseLog(2, Math.abs(z.x + z.y))));
+    return n;
 }
 
-function draw() {
+export function draw() {
     const colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`)
     for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height / 2; j++) {
-            complex = {
+            let complex = {
                 x: RE_MIN + (i / canvas.width) * (RE_MAX - RE_MIN),
                 y: IM_MIN + (j / canvas.height) * (IM_MAX - IM_MIN)
             }
@@ -94,6 +50,7 @@ function draw() {
             ctx.fillStyle = color_RGB(iterations, 1, 1, 1)
             // ctx.fillStyle = color_HEX(isMandelbrotSet, iterations, colors)
             // ctx.fillStyle = console.log(color_HSL(iterations));
+            // ctx.fillStyle = color_RGB2(iterations);
             ctx.beginPath();
             ctx.fillRect(i, j, 1, 1);
             ctx.fillRect(i, canvas.height - j - 1, 1, 1);
@@ -103,8 +60,8 @@ function draw() {
 }
 
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
-    // if (iterations === MAX_ITERATIONS) return `white`
-    let color = 255 - (iterations * 255 / MAX_ITERATIONS)
+    // if (iterations === MAX_ITERATIONS) return `black`
+    let color = 255 - parseInt(iterations * 255 / MAX_ITERATIONS)
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
 
 }
@@ -117,7 +74,12 @@ function getBaseLog(x, y) {
     return Math.log(y) / Math.log(x);
   }
 
-draw();
-document.getElementById("generator").onclick = () => {
-    draw();
+
+function color_RGB2(iterations) {
+    let h = parseInt(255 * iterations / MAX_ITERATIONS);
+    let s = 255
+    let v = ((iterations < MAX_ITERATIONS) ? 255 : 0);
+    return `rgb(${h},${s},${v})`
 }
+
+

@@ -55,7 +55,7 @@ button:hover {
     background-color: rgba(0, 136, 169, 0.8);
 }
 
-.form__seed {
+.form__seed, #input, #label {
     margin-left: auto;
     margin-right: auto;
     display: block;
