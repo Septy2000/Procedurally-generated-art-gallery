@@ -84,6 +84,6 @@ function getBaseLog(x, y) {
         return `black`;
     }
     let h = parseInt(360 * iterations / MAX_ITERATIONS);
-    return `hsl(${h},50%,50%)`
+    return `hsl(${h},100%,50%)`
 }
 
