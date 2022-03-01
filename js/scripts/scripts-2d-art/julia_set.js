@@ -5,8 +5,8 @@ const ctx = canvas.getContext("2d");
 
 const MAX_ITERATIONS = random(50, 50);
 
-const RE_MIN = -1, RE_MAX = 1;
-const IM_MIN = -1.2, IM_MAX = 1.2;
+const RE_MIN = -2, RE_MAX = 1;
+const IM_MIN = -1, IM_MAX = 1;
 
 const COLORS_NUMBER = 5;
 

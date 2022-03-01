@@ -34,8 +34,10 @@ function mandelbrot(c, power) {
         z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
         n += 1;
     } while (Math.abs(z_next) <= 2 && n < MAX_ITERATIONS);
-    return n;
+return n;
 }
+
+
 
 export function draw() {
     const colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`)
@@ -61,7 +63,6 @@ export function draw() {
 }
 
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
-    // if (iterations === MAX_ITERATIONS) return `black`
     let color = 255 - parseInt(iterations * 255 / MAX_ITERATIONS)
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
 

@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #646674;
+    background-color: #b9bbd4;
 }
 /* #24252a */
 li, a, button {
@@ -19,7 +19,7 @@ header {
     justify-content: flex-end;
     align-items: center;
     padding: 30px 10%;
-    margin-bottom: 100px;
+    margin-bottom: 75px;
 }
 
 .nav__bar {
@@ -55,15 +55,39 @@ button:hover {
     background-color: rgba(0, 136, 169, 0.8);
 }
 
-.form__seed, #input, #label {
+
+
+
+.container {
+    height: auto;
+    width: 1200px;
+    padding: 20px;
     margin-left: auto;
     margin-right: auto;
-    display: block;
+    border: 1px solid black;
 }
 
-.form__seed input {
-    background-color:aliceblue;
+.flex__container {
+    display: flex;   
 }
+
+#menu__wrap {
+    flex: 1;
+    margin-left: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    /* border: 10px black; */
+}
+
+#menu {
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+
+
 
 
 
@@ -71,13 +95,10 @@ canvas {
     width: 852px;
     height: 480px;
     background: white;
-    padding-left: 0;
-    padding-right: 0;
-    margin-top: auto;
+    float: left;
+    /* margin-top: auto;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; */
     display: block;
-    border: 100px blue;
-    
 }
 

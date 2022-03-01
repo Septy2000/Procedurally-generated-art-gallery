@@ -16,23 +16,34 @@
         </nav>
         <a class="cta" href="#"><button id="generator">Generate</button></a>
     </header>
-    <div>
-        <canvas id="canvas1"></canvas>  
-        <form class="form__seed" action="#" method="post">
-            <label id="label" for=""><em>Seed</em></label>
-            <input id="input" type="text" id="seed">
-        </form>
 
-        <select name="Algorithm" id="alg_select">
-            <optgroup label="2D Algorithms">
-                <option value="mandelbrot">Mandelbrot Set</option>
-                <option value="julia">Julia Set</option>
-                <option value="perlin">Perlin Noise</option>
-            </optgroup>
-            <optgroup label="3D Algorithms">
-                <option value="None">3D to come ;)</option>
-            </optgroup>
-        </select>
+    <div class="container">
+        <div class="flex__container">
+            <canvas id="canvas1"></canvas>  
+            <div id="menu__wrap">
+                <div id="menu">
+                    <label for="alg__select">Select algorithm</label>
+                    <select name="Algorithm" id="alg__select">
+                        <optgroup label="2D Algorithms">
+                            <option value="mandelbrot">Mandelbrot Set</option>
+                            <option value="julia">Julia Set</option>
+                            <option value="perlin">Perlin Noise</option>
+                        </optgroup>
+                        <optgroup label="3D Algorithms">
+                            <option value="None">3D to come ;)</option>
+                        </optgroup>
+                    </select>
+
+                    <br>
+
+                    <label for="seed__input">Seed</label>
+                    <input id="seed__input" type="text">
+            </div>
+            
+            </div>
+        </div>
+        
+        
     </div>
     <script type="module" src="./js/script_selector.js"></script>
 </body>

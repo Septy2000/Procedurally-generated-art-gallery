@@ -1,7 +1,7 @@
 // import './scripts/scripts-2d-art/julia_set'
 import * as mb from './scripts/scripts-2d-art/mandelbrot_set.js';
 import * as ju from './scripts/scripts-2d-art/julia_set.js'
-let selection = document.getElementById('alg_select');
+let selection = document.getElementById('alg__select');
 let alg;
 function update_selected_alg() {
     alg = selection.options[selection.selectedIndex].value;
