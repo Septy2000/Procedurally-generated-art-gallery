@@ -8,8 +8,8 @@
     box-sizing: border-box;
     background-color: #e4e5e9;
 }
-/* #24252a */
-li, a, button {
+
+a {
     font-size: 20px;
     color: #282d30;
 }
@@ -41,13 +41,13 @@ header {
 
 button {
     display: inline-block;
-    width: 40%;;
+    width: 40%;
     font-size: 14px;
     color: #fffdf0;
     padding: 5px 5px;
     background-color: rgba(0, 136, 169, 1);
     border: none;
-    border-radius: 28px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
 
@@ -80,9 +80,19 @@ button:active {
     width: 100%;   
 }
 
+canvas {
+    border-radius: 10px;
+    width: 800px;
+    height: 600px;
+    background: #e4e5e9;
+    /* box-shadow: 1px 1px 20px red; */
+    float: left;
+    display: block;
+}
+
 #menu__frame {
     overflow: hidden;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 10px;
     margin-left: 10px;
     width: 100%;
 }
@@ -104,6 +114,14 @@ button:active {
     width: 100%;
 }
 
+#alg__select {
+    border-radius: 5px;
+}
+
+#seed__input {
+    border-radius: 5px;
+}
+
 #menu__alg {
     height: 100px;
 }
@@ -114,13 +132,4 @@ button:active {
     text-align: center;
 }
 
-canvas {
-    border-radius: 10px 0px 0px 10px;
-    width: 800px;
-    height: 600px;
-    background: white;
-    /* box-shadow: 1px 1px 20px red; */
-    float: left;
-    display: block;
-}
 
