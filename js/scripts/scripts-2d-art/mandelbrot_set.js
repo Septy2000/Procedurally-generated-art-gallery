@@ -1,3 +1,4 @@
+import * as pb from '../../progress_bar.js'
 const canvas = document.getElementById('canvas1');
 canvas.width = 1440;
 canvas.height = 1080;
@@ -13,6 +14,8 @@ const COLORS_NUMBER = 5;
 let worker;
 const TASKS = [];
 
+const progressBar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
+
 
 function start() {
     for (let col = 0; col < canvas.width; col++) {
@@ -27,6 +30,7 @@ const draw = data => {
         worker.postMessage({col: TASKS.shift()});
     }
     const {col, mandelbrotSets} = data;
+    progressBar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
         const iterations = mandelbrotSets[i];
         ctx.fillStyle = color_HSL(iterations);
@@ -82,4 +86,6 @@ function color_HSL(iterations) {
 function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
+
+
 

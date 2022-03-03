@@ -107,7 +107,6 @@ canvas {
 }
 
 #menu * {
-    position: relative;
     flex: 1;
 }
 
@@ -126,6 +125,36 @@ canvas {
 #menu__alg {
     height: 100px;
 }
+
+#progress__bar__container {
+    /* position: relative; */
+    height: 10px;
+    background-color: red;
+    border-radius: 20px;
+}
+
+#progress__bar__percentage {
+    /* position: absolute; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#progress__bar {
+    /* position: absolute; */
+    background-color: green;
+    border-radius: 20px;
+    height: 100%;
+    width: 25%;
+    transition: width 0.1s;
+    /* animation: progress-animation 5s infinite; */
+}
+
+/* @keyframes progress-animation {
+    0% { width: 0%; }
+    100% { width: 100%; }
+} */
 
 #buttons__bar {
     flex: 0 1 0%;
