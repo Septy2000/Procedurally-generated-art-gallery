@@ -52,7 +52,6 @@ function mandelbrot(c, power) {
             x: z_powered.x + c.x,
             y: z_powered.y + c.y
         }
-        // z_next = 0.0000001 * (Math.pow(z.x, power) + Math.pow(z.y, power));
         n += 1;
     } while ((Math.abs(z.x) + Math.abs(z.y)) <= 2 && n < MAX_ITERATIONS);
 return n;

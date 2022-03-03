@@ -1,14 +1,21 @@
+import * as pb from '../../progress_bar.js'
+
 const canvas = document.getElementById('canvas1');
 canvas.width = 1440;
 canvas.height = 1080;
 const ctx = canvas.getContext("2d");
 
-const MAX_ITERATIONS = random(100, 100);
+const MAX_ITERATIONS = random(200, 200);
 
 const RE_MIN = -2, RE_MAX = 2;
 const IM_MIN = -1.5, IM_MAX = 1.5;
 
 const COLORS_NUMBER = 5;
+
+let worker;
+const TASKS = [];
+
+const progressBar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
 
 // Generate a random integer between a lower and an upper bound (inclusive)
@@ -18,7 +25,6 @@ function random(lower_bound, upper_bound) {
 
 
 function julia(z, c, power) {
-    // let z = {x: 0.3, y: 0.01 };
     let n = 0;
     let z_powered, z_next; 
     do {
@@ -64,7 +70,6 @@ export function draw() {
 }
 
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
-    // if (iterations === MAX_ITERATIONS) return `black`
     let color = 255 - parseInt(iterations * 255 / MAX_ITERATIONS)
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
 

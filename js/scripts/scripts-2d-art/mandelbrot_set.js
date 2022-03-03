@@ -1,4 +1,5 @@
 import * as pb from '../../progress_bar.js'
+
 const canvas = document.getElementById('canvas1');
 canvas.width = 1440;
 canvas.height = 1080;
@@ -6,31 +7,31 @@ const ctx = canvas.getContext("2d");
 
 const MAX_ITERATIONS = random(200, 200);
 
-const RE_MIN = -2, RE_MAX = 1;
-const IM_MIN = -1, IM_MAX = 1;
+const RE_MIN = -2, RE_MAX = 2;
+const IM_MIN = -1.5, IM_MAX = 1.5;
 
 const COLORS_NUMBER = 5;
 
 let worker;
-const TASKS = [];
+const COLUMN_LIST = [];
 
-const progressBar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
+const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
 
-function start() {
+function init() {
     for (let col = 0; col < canvas.width; col++) {
-        TASKS[col] = col;
+        COLUMN_LIST[col] = col;
     }
-    worker.postMessage({col: TASKS.shift()});
+    worker.postMessage({col: COLUMN_LIST.shift()});
 }
 
 
 const draw = data => {
-    if (TASKS.length > 0) {
-        worker.postMessage({col: TASKS.shift()});
+    if (COLUMN_LIST.length > 0) {
+        worker.postMessage({col: COLUMN_LIST.shift()});
     }
     const {col, mandelbrotSets} = data;
-    progressBar.setValue(parseInt((col + 1) * 100 / canvas.width));
+    progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
         const iterations = mandelbrotSets[i];
         ctx.fillStyle = color_HSL(iterations);
@@ -40,7 +41,7 @@ const draw = data => {
     }
 }
 
-export function init() {
+export function generate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
     worker = new Worker('../js/worker.js');
@@ -54,7 +55,7 @@ export function init() {
         max_iter: MAX_ITERATIONS,
         isSettingUp: true
     })
-    start();
+    init();
     worker.onmessage = function(e) {
         draw(e.data);
     }
