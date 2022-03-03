@@ -1,18 +1,19 @@
-let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX;
-const MAX_ITERATIONS = 500;
+let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS;
 
 onmessage = e => {
     const { isSettingUp } = e.data;
     if (isSettingUp) {
-        const { w, h, re_min, re_max, im_min, im_max} = e.data;
+        const { width, height, re_min, re_max, im_min, im_max, max_iter} = e.data;
+
+        WIDTH = width;
+        HEIGHT = height;
 
         RE_MIN = re_min;
         RE_MAX = re_max;
         IM_MIN = im_min;
         IM_MAX = im_max;
 
-        WIDTH = w;
-        HEIGHT = h;
+        MAX_ITERATIONS = max_iter;
     } 
     else {
         const { col } = e.data;
@@ -51,9 +52,8 @@ function mandelbrot(c, power) {
             x: z_powered.x + c.x,
             y: z_powered.y + c.y
         }
-        z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
+        // z_next = 0.0000001 * (Math.pow(z.x, power) + Math.pow(z.y, power));
         n += 1;
-    } while (Math.abs(z_next) <= 4 && n < MAX_ITERATIONS);
-console.log(n === MAX_ITERATIONS);
+    } while ((Math.abs(z.x) + Math.abs(z.y)) <= 2 && n < MAX_ITERATIONS);
 return n;
 }
