@@ -30,10 +30,10 @@ const draw = data => {
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({col: COLUMN_LIST.shift()});
     }
-    const {col, mandelbrotSets} = data;
+    const {col, columns_values} = data;
     progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
-        const iterations = mandelbrotSets[i];
+        const iterations = columns_values[i];
         ctx.fillStyle = color_HSL(iterations);
         ctx.beginPath();
         ctx.fillRect(col, i, 1, 1);
@@ -41,11 +41,12 @@ const draw = data => {
     }
 }
 
-export function generate() {
+export function generate(alg) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
     worker = new Worker('../js/worker.js');
     worker.postMessage({
+        algorithm: alg,
         width: canvas.width,
         height: canvas.height,
         re_min: RE_MIN,

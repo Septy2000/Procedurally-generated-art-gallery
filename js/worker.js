@@ -1,9 +1,16 @@
-let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS;
+let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS, ALGORITHM;
+
+const COMPLEX = {
+    x: -0.54,
+    y: 0.54
+}
 
 onmessage = e => {
     const { isSettingUp } = e.data;
     if (isSettingUp) {
-        const { width, height, re_min, re_max, im_min, im_max, max_iter} = e.data;
+        const { algorithm, width, height, re_min, re_max, im_min, im_max, max_iter } = e.data;
+
+        ALGORITHM = algorithm;
 
         WIDTH = width;
         HEIGHT = height;
@@ -17,18 +24,19 @@ onmessage = e => {
     } 
     else {
         const { col } = e.data;
-        const mandelbrotSets = [];
+        const columns_values = [];
         
         for (let row = 0; row < HEIGHT; row++) {
-            mandelbrotSets[row] = calculate(col, row);
+            columns_values[row] = calculate(col, row);
         }
 
-        postMessage({ col, mandelbrotSets });
+        postMessage({ col, columns_values });
     }
 }
 
 function calculate(i, j) {
-    return mandelbrot(relativePoint(i, j), 2);
+    if (ALGORITHM === "mandelbrot") return mandelbrot(relativePoint(i, j), 2);
+    else return julia(relativePoint(i, j), COMPLEX, 2);
 }
  
 
@@ -54,5 +62,25 @@ function mandelbrot(c, power) {
         }
         n += 1;
     } while ((Math.abs(z.x) + Math.abs(z.y)) <= 2 && n < MAX_ITERATIONS);
+return n;
+}
+
+
+function julia(z, c, power) {
+    let n = 0;
+    let z_powered, z_next; 
+    do {
+        z_powered = {
+            x: Math.pow(z.x, power) - Math.pow(z.y, power),
+            y: 2 * z.x * z.y
+        }
+
+        z = {
+            x: z_powered.x + c.x,
+            y: z_powered.y + c.y
+        }
+        z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
+        n += 1;
+    } while (Math.abs(z_next) <= 2 && n < MAX_ITERATIONS);
 return n;
 }
