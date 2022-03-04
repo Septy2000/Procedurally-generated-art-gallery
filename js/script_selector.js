@@ -1,7 +1,11 @@
 import * as frac from './scripts/scripts-2d-art/fractal_set.js';
 // Extract the selected algorithm
+
 let selection = document.getElementById('alg__select');
 let selected_algorithm;
+
+
+const canvas = document.getElementById('canvas1'); 
 
 // Used to update the selected algorithm whenever the user changes it
 function update_selected_alg() {
@@ -26,7 +30,7 @@ document.getElementById("save__button").addEventListener("click", function() {
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href = image;
     
-    
+
 
 })
 

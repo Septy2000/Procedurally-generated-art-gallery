@@ -2,20 +2,16 @@ import * as pb from '../../progress_bar.js'
 
 const canvas = document.getElementById('canvas1'); 
 const ctx = canvas.getContext("2d");
-canvas.width = 1440;
-canvas.height = 1080;
+canvas.width = 800;
+canvas.height = 600;
 
 const MAX_ITERATIONS = random(1000, 1000);
+let RE_MIN = -2, RE_MAX = 1;
+let IM_MIN = -1, IM_MAX = 1;
 
-let RE_MIN = -2, RE_MAX = 2;
-let IM_MIN = -1.5, IM_MAX = 1.5;
-
-const ZOOM_FACTOR = 0.0001;
-const SCALING_FACTOR = canvas.width / 800;
 let x_start, y_start;
 let x_end, y_end;
-let x_diff, y_diff;
-const COLORS_NUMBER = 5;
+const COLORS_NUMBER = 16;
 
 let worker;
 let algorithm;
@@ -23,19 +19,52 @@ const COLUMN_LIST = [];
 
 const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
-canvas.addEventListener('mousedown', e => {
-    const rect = canvas.getBoundingClientRect();
-    x_start = parseInt((e.clientX - rect.left) * SCALING_FACTOR);
-    y_start = parseInt((e.clientY - rect.top) * SCALING_FACTOR);
-    console.log(x_start, y_start);
+let painting;
+let imageData;
+let colors; 
 
+canvas.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    const rect = canvas.getBoundingClientRect();
+    x_start = e.clientX - rect.left;
+    y_start = e.clientY - rect.top;
+
+
+    painting = true;
+    canvas.style.cursor = "crosshair";
+    if("setLineDash" in ctx) {
+        ctx.setLineDash([2,2]);
+    }
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "white";
+    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
 })
-canvas.addEventListener('mouseup', e => {
+
+canvas.addEventListener('mousemove', e => {
+    if (!painting) return;
     const rect = canvas.getBoundingClientRect();
-    x_end = parseInt((e.clientX - rect.left) * SCALING_FACTOR);
-    y_end = parseInt((e.clientY - rect.top) * SCALING_FACTOR);
-    console.log(x_end, y_end);
+    let x_mouse = e.clientX - rect.left;
+    let y_mouse = e.clientY - rect.top;
+
+
+    ctx.putImageData(imageData, 0, 0);
+    ctx.strokeRect(x_start, y_start, (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start)), y_mouse - y_start);
+
+})
+
+canvas.addEventListener('mouseup', e => {
+    // Check if the "mouseup" event comes from left click
+    if (e.button !== 0) return;
+
+    const rect = canvas.getBoundingClientRect();
+    let x_mouse = e.clientX - rect.left;
+    let y_mouse = e.clientY - rect.top;
+
+
+    x_end = x_start + (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start));
+    y_end = y_mouse;
+
     
     let temp_re_min = Math.min(reRelativePoint(x_start), reRelativePoint(x_end));
     let temp_re_max = Math.max(reRelativePoint(x_start), reRelativePoint(x_end));
@@ -49,10 +78,18 @@ canvas.addEventListener('mouseup', e => {
     IM_MIN = temp_im_min;
     IM_MAX = temp_im_max;
     
+
+    painting = false;
+    canvas.style.cursor = "default";
+
     generate(algorithm);
 
 
 })
+
+function diagonal(x, y) {
+    return Math.sqrt(x * x + y * y);
+}
 
 const reRelativePoint = x => {
     x = RE_MIN + (x / canvas.width) * (RE_MAX - RE_MIN);
@@ -73,10 +110,6 @@ document.getElementById("reset__zoom__button").addEventListener("click", functio
     generate(algorithm);
 })
 
-const relativePoint = (pixel, length, min, max) => {
-    return min + (pixel / length) * (max - min);
-}
-
 function init() {
     for (let col = 0; col < canvas.width; col++) {
         COLUMN_LIST[col] = col;
@@ -95,15 +128,15 @@ const draw = data => {
     for (let i = 0; i < canvas.height; i++) {
         const iterations = columns_values[i];
         ctx.fillStyle = color_HSL(iterations);
+        // ctx.fillStyle = color_HEX(iterations, colors);
         ctx.beginPath();
         ctx.fillRect(col, i, 1, 1);
         ctx.closePath();
     }
 }
 
-export function generate(alg) {
-    console.log(RE_MIN, RE_MAX, IM_MIN, IM_MAX);
-
+export function generate(alg = "mandelbrot") {
+    colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();

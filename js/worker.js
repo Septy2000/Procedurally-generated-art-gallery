@@ -61,7 +61,7 @@ function mandelbrot(c, power) {
             y: z_powered.y + c.y
         }
         n += 1;
-    } while ((Math.abs(z.x) + Math.abs(z.y)) <= 2 && n < MAX_ITERATIONS);
+    } while ((Math.abs(z.x) + Math.abs(z.y)) <= 256 && n < MAX_ITERATIONS);
 return n;
 }
 
@@ -79,8 +79,8 @@ function julia(z, c, power) {
             x: z_powered.x + c.x,
             y: z_powered.y + c.y
         }
-        z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
+        // z_next = Math.pow(z.x, power) + Math.pow(z.y, power) + c.x + c.y;
         n += 1;
-    } while (Math.abs(z_next) <= 2 && n < MAX_ITERATIONS);
+    } while ((Math.abs(z.x) + Math.abs(z.y)) <= 256 && n < MAX_ITERATIONS);
 return n;
 }
