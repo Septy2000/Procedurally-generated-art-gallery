@@ -41,7 +41,7 @@ header {
 }
 
 button {
-    display: inline-block;
+    /* display: inline-block; */
     width: 40%;
     font-size: 14px;
     color: #fffdf0;
@@ -161,5 +161,11 @@ canvas {
     padding: 10px;
     text-align: center;
 }
+
+/* #save__button a {
+    font-size: 14px;
+    height: auto;
+    width: auto;
+} */
 
 

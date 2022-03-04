@@ -36,7 +36,7 @@ onmessage = e => {
 
 function calculate(i, j) {
     if (ALGORITHM === "mandelbrot") return mandelbrot(relativePoint(i, j), 2);
-    else return julia(relativePoint(i, j), COMPLEX, 2);
+    else if (ALGORITHM === "julia") return julia(relativePoint(i, j), COMPLEX, 2);
 }
  
 

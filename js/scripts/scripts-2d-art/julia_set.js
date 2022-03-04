@@ -1,9 +1,7 @@
 import * as pb from '../../progress_bar.js'
 
-const canvas = document.getElementById('canvas1');
-canvas.width = 1440;
-canvas.height = 1080;
-const ctx = canvas.getContext("2d");
+// const canvas = document.getElementById('canvas1');
+
 
 const MAX_ITERATIONS = random(200, 200);
 
@@ -42,6 +40,10 @@ const draw = data => {
 }
 
 export function generate() {
+    canvas.width = 1440;
+    canvas.height = 1080;
+    const ctx = canvas.getContext("2d");
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
     worker = new Worker('../js/worker.js');
