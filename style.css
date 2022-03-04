@@ -42,7 +42,7 @@ header {
 
 button {
     /* display: inline-block; */
-    width: 40%;
+    width:  40%;
     font-size: 14px;
     color: #fffdf0;
     padding: 5px 5px;
@@ -51,7 +51,6 @@ button {
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
-
 }
 
 button:hover {
@@ -162,10 +161,9 @@ canvas {
     text-align: center;
 }
 
-/* #save__button a {
-    font-size: 14px;
-    height: auto;
-    width: auto;
-} */
+
+#save__button {
+    margin-top: 5px;
+}
 
 

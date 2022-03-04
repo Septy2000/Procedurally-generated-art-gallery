@@ -4,9 +4,6 @@ export class ProgressBar {
         this.fillElem = document.getElementById("progress__bar");
 
         this.setValue(initialValue);
-
-        console.log(this.valueElem);
-        console.log(this.fillElem);
     }
 
     setValue (newValue) {

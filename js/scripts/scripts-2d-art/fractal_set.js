@@ -1,20 +1,81 @@
 import * as pb from '../../progress_bar.js'
 
-let canvas, ctx;
+const canvas = document.getElementById('canvas1'); 
+const ctx = canvas.getContext("2d");
+canvas.width = 1440;
+canvas.height = 1080;
 
+const MAX_ITERATIONS = random(1000, 1000);
 
-const MAX_ITERATIONS = random(200, 200);
+let RE_MIN = -2, RE_MAX = 2;
+let IM_MIN = -1.5, IM_MAX = 1.5;
 
-const RE_MIN = -2, RE_MAX = 2;
-const IM_MIN = -1.5, IM_MAX = 1.5;
-
+const ZOOM_FACTOR = 0.0001;
+const SCALING_FACTOR = canvas.width / 800;
+let x_start, y_start;
+let x_end, y_end;
+let x_diff, y_diff;
 const COLORS_NUMBER = 5;
 
 let worker;
+let algorithm;
 const COLUMN_LIST = [];
 
 const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
+canvas.addEventListener('mousedown', e => {
+    const rect = canvas.getBoundingClientRect();
+    x_start = parseInt((e.clientX - rect.left) * SCALING_FACTOR);
+    y_start = parseInt((e.clientY - rect.top) * SCALING_FACTOR);
+    console.log(x_start, y_start);
+
+    
+})
+canvas.addEventListener('mouseup', e => {
+    const rect = canvas.getBoundingClientRect();
+    x_end = parseInt((e.clientX - rect.left) * SCALING_FACTOR);
+    y_end = parseInt((e.clientY - rect.top) * SCALING_FACTOR);
+    console.log(x_end, y_end);
+    
+    let temp_re_min = Math.min(reRelativePoint(x_start), reRelativePoint(x_end));
+    let temp_re_max = Math.max(reRelativePoint(x_start), reRelativePoint(x_end));
+
+    RE_MIN = temp_re_min;
+    RE_MAX = temp_re_max;
+    
+
+    let temp_im_min = Math.min(imRelativePoint(y_start), imRelativePoint(y_end));
+    let temp_im_max = Math.max(imRelativePoint(y_start), imRelativePoint(y_end));
+    IM_MIN = temp_im_min;
+    IM_MAX = temp_im_max;
+    
+    generate(algorithm);
+
+
+})
+
+const reRelativePoint = x => {
+    x = RE_MIN + (x / canvas.width) * (RE_MAX - RE_MIN);
+    return x;
+}
+
+const imRelativePoint = y => {
+    y = IM_MIN + (y / canvas.height) * (IM_MAX - IM_MIN);
+    return y;
+}
+
+document.getElementById("reset__zoom__button").addEventListener("click", function() {
+    RE_MIN = -2;
+    RE_MAX = 2;
+    IM_MIN = -1.5;
+    IM_MAX = 1.5;
+
+    generate(algorithm);
+})
+
+const relativePoint = (pixel, length, min, max) => {
+    return min + (pixel / length) * (max - min);
+}
 
 function init() {
     for (let col = 0; col < canvas.width; col++) {
@@ -28,6 +89,7 @@ const draw = data => {
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({col: COLUMN_LIST.shift()});
     }
+
     const {col, columns_values} = data;
     progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
@@ -39,12 +101,10 @@ const draw = data => {
     }
 }
 
-export function generate(alg, canvas_param) {
-    canvas = canvas_param;
-    canvas.width = 1440;
-    canvas.height = 1080;
-    ctx = canvas.getContext("2d");
+export function generate(alg) {
+    console.log(RE_MIN, RE_MAX, IM_MIN, IM_MAX);
 
+    algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
     worker = new Worker('../js/worker.js');
@@ -63,7 +123,6 @@ export function generate(alg, canvas_param) {
     worker.onmessage = function(e) {
         draw(e.data);
     }
-    console.log("finished");
 }
 
 

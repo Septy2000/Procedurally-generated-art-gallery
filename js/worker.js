@@ -1,8 +1,8 @@
 let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS, ALGORITHM;
 
 const COMPLEX = {
-    x: -0.54,
-    y: 0.54
+    x: 0.355,
+    y: 0.355
 }
 
 onmessage = e => {
