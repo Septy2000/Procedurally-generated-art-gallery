@@ -28,6 +28,7 @@ document.getElementById("generator").disabled = false;
 
 // Check if the image is fully generated 
 let isGenerated = false;
+let isLeftClickPressed = false;
 
 const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
@@ -43,6 +44,8 @@ canvas.addEventListener('mousedown', e => {
 
 
     painting = true;
+    isLeftClickPressed = true;
+
     canvas.style.cursor = "crosshair";
     if("setLineDash" in ctx) {
         ctx.setLineDash([2,2]);
@@ -67,7 +70,7 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mouseup', e => {
     // Check if the "mouseup" event comes from left click
-    if (e.button !== 0 || !isGenerated) return;
+    if (e.button !== 0 || !isGenerated || !isLeftClickPressed) return;
 
     zoom_history.push([RE_MIN, RE_MAX, IM_MIN, IM_MAX]);
 
@@ -95,6 +98,8 @@ canvas.addEventListener('mouseup', e => {
     
 
     painting = false;
+    isLeftClickPressed = false;
+
     canvas.style.cursor = "default";
 
     document.getElementById("undo__zoom__button").disabled = false;
