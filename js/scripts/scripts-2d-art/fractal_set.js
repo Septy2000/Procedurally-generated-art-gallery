@@ -57,10 +57,17 @@ canvas.addEventListener('mousedown', e => {
 })
 
 canvas.addEventListener('mousemove', e => {
-    if (!painting) return;
+    if (!painting || !isLeftClickPressed) return;
     const rect = canvas.getBoundingClientRect();
     let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
     let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
+    console.log(x_mouse, y_mouse);
+    if(x_mouse > canvas.width - 2 || x_mouse < 2 || y_mouse > canvas.height - 2 || y_mouse < 2) {
+        painting = false;
+        canvas.style.cursor = "default";
+        ctx.putImageData(imageData, 0, 0);
+        return
+    }
 
 
     ctx.putImageData(imageData, 0, 0);
@@ -70,8 +77,10 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mouseup', e => {
     // Check if the "mouseup" event comes from left click
-    if (e.button !== 0 || !isGenerated || !isLeftClickPressed) return;
-
+    if (e.button !== 0 || !isGenerated || !isLeftClickPressed || !painting) {
+        canvas.style.cursor = "default";
+        return;
+    }   
     zoom_history.push([RE_MIN, RE_MAX, IM_MIN, IM_MAX]);
 
 

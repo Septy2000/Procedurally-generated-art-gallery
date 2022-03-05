@@ -130,7 +130,10 @@ canvas {
 
 #menu__alg {
     padding: 10px;
+}
 
+.hide {
+    display: none;
 }
 
 #progress__bar__container {

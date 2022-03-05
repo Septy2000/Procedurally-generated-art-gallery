@@ -1,20 +1,30 @@
 import * as frac from './scripts/scripts-2d-art/fractal_set.js';
 // Extract the selected algorithm
-
 let selection = document.getElementById('alg__select');
-let selected_algorithm;
-
+let selected_algorithm = selection.options[selection.selectedIndex].value;
+let fractal_algorithsm = ["mandelbrot", "julia"];
 
 const canvas = document.getElementById('canvas1'); 
 
 // Used to update the selected algorithm whenever the user changes it
 function update_selected_alg() {
+    document.getElementById(`${selected_algorithm}`).classList.add("hide");
+ 
     selected_algorithm = selection.options[selection.selectedIndex].value; 
+    if(!fractal_algorithsm.includes(selected_algorithm)) {
+        document.getElementById("fractals").classList.add("hide");
+    }
+    else {
+        document.getElementById("fractals").classList.remove("hide");
+
+    }
+
+    document.getElementById(`${selected_algorithm}`).classList.remove("hide");
+
 }
 
 // Check when the user changes the algorithm selection
 selection.onchange = update_selected_alg;
-update_selected_alg()
 
 // Decide what algorithm to run, depending on the user selection
 document.getElementById("generator").addEventListener("click", function() {
