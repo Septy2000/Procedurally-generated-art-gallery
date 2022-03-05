@@ -5,17 +5,29 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
-const MAX_ITERATIONS = random(1000, 1000);
+const MAX_ITERATIONS = random(500, 500);
 let RE_MIN = -2, RE_MAX = 1;
 let IM_MIN = -1, IM_MAX = 1;
 
+const SCALING_FACTOR = canvas.width / 1200;
 let x_start, y_start;
 let x_end, y_end;
+let zoom_history = [];
+
 const COLORS_NUMBER = 16;
 
 let worker;
 let algorithm;
 const COLUMN_LIST = [];
+
+// Button states
+document.getElementById("undo__zoom__button").disabled = true;
+document.getElementById("reset__zoom__button").disabled = true;
+document.getElementById("generator").disabled = false;
+
+
+// Check if the image is fully generated 
+let isGenerated = false;
 
 const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
@@ -24,10 +36,10 @@ let imageData;
 let colors; 
 
 canvas.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || !isGenerated) return;
     const rect = canvas.getBoundingClientRect();
-    x_start = e.clientX - rect.left;
-    y_start = e.clientY - rect.top;
+    x_start = (e.clientX - rect.left) * SCALING_FACTOR;
+    y_start = (e.clientY - rect.top) * SCALING_FACTOR;
 
 
     painting = true;
@@ -44,8 +56,8 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
     if (!painting) return;
     const rect = canvas.getBoundingClientRect();
-    let x_mouse = e.clientX - rect.left;
-    let y_mouse = e.clientY - rect.top;
+    let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
+    let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
 
 
     ctx.putImageData(imageData, 0, 0);
@@ -55,11 +67,14 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mouseup', e => {
     // Check if the "mouseup" event comes from left click
-    if (e.button !== 0) return;
+    if (e.button !== 0 || !isGenerated) return;
+
+    zoom_history.push([RE_MIN, RE_MAX, IM_MIN, IM_MAX]);
+
 
     const rect = canvas.getBoundingClientRect();
-    let x_mouse = e.clientX - rect.left;
-    let y_mouse = e.clientY - rect.top;
+    let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
+    let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
 
 
     x_end = x_start + (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start));
@@ -82,14 +97,13 @@ canvas.addEventListener('mouseup', e => {
     painting = false;
     canvas.style.cursor = "default";
 
+    document.getElementById("undo__zoom__button").disabled = false;
+    document.getElementById("reset__zoom__button").disabled = false;
+
     generate(algorithm);
 
 
 })
-
-function diagonal(x, y) {
-    return Math.sqrt(x * x + y * y);
-}
 
 const reRelativePoint = x => {
     x = RE_MIN + (x / canvas.width) * (RE_MAX - RE_MIN);
@@ -106,8 +120,26 @@ document.getElementById("reset__zoom__button").addEventListener("click", functio
     RE_MAX = 2;
     IM_MIN = -1.5;
     IM_MAX = 1.5;
-
+    
+    document.getElementById("reset__zoom__button").disabled = true;
+    document.getElementById("undo__zoom__button").disabled = true;
+    zoom_history = [];
     generate(algorithm);
+})
+
+document.getElementById("undo__zoom__button").addEventListener("click", function() {
+    if (zoom_history.length === 0) return;
+    const [re_min_prev, re_max_prev, im_min_prev, im_max_prev] = zoom_history.pop();
+    RE_MIN = re_min_prev;
+    RE_MAX = re_max_prev;
+    IM_MIN = im_min_prev;
+    IM_MAX = im_max_prev;
+
+    if (zoom_history.length === 0) {
+        document.getElementById("undo__zoom__button").disabled = true;
+        document.getElementById("reset__zoom__button").disabled = true;
+    }
+        generate(algorithm);
 })
 
 function init() {
@@ -122,13 +154,16 @@ const draw = data => {
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({col: COLUMN_LIST.shift()});
     }
+    else {
+        isGenerated = true;
+        document.getElementById("generator").disabled = false;
+    }
 
     const {col, columns_values} = data;
     progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
         const iterations = columns_values[i];
         ctx.fillStyle = color_HSL(iterations);
-        // ctx.fillStyle = color_HEX(iterations, colors);
         ctx.beginPath();
         ctx.fillRect(col, i, 1, 1);
         ctx.closePath();
@@ -137,6 +172,10 @@ const draw = data => {
 
 export function generate(alg = "mandelbrot") {
     colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
+   
+    document.getElementById("generator").disabled = true;
+    isGenerated = false;
+    
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
