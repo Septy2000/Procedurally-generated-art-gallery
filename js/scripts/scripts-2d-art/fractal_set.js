@@ -175,7 +175,17 @@ const draw = data => {
     }
 }
 
-export function generate(alg = "mandelbrot") {
+export function generate(alg = "mandelbrot", generatedFromButton) {
+    if (generatedFromButton) {
+        RE_MIN = -2;
+        RE_MAX = 2;
+        IM_MIN = -1.5;
+        IM_MAX = 1.5;
+        zoom_history =[];
+        document.getElementById("undo__zoom__button").disabled = true;
+        document.getElementById("reset__zoom__button").disabled = true;
+    }
+    
     colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
    
     document.getElementById("generator").disabled = true;

@@ -19,10 +19,10 @@ update_selected_alg()
 // Decide what algorithm to run, depending on the user selection
 document.getElementById("generator").addEventListener("click", function() {
     if(selected_algorithm === "mandelbrot") {
-        frac.generate(selected_algorithm);
+        frac.generate(selected_algorithm, true);
     }   
     else if(selected_algorithm === "julia") {
-        frac.generate(selected_algorithm);
+        frac.generate(selected_algorithm, true);
     }  
 })
 
