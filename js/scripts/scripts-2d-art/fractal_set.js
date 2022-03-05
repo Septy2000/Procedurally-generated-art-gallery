@@ -169,6 +169,8 @@ const draw = data => {
     for (let i = 0; i < canvas.height; i++) {
         const iterations = columns_values[i];
         ctx.fillStyle = color_HSL(iterations);
+        // ctx.fillStyle = color_RGB(iterations, 1, 1, 1);
+        // ctx.fillStyle = color_HEX(iterations, colors);
         ctx.beginPath();
         ctx.fillRect(col, i, 1, 1);
         ctx.closePath();
@@ -184,9 +186,8 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
         zoom_history =[];
         document.getElementById("undo__zoom__button").disabled = true;
         document.getElementById("reset__zoom__button").disabled = true;
+        colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
     }
-    
-    colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
    
     document.getElementById("generator").disabled = true;
     isGenerated = false;
@@ -229,7 +230,7 @@ function color_HSL(iterations) {
     if (iterations === MAX_ITERATIONS) {
         return `black`;
     }
-    let h = 360 * iterations / MAX_ITERATIONS;
+    let h = 720 * iterations / MAX_ITERATIONS;
     return `hsl(${h},100%,50%)`
 
 }
