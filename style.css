@@ -120,13 +120,11 @@ canvas {
     padding: 10px;
 }
 
-#alg__select {
+select, input {
     border-radius: 5px;
+    width: 100%;
 }
 
-#seed__input {
-    border-radius: 5px;
-}
 
 #menu__alg {
     padding: 10px;

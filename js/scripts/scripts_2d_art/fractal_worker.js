@@ -1,14 +1,10 @@
-let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS, ALGORITHM;
+let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS, ALGORITHM, COMPLEX;
 
-const COMPLEX = {
-    x: 0.355,
-    y: 0.355
-}
 
 onmessage = e => {
     const { isSettingUp } = e.data;
     if (isSettingUp) {
-        const { algorithm, width, height, re_min, re_max, im_min, im_max, max_iter } = e.data;
+        const { algorithm, width, height, re_min, re_max, im_min, im_max, max_iter, complex } = e.data;
 
         ALGORITHM = algorithm;
 
@@ -21,6 +17,8 @@ onmessage = e => {
         IM_MAX = im_max;
 
         MAX_ITERATIONS = max_iter;
+
+        COMPLEX = complex;
     } 
     else {
         const { col } = e.data;
@@ -34,22 +32,10 @@ onmessage = e => {
     }
 }
 
-function calculate(i, j) {
-    if (ALGORITHM === "mandelbrot") return mandelbrot(relativePoint(i, j), 2);
-    else if (ALGORITHM === "julia") return julia(relativePoint(i, j), COMPLEX, 2);
-}
- 
-
-const relativePoint = (x, y) => {
-    x = RE_MIN + (x / WIDTH) * (RE_MAX - RE_MIN);
-    y = IM_MIN + (y / HEIGHT) * (IM_MAX - IM_MIN);
-    return { x, y }
-}
-
 function mandelbrot(c, power) {
     let z = {x: 0, y: 0 };
     let n = 0;
-    let z_powered, z_next; 
+    let z_powered; 
     do {
         z_powered = {
             x: Math.pow(z.x, power) - Math.pow(z.y, power),
@@ -65,10 +51,9 @@ function mandelbrot(c, power) {
 return n;
 }
 
-
 function julia(z, c, power) {
     let n = 0;
-    let z_powered, z_next; 
+    let z_powered; 
     do {
         z_powered = {
             x: Math.pow(z.x, power) - Math.pow(z.y, power),
@@ -84,3 +69,22 @@ function julia(z, c, power) {
     } while ((Math.abs(z.x) + Math.abs(z.y)) <= 2 && n < MAX_ITERATIONS);
 return n;
 }
+
+
+function calculate(i, j) {
+    if (ALGORITHM === "mandelbrot") return mandelbrot(relativePoint(i, j), 2);
+    else if (ALGORITHM === "julia") {
+        console.log()
+        return julia(relativePoint(i, j), COMPLEX, 2);
+    }
+}
+ 
+
+const relativePoint = (x, y) => {
+    x = RE_MIN + (x / WIDTH) * (RE_MAX - RE_MIN);
+    y = IM_MIN + (y / HEIGHT) * (IM_MAX - IM_MIN);
+    return { x, y }
+}
+
+
+

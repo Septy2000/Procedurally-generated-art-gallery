@@ -22,8 +22,8 @@
             <div id="menu__frame">
                 <div id="menu">
                     <div id="menu__static">
-                        <label for="alg__select">Select algorithm</label>
-                        <select id="alg__select" name="Algorithm" >
+                        <label for="alg__select">Select algorithm:</label>
+                        <select name="Algorithm" id="alg__select">
                             <optgroup label="2D Algorithms">
                                 <option value="mandelbrot">Mandelbrot Set</option>
                                 <option value="julia">Julia Set</option>
@@ -34,7 +34,7 @@
                             </optgroup>
                         </select>
                         <br>
-                        <label for="seed__input">Seed</label>
+                        <label for="seed__input">Seed:</label>
                         <br>
                         <input id="seed__input" type="text">
                     </div>
@@ -43,36 +43,89 @@
                         <div id="fractals">
                             <button id="reset__zoom__button">Reset Zoom</button>
                             <button id="undo__zoom__button">Undo Zoom</button>
-                           
+                            <br><br>
+                            <label for="colormode__select">Color Mode:</label>
+                            <br>
+                            <select name="Color Mode" id="colormode__select">
+                                <option value="smooth__colors">Smooth</option>
+                                <option value="black__and__white">Black and White</option>    
+                                <option value="rand__colors">Random colors</option>
+                            </select>
+
+                            <br><br>
+
+                            <div id="colors__intensity" class="hide">
+                                <label for="color__intensity__select">Color Intensity:</label>
+                                <br>
+                                <input type="number" id="color__intensity__value" min="1" value="1">
+                                <br><br>
+                            </div>
+
+                            <div id="colors__weight" class="hide">
+                                <label for="red__value">Red:</label><br>
+                                <input type="text" id="red__value" min="0" value="1">
+                                <br>
+                                <label for="green__value">Green:</label><br>
+                                <input type="text" id="green__value" min="0" value="1">
+                                <br>
+                                <label for="blue__value">Blue:</label><br>
+                                <input type="text" id="blue__value" min="0" value="1">
+                                <br><br>
+                            </div>
+
+                            <div id="colors__number" class="hide">
+                                <label for="colors__number">Number of colors:</label>
+                                <br>
+                                <input type="text" id="colors__number__value" min="0" value="16">
+                                <br><br>
+                            </div>
+
+                            <label for="max__iterations">Iterations:</label>
+                            <input id="max__iterations" type="text" min="1" value="500">
+
                             <div id="mandelbrot">
-                               <div>TEST MANDEL</div>
                             </div>
                            
                             <div id="julia" class="hide">
-                                <div>TEST JULIA</div>
-                               
+                                <br>
+                                <label for="c__value__select">Value for C</label>
+                                <select name="Value for C" id="c__value__select">
+                                    <option value="0">0.355 + 0.355i</option>
+                                    <option value="1">0 + 0.8i</option>
+                                    <option value="2">0.37 + 0.1i</option>
+                                    <option value="3">-0.54 + 0.54i</option>
+                                    <option value="4">-0.4 - 0.59i</option>
+                                    <option value="5">0.355534 - 0.337292i</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                                <br><br>
+                                
+                                <div id="c__value__custom" class="hide">
+                                    <label for="">Value for real part:</label><br>
+                                    <input id="c__value__re" type="number">
+                                    <br><br>
+                                    <label for="">Value for imaginary part: (without "i")</label><br>
+                                    <input id="c__value__im" type="number">
+                                </div>
                             </div>
-                        </div>
-                       
+                        </div>                 
                     
                         <div id="perlin" class="hide">
                             <div>TEST PERLIN</div>
-
                         </div>
                     </div>
 
 
-                    <div id="buttons__bar" >
+                    <div id="buttons__bar">
                         <div id="progress__bar__percentage">0%</div> 
                         <div id="progress__bar__container">
                             <div id="progress__bar"></div>
                         </div>
                         <br>
-                        <button id="generator">Generate</button>
+                        <button id="generate__button">Generate</button>
                         <button id="save__button">Save Image</button>
                         
-                        <br>
-                        
+                        <br> 
                     </div>
             </div>
         </div>

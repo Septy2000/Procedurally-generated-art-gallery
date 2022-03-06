@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
-const MAX_ITERATIONS = random(500, 500);
+const MAX_ITERATIONS = 500;
 let RE_MIN = -2, RE_MAX = 1;
 let IM_MIN = -1, IM_MAX = 1;
 
@@ -20,10 +20,15 @@ let worker;
 let algorithm;
 const COLUMN_LIST = [];
 
+// Buttons
+const button_undo = document.getElementById("undo__zoom__button");
+const button_reset = document.getElementById("reset__zoom__button")
+const button_generate = document.getElementById("generate__button")
+
 // Button states
-document.getElementById("undo__zoom__button").disabled = true;
-document.getElementById("reset__zoom__button").disabled = true;
-document.getElementById("generator").disabled = false;
+button_undo.disabled = true;
+button_reset.disabled = true;
+button_generate.disabled = false;
 
 
 // Check if the image is fully generated 
@@ -35,6 +40,17 @@ const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__
 let painting;
 let imageData;
 let colors; 
+
+const COMPLEX_LIST = [
+    {x: 0.355, y: 0.355}, 
+    {x: 0, y: 0.8}, 
+    {x: 0.37, y: 0.1}, 
+    {x: -0.54, y: 0.54}, 
+    {x: -0.4, y: -0.59}, 
+    {x: 0.355534, y: -0.337292}
+]
+
+let index_julia;
 
 canvas.addEventListener('mousedown', e => {
     if (e.button !== 0 || !isGenerated) return;
@@ -61,7 +77,7 @@ canvas.addEventListener('mousemove', e => {
     const rect = canvas.getBoundingClientRect();
     let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
     let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
-    console.log(x_mouse, y_mouse);
+
     if(x_mouse > canvas.width - 2 || x_mouse < 2 || y_mouse > canvas.height - 2 || y_mouse < 2) {
         painting = false;
         canvas.style.cursor = "default";
@@ -111,8 +127,8 @@ canvas.addEventListener('mouseup', e => {
 
     canvas.style.cursor = "default";
 
-    document.getElementById("undo__zoom__button").disabled = false;
-    document.getElementById("reset__zoom__button").disabled = false;
+    button_undo.disabled = false;
+    button_reset.disabled = false;
 
     generate(algorithm);
 
@@ -129,19 +145,19 @@ const imRelativePoint = y => {
     return y;
 }
 
-document.getElementById("reset__zoom__button").addEventListener("click", function() {
+button_reset.addEventListener("click", function() {
     RE_MIN = -2;
     RE_MAX = 2;
     IM_MIN = -1.5;
     IM_MAX = 1.5;
     
-    document.getElementById("reset__zoom__button").disabled = true;
-    document.getElementById("undo__zoom__button").disabled = true;
+    button_reset.disabled = true;
+    button_undo.disabled = true;
     zoom_history = [];
     generate(algorithm);
 })
 
-document.getElementById("undo__zoom__button").addEventListener("click", function() {
+button_undo.addEventListener("click", function() {
     if (zoom_history.length === 0) return;
     const [re_min_prev, re_max_prev, im_min_prev, im_max_prev] = zoom_history.pop();
     RE_MIN = re_min_prev;
@@ -150,8 +166,8 @@ document.getElementById("undo__zoom__button").addEventListener("click", function
     IM_MAX = im_max_prev;
 
     if (zoom_history.length === 0) {
-        document.getElementById("undo__zoom__button").disabled = true;
-        document.getElementById("reset__zoom__button").disabled = true;
+        button_undo.disabled = true;
+        button_reset.disabled = true;
     }
         generate(algorithm);
 })
@@ -170,7 +186,7 @@ const draw = data => {
     }
     else {
         isGenerated = true;
-        document.getElementById("generator").disabled = false;
+        button_generate.disabled = false;
     }
 
     const {col, columns_values} = data;
@@ -180,9 +196,7 @@ const draw = data => {
         ctx.fillStyle = color_HSL(iterations);
         // ctx.fillStyle = color_RGB(iterations, 1, 1, 1);
         // ctx.fillStyle = color_HEX(iterations, colors);
-        ctx.beginPath();
         ctx.fillRect(col, i, 1, 1);
-        ctx.closePath();
     }
 }
 
@@ -193,18 +207,20 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
         IM_MIN = -1.5;
         IM_MAX = 1.5;
         zoom_history =[];
-        document.getElementById("undo__zoom__button").disabled = true;
-        document.getElementById("reset__zoom__button").disabled = true;
+        button_undo.disabled = true;
+        button_reset.disabled = true;
         colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
+        index_julia = random(0, COMPLEX_LIST.length - 1);
+        console.log(index_julia);
     }
-   
-    document.getElementById("generator").disabled = true;
+
+    button_generate.disabled = true;
     isGenerated = false;
     
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
-    worker = new Worker('../js/worker.js');
+    worker = new Worker('../js/scripts/scripts_2d_art/fractal_worker.js');
     worker.postMessage({
         algorithm: alg,
         width: canvas.width,
@@ -214,7 +230,8 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
         im_min: IM_MIN,
         im_max: IM_MAX,
         max_iter: MAX_ITERATIONS,
-        isSettingUp: true
+        isSettingUp: true,
+        complex : COMPLEX_LIST[index_julia]
     })
     init();
     worker.onmessage = function(e) {
@@ -223,8 +240,17 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
 }
 
 
+// Generate a random integer between a lower and an upper bound (inclusive)
+function random(lower_bound, upper_bound) {
+    return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
+}
+
+
+// Coloring functions
+
+
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
-    let color = 255 - parseInt(iterations * 255 / MAX_ITERATIONS)
+    let color = parseInt(iterations * 255 / MAX_ITERATIONS)
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
 
 }
@@ -239,14 +265,9 @@ function color_HSL(iterations) {
     if (iterations === MAX_ITERATIONS) {
         return `black`;
     }
-    let h = 720 * iterations / MAX_ITERATIONS;
-    return `hsl(${h},100%,50%)`
+    let hue = 1 * 360 * (iterations / MAX_ITERATIONS);
+    return `hsl(${hue}, 100%, 50%)`
 
-}
-
-// Generate a random integer between a lower and an upper bound (inclusive)
-function random(lower_bound, upper_bound) {
-    return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
 
 

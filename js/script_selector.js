@@ -1,8 +1,18 @@
-import * as frac from './scripts/scripts-2d-art/fractal_set.js';
+import * as frac from './scripts/scripts_2d_art/fractal_set.js';
 // Extract the selected algorithm
-let selection = document.getElementById('alg__select');
-let selected_algorithm = selection.options[selection.selectedIndex].value;
-let fractal_algorithsm = ["mandelbrot", "julia"];
+let algorithm_selection = document.getElementById("alg__select");
+let selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value;
+
+let colormode_selection = document.getElementById("colormode__select");
+let selected_colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
+let current_colormode_menu;
+setCurrentColormodeMenu(selected_colormode);
+
+
+let c_value_selection = document.getElementById("c__value__select");
+let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
+
+let fractal_algorithms = ["mandelbrot", "julia"];
 
 const canvas = document.getElementById('canvas1'); 
 
@@ -10,8 +20,10 @@ const canvas = document.getElementById('canvas1');
 function update_selected_alg() {
     document.getElementById(`${selected_algorithm}`).classList.add("hide");
  
-    selected_algorithm = selection.options[selection.selectedIndex].value; 
-    if(!fractal_algorithsm.includes(selected_algorithm)) {
+    selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
+    console.log(selected_algorithm);
+
+    if(!fractal_algorithms.includes(selected_algorithm)) {
         document.getElementById("fractals").classList.add("hide");
     }
     else {
@@ -23,11 +35,51 @@ function update_selected_alg() {
 
 }
 
+function update_selected_colormode() {
+    
+    document.getElementById(`${current_colormode_menu}`).classList.add("hide");
+    selected_colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
+    setCurrentColormodeMenu(selected_colormode);
+    console.log(selected_colormode);
+    console.log(current_colormode_menu);
+    document.getElementById(`${current_colormode_menu}`).classList.remove("hide");
+}
+
+function setCurrentColormodeMenu(colorMode) {
+    if (colorMode === "smooth__colors") {
+        current_colormode_menu = "colors__intensity";
+    }
+    else if (colorMode === "black__and__white") {
+        current_colormode_menu = "colors__weight";
+    }
+    else {
+        current_colormode_menu = "colors__number";
+    }
+}
+
+
+function update_selected_c_value() {
+    if (selected_c_value === "custom") document.getElementById("c__value__custom").classList.add("hide");
+    
+    selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
+
+    if (selected_c_value === "custom") document.getElementById("c__value__custom").classList.remove("hide");
+}
+
 // Check when the user changes the algorithm selection
-selection.onchange = update_selected_alg;
+algorithm_selection.onchange = update_selected_alg;
+update_selected_alg();
+
+// Check when the user changes the colormode
+colormode_selection.onchange = update_selected_colormode;
+update_selected_colormode();
+
+// Check when the user changes the c value
+c_value_selection.onchange = update_selected_c_value;
+update_selected_c_value();
 
 // Decide what algorithm to run, depending on the user selection
-document.getElementById("generator").addEventListener("click", function() {
+document.getElementById("generate__button").addEventListener("click", function() {
     if(selected_algorithm === "mandelbrot") {
         frac.generate(selected_algorithm, true);
     }   
