@@ -10,6 +10,7 @@
     background-color: #e4e5e9;
 }
 
+
 a {
     font-size: 25px;
     color: #282d30;
@@ -71,6 +72,7 @@ button:disabled {
 
 
 #container {
+    /* background-color: linear-gradient(white, blue); */
     background-color: #818185;
     border-radius: 10px;
     width: 1600px;
@@ -125,6 +127,11 @@ select, input {
     width: 100%;
 }
 
+optgroup {
+    font-weight: bold;
+    /* background-color: #dedee7; */
+
+}
 
 #menu__alg {
     padding: 10px;

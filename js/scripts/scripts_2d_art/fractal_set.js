@@ -197,7 +197,7 @@ function draw(data) {
     }
 
     const {col, columns_values} = data;
-    progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
+    progress_bar.setValue((parseInt(col * 100 / (canvas.width - 1))));
     for (let i = 0; i < canvas.height; i++) {
         const iterations = columns_values[i];
 
@@ -236,6 +236,8 @@ export function generate(alg, generatedFromButton) {
     //index_julia = random(0, COMPLEX_LIST.length - 1);
     button_generate.disabled = true;
     isGenerated = false;
+
+    MAX_ITERATIONS = parseInt(document.getElementById("max__iterations").value);
 
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -283,13 +285,12 @@ function refreshMenuInputs() {
     colors_number = parseInt(document.getElementById("colors__number__value").value);
     // console.log(colors_number)
 
-    re_value = parseInt(document.getElementById("c__value__re").value);
+    re_value = parseFloat(document.getElementById("c__value__re").value);
     // console.log(re_value)
 
-    im_value = parseInt(document.getElementById("c__value__im").value);
+    im_value = parseFloat(document.getElementById("c__value__im").value);
     // console.log(im_value)
 
-    MAX_ITERATIONS = parseInt(document.getElementById("max__iterations").value);
     // console.log(MAX_ITERATIONS)
 }
 

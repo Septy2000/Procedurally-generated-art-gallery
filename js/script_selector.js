@@ -67,11 +67,11 @@ function setCurrentColormodeMenu(colorMode) {
 
 
 function update_selected_c_value() {
-    if (selected_c_value === "custom") document.getElementById("c__value__custom").classList.add("hide");
+    if (selected_c_value === "-1") document.getElementById("c__value__custom").classList.add("hide");
     
     selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
 
-    if (selected_c_value === "custom") document.getElementById("c__value__custom").classList.remove("hide");
+    if (selected_c_value === "-1") document.getElementById("c__value__custom").classList.remove("hide");
 }
 
 // Check when the user changes the algorithm selection
