@@ -217,9 +217,9 @@ function draw(data) {
 export function generate(alg, generatedFromButton) {
     if (generatedFromButton) {
         refreshMenuInputs();
-        if (isMenuInputValid()) {
+        // if (isMenuInputValid()) {
 
-        }
+        // }
         if (isInputMenuEmpty()) {
             alert("One of the input fields is empty!");
             return;
