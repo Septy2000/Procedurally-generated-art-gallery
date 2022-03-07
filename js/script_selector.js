@@ -1,20 +1,32 @@
 import * as frac from './scripts/scripts_2d_art/fractal_set.js';
-// Extract the selected algorithm
+// Get the selected algorithm
 let algorithm_selection = document.getElementById("alg__select");
 let selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value;
 
+// Get the color mode for fractals
 let colormode_selection = document.getElementById("colormode__select");
 let selected_colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
 let current_colormode_menu;
 setCurrentColormodeMenu(selected_colormode);
 
-
+// Get the selected C value for Julia sets
 let c_value_selection = document.getElementById("c__value__select");
 let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
 
+// Store a list of the fractals algorithms
 let fractal_algorithms = ["mandelbrot", "julia"];
 
 const canvas = document.getElementById('canvas1'); 
+
+// Decide what algorithm to run, depending on the user selection
+document.getElementById("generate__button").addEventListener("click", () => {
+    if(selected_algorithm === "mandelbrot") {
+        frac.generate(selected_algorithm, true);
+    }   
+    else if(selected_algorithm === "julia") {
+        frac.generate(selected_algorithm, true);
+    }  
+})
 
 // Used to update the selected algorithm whenever the user changes it
 function update_selected_alg() {
@@ -77,16 +89,6 @@ update_selected_colormode();
 // Check when the user changes the c value
 c_value_selection.onchange = update_selected_c_value;
 update_selected_c_value();
-
-// Decide what algorithm to run, depending on the user selection
-document.getElementById("generate__button").addEventListener("click", function() {
-    if(selected_algorithm === "mandelbrot") {
-        frac.generate(selected_algorithm, true);
-    }   
-    else if(selected_algorithm === "julia") {
-        frac.generate(selected_algorithm, true);
-    }  
-})
 
 document.getElementById("save__button").addEventListener("click", function() {
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");

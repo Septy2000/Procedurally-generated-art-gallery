@@ -92,7 +92,7 @@ canvas.addEventListener('mousemove', e => {
 })
 
 canvas.addEventListener('mouseup', e => {
-    // Check if the "mouseup" event comes from left click
+    // Check if the "mouseup" event comes from left click (value 0)
     if (e.button !== 0 || !isGenerated || !isLeftClickPressed || !painting) {
         canvas.style.cursor = "default";
         return;
@@ -180,7 +180,7 @@ function init() {
 }
 
 
-const draw = data => {
+function draw(data) {
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({col: COLUMN_LIST.shift()});
     }
