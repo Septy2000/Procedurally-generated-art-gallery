@@ -83,7 +83,7 @@
                             <label for="max__iterations">Iterations:</label>
                             <input id="max__iterations" type="number" min="1" value="500">
 
-                            <div id="mandelbrot">
+                            <div id="mandelbrot" class="hide">
                             </div>
                            
                             <div id="julia" class="hide">
@@ -96,16 +96,16 @@
                                     <option value="3">-0.54 + 0.54i</option>
                                     <option value="4">-0.4 - 0.59i</option>
                                     <option value="5">0.355534 - 0.337292i</option>
-                                    <option value="custom">Custom</option>
+                                    <option value="-1">Custom</option>
                                 </select>
                                 <br><br>
                                 
                                 <div id="c__value__custom" class="hide">
                                     <label for="">Value for real part:</label><br>
-                                    <input id="c__value__re" type="number">
+                                    <input id="c__value__re" type="number" value="0.0">
                                     <br><br>
                                     <label for="">Value for imaginary part: (without "i")</label><br>
-                                    <input id="c__value__im" type="number">
+                                    <input id="c__value__im" type="number" value="0.0">
                                 </div>
                             </div>
                         </div>                 

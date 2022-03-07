@@ -5,7 +5,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 600;
 
-const MAX_ITERATIONS = 500;
+
 let RE_MIN = -2, RE_MAX = 1;
 let IM_MIN = -1, IM_MAX = 1;
 
@@ -14,7 +14,7 @@ let x_start, y_start;
 let x_end, y_end;
 let zoom_history = [];
 
-const COLORS_NUMBER = 16;
+
 
 let worker;
 let algorithm;
@@ -29,6 +29,13 @@ const button_generate = document.getElementById("generate__button")
 button_undo.disabled = true;
 button_reset.disabled = true;
 button_generate.disabled = false;
+
+// Menu inputs
+let MAX_ITERATIONS;
+let colormode, c_value; 
+let color_intensity, red_weight, green_weight, blue_weight, colors_number;
+let re_value, im_value;
+
 
 
 // Check if the image is fully generated 
@@ -193,15 +200,30 @@ function draw(data) {
     progress_bar.setValue(parseInt((col + 1) * 100 / canvas.width));
     for (let i = 0; i < canvas.height; i++) {
         const iterations = columns_values[i];
-        ctx.fillStyle = color_HSL(iterations);
-        // ctx.fillStyle = color_RGB(iterations, 1, 1, 1);
-        // ctx.fillStyle = color_HEX(iterations, colors);
+
+        if (colormode === "smooth__colors") {
+            ctx.fillStyle = color_HSL(iterations);
+        }
+        else if (colormode === "black__and__white") {
+            ctx.fillStyle = color_RGB(iterations, red_weight, green_weight, blue_weight);
+        }
+        else {
+            ctx.fillStyle = color_HEX(iterations, colors);
+        }
         ctx.fillRect(col, i, 1, 1);
     }
 }
 
-export function generate(alg = "mandelbrot", generatedFromButton) {
+export function generate(alg, generatedFromButton) {
     if (generatedFromButton) {
+        refreshMenuInputs();
+        if (isMenuInputValid()) {
+
+        }
+        if (isInputMenuEmpty()) {
+            alert("One of the input fields is empty!");
+            return;
+        }
         RE_MIN = -2;
         RE_MAX = 2;
         IM_MIN = -1.5;
@@ -209,14 +231,12 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
         zoom_history =[];
         button_undo.disabled = true;
         button_reset.disabled = true;
-        colors = new Array(COLORS_NUMBER).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
-        index_julia = random(0, COMPLEX_LIST.length - 1);
-        console.log(index_julia);
+        colors = new Array(colors_number).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
     }
-
+    //index_julia = random(0, COMPLEX_LIST.length - 1);
     button_generate.disabled = true;
     isGenerated = false;
-    
+
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (worker) worker.terminate();
@@ -231,12 +251,60 @@ export function generate(alg = "mandelbrot", generatedFromButton) {
         im_max: IM_MAX,
         max_iter: MAX_ITERATIONS,
         isSettingUp: true,
-        complex : COMPLEX_LIST[index_julia]
+        complex : (c_value !== -1) ? COMPLEX_LIST[c_value] : {x: re_value, y: im_value}
     })
     init();
     worker.onmessage = function(e) {
         draw(e.data);
     }
+}
+
+function refreshMenuInputs() {    
+    let colormode_selection = document.getElementById("colormode__select");
+    colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
+    // console.log(colormode)
+
+    let c_value_selection = document.getElementById("c__value__select");
+    c_value = parseInt(c_value_selection.options[c_value_selection.selectedIndex].value);
+    // console.log(c_value + typeof c_value)
+
+    color_intensity = parseInt(document.getElementById("color__intensity__value").value);
+    // console.log(color_intensity)
+
+    red_weight = parseInt(document.getElementById("red__value").value);
+    // console.log(red_weight)
+
+    green_weight = parseInt(document.getElementById("green__value").value);
+    // console.log(green_weight)
+
+    blue_weight = parseInt(document.getElementById("blue__value").value);
+    // console.log(blue_weight)
+
+    colors_number = parseInt(document.getElementById("colors__number__value").value);
+    // console.log(colors_number)
+
+    re_value = parseInt(document.getElementById("c__value__re").value);
+    // console.log(re_value)
+
+    im_value = parseInt(document.getElementById("c__value__im").value);
+    // console.log(im_value)
+
+    MAX_ITERATIONS = parseInt(document.getElementById("max__iterations").value);
+    // console.log(MAX_ITERATIONS)
+}
+
+// Checks if any of the inputs from menu is empty
+// If there is at least one that is empty, the user cannot generate a new image
+function isInputMenuEmpty() {
+    return (
+        Number.isNaN(color_intensity) ||
+        Number.isNaN(red_weight) || 
+        Number.isNaN(green_weight) || 
+        Number.isNaN(blue_weight) || 
+        Number.isNaN(colors_number) || 
+        Number.isNaN(re_value) || 
+        Number.isNaN(im_value)
+        );
 }
 
 
@@ -265,7 +333,7 @@ function color_HSL(iterations) {
     if (iterations === MAX_ITERATIONS) {
         return `black`;
     }
-    let hue = 1 * 360 * (iterations / MAX_ITERATIONS);
+    let hue = color_intensity * 360 * (iterations / MAX_ITERATIONS);
     return `hsl(${hue}, 100%, 50%)`
 
 }

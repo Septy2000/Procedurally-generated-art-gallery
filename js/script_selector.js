@@ -19,7 +19,7 @@ let fractal_algorithms = ["mandelbrot", "julia"];
 const canvas = document.getElementById('canvas1'); 
 
 // Decide what algorithm to run, depending on the user selection
-document.getElementById("generate__button").addEventListener("click", () => {
+document.getElementById("generate__button").addEventListener("click", e => {
     if(selected_algorithm === "mandelbrot") {
         frac.generate(selected_algorithm, true);
     }   
@@ -33,7 +33,6 @@ function update_selected_alg() {
     document.getElementById(`${selected_algorithm}`).classList.add("hide");
  
     selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
-    console.log(selected_algorithm);
 
     if(!fractal_algorithms.includes(selected_algorithm)) {
         document.getElementById("fractals").classList.add("hide");
@@ -48,12 +47,9 @@ function update_selected_alg() {
 }
 
 function update_selected_colormode() {
-    
     document.getElementById(`${current_colormode_menu}`).classList.add("hide");
     selected_colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
     setCurrentColormodeMenu(selected_colormode);
-    console.log(selected_colormode);
-    console.log(current_colormode_menu);
     document.getElementById(`${current_colormode_menu}`).classList.remove("hide");
 }
 
