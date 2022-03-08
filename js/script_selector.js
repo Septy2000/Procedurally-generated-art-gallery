@@ -16,7 +16,7 @@ let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex
 // Store a list of the fractals algorithms
 let fractal_algorithms = ["mandelbrot", "julia"];
 
-const canvas = document.getElementById('canvas'); 
+const canvas1 = document.getElementById('canvas'); 
 
 // Decide what algorithm to run, depending on the user selection
 document.getElementById("generate__button").addEventListener("click", e => {
@@ -90,33 +90,48 @@ c_value_selection.onchange = update_selected_c_value;
 update_selected_c_value();
 
 document.getElementById("save__button").addEventListener("click", function() {
-    let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    let image = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href = image;
 })
 
 
-import * as THREE from '../node_modules/three/build/three.module.js';
+import * as THREE from './../node_modules/three/build/three.module.js';
 // const canvas = document.getElementById('canvas'); 
 
-const scene = new THREE.Scene();
+let scene = new THREE.Scene();
 
-const geometry = new THREE.TorusGeometry( .7, .2, 16, 100);
+let camera = new THREE.PerspectiveCamera(72, 800 / 600, 0.1, 1000)
 
-const material = new THREE.MeshBasicMaterial();
-material.color = new THREE.Color(0xff0000);
 
-const sphere = new THREE.Mesh(geometry, material);
-scene.add(sphere);
+// material.color = new THREE.Color(0xff0000);
 
-const pointLight = new THREE.PointLight(0xffffff, 0.1);
-pointLight.position.x = 2;
-pointLight.position.y = 3;
-pointLight.position.z = 4;
-scene.add(pointLight);
+// const sphere = new THREE.Mesh(geometry, material);
+// scene.add(sphere);
 
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+// const pointLight = new THREE.PointLight(0xffffff, 0.1);
+// pointLight.position.x = 2;
+// pointLight.position.y = 3;
+// pointLight.position.z = 4;
+// scene.add(pointLight);
+
+let renderer = new THREE.WebGLRenderer({
+    antialias: true
 })
+renderer.setClearColor("#e5e5e5");
 renderer.setSize(800, 600);
-// document.body.appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
+
+
+let geometry = new THREE.SphereGeometry(1, 10, 10);
+let material = new THREE.MeshLambertMaterial({color: 0xFFCC00});
+let mesh = new THREE.Mesh(geometry, material);
+
+scene.add(mesh);
+
+var light = new THREE.PointLight(0xFFFFFF, 1, 500);
+light.position.set(10, 0, 25);
+scene.add(light);
+
+renderer.render(scene, camera);
+
 // renderer.setPixelRatio(Math.min(wi))
