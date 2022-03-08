@@ -2,8 +2,8 @@ import * as pb from '../../progress_bar.js'
 
 const canvas = document.getElementById('canvas1'); 
 const ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 1600;
+canvas.height = 1200;
 
 
 let RE_MIN = -2, RE_MAX = 1;
@@ -31,16 +31,13 @@ button_reset.disabled = true;
 button_generate.disabled = false;
 
 // Menu inputs
-let MAX_ITERATIONS;
+let max_iterations;
 let colormode, c_value; 
 let color_intensity, red_weight, green_weight, blue_weight, colors_number;
 let re_value, im_value;
 
-
-
 // Check if the image is fully generated 
 let isGenerated = false;
-let isLeftClickPressed = false;
 
 const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
 
@@ -57,17 +54,13 @@ const COMPLEX_LIST = [
     {x: 0.355534, y: -0.337292}
 ]
 
-let index_julia;
-
 canvas.addEventListener('mousedown', e => {
     if (e.button !== 0 || !isGenerated) return;
     const rect = canvas.getBoundingClientRect();
     x_start = (e.clientX - rect.left) * SCALING_FACTOR;
     y_start = (e.clientY - rect.top) * SCALING_FACTOR;
 
-
     painting = true;
-    isLeftClickPressed = true;
 
     canvas.style.cursor = "crosshair";
     if("setLineDash" in ctx) {
@@ -80,30 +73,35 @@ canvas.addEventListener('mousedown', e => {
 })
 
 canvas.addEventListener('mousemove', e => {
-    if (!painting || !isLeftClickPressed) return;
+    if (!painting) {
+        canvas.style.cursor = "default";
+        return;
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
     const rect = canvas.getBoundingClientRect();
     let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
     let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
 
-    if(x_mouse > canvas.width - 2 || x_mouse < 2 || y_mouse > canvas.height - 2 || y_mouse < 2) {
-        painting = false;
-        canvas.style.cursor = "default";
-        ctx.putImageData(imageData, 0, 0);
-        return
-    }
-
-
-    ctx.putImageData(imageData, 0, 0);
     ctx.strokeRect(x_start, y_start, (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start)), y_mouse - y_start);
 
 })
 
-canvas.addEventListener('mouseup', e => {
-    // Check if the "mouseup" event comes from left click (value 0)
-    if (e.button !== 0 || !isGenerated || !isLeftClickPressed || !painting) {
-        canvas.style.cursor = "default";
+canvas.addEventListener("mouseout", e => {
+    if (!painting) return;
+    painting = false;
+    ctx.putImageData(imageData, 0, 0);
+
+})
+
+canvas.addEventListener('mouseup', e => { 
+    if (!painting) {
         return;
-    }   
+    }
+
+    painting = false;
+
     zoom_history.push([RE_MIN, RE_MAX, IM_MIN, IM_MAX]);
 
 
@@ -127,10 +125,6 @@ canvas.addEventListener('mouseup', e => {
     let temp_im_max = Math.max(imRelativePoint(y_start), imRelativePoint(y_end));
     IM_MIN = temp_im_min;
     IM_MAX = temp_im_max;
-    
-
-    painting = false;
-    isLeftClickPressed = false;
 
     canvas.style.cursor = "default";
 
@@ -233,11 +227,10 @@ export function generate(alg, generatedFromButton) {
         button_reset.disabled = true;
         colors = new Array(colors_number).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
     }
-    //index_julia = random(0, COMPLEX_LIST.length - 1);
     button_generate.disabled = true;
     isGenerated = false;
 
-    MAX_ITERATIONS = parseInt(document.getElementById("max__iterations").value);
+    max_iterations = parseInt(document.getElementById("max__iterations").value);
 
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -251,7 +244,7 @@ export function generate(alg, generatedFromButton) {
         re_max: RE_MAX,
         im_min: IM_MIN,
         im_max: IM_MAX,
-        max_iter: MAX_ITERATIONS,
+        max_iter: max_iterations,
         isSettingUp: true,
         complex : (c_value !== -1) ? COMPLEX_LIST[c_value] : {x: re_value, y: im_value}
     })
@@ -291,7 +284,7 @@ function refreshMenuInputs() {
     im_value = parseFloat(document.getElementById("c__value__im").value);
     // console.log(im_value)
 
-    // console.log(MAX_ITERATIONS)
+    // console.log(max_iterations)
 }
 
 // Checks if any of the inputs from menu is empty
@@ -319,22 +312,22 @@ function random(lower_bound, upper_bound) {
 
 
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
-    let color = parseInt(iterations * 255 / MAX_ITERATIONS)
+    let color = parseInt(iterations * 255 / max_iterations)
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
 
 }
 
 
 function color_HEX(iterations, colors) {
-    return colors[(iterations === MAX_ITERATIONS) ? 0 : (iterations % colors.length - 1) + 1]
+    return colors[(iterations === max_iterations) ? 0 : (iterations % colors.length - 1) + 1]
 }
 
 
 function color_HSL(iterations) {
-    if (iterations === MAX_ITERATIONS) {
+    if (iterations === max_iterations) {
         return `black`;
     }
-    let hue = color_intensity * 360 * (iterations / MAX_ITERATIONS);
+    let hue = color_intensity * 360 * (iterations / max_iterations);
     return `hsl(${hue}, 100%, 50%)`
 
 }
