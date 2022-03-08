@@ -11,6 +11,7 @@
 }
 
 
+
 a {
     font-size: 25px;
     color: #282d30;
@@ -127,10 +128,12 @@ select, input {
     width: 100%;
 }
 
+.res__input {
+    width: 38%;
+}
+
 optgroup {
     font-weight: bold;
-    /* background-color: #dedee7; */
-
 }
 
 #menu__alg {
@@ -162,12 +165,18 @@ optgroup {
     transition: width 0.02s;
 }
 
-
 #buttons__bar {
     flex: 0 1 0%;
-    padding: 10px;
+}
+
+.rgb__input {
+    width: 24%;
+}
+
+.center {
     text-align: center;
 }
 
-
-
+.button__padding {
+    padding: 10px;
+}

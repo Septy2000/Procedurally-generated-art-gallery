@@ -90,4 +90,3 @@ document.getElementById("save__button").addEventListener("click", function() {
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href = image;
 })
-

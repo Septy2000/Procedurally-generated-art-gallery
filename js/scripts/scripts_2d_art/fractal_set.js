@@ -2,14 +2,11 @@ import * as pb from '../../progress_bar.js'
 
 const canvas = document.getElementById('canvas1'); 
 const ctx = canvas.getContext("2d");
-canvas.width = 1600;
-canvas.height = 1200;
-
 
 let RE_MIN = -2, RE_MAX = 1;
 let IM_MIN = -1, IM_MAX = 1;
 
-const SCALING_FACTOR = canvas.width / 1200;
+let scaling_factor;
 let x_start, y_start;
 let x_end, y_end;
 let zoom_history = [];
@@ -57,8 +54,8 @@ const COMPLEX_LIST = [
 canvas.addEventListener('mousedown', e => {
     if (e.button !== 0 || !isGenerated) return;
     const rect = canvas.getBoundingClientRect();
-    x_start = (e.clientX - rect.left) * SCALING_FACTOR;
-    y_start = (e.clientY - rect.top) * SCALING_FACTOR;
+    x_start = (e.clientX - rect.left) * scaling_factor;
+    y_start = (e.clientY - rect.top) * scaling_factor;
 
     painting = true;
 
@@ -81,8 +78,8 @@ canvas.addEventListener('mousemove', e => {
     ctx.putImageData(imageData, 0, 0);
 
     const rect = canvas.getBoundingClientRect();
-    let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
-    let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
+    let x_mouse = (e.clientX - rect.left) * scaling_factor;
+    let y_mouse = (e.clientY - rect.top) * scaling_factor;
 
     ctx.strokeRect(x_start, y_start, (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start)), y_mouse - y_start);
 
@@ -106,8 +103,8 @@ canvas.addEventListener('mouseup', e => {
 
 
     const rect = canvas.getBoundingClientRect();
-    let x_mouse = (e.clientX - rect.left) * SCALING_FACTOR;
-    let y_mouse = (e.clientY - rect.top) * SCALING_FACTOR;
+    let x_mouse = (e.clientX - rect.left) * scaling_factor;
+    let y_mouse = (e.clientY - rect.top) * scaling_factor;
 
 
     x_end = x_start + (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start));
@@ -252,7 +249,27 @@ export function generate(alg, generatedFromButton) {
     }
 }
 
-function refreshMenuInputs() {    
+let res_width = document.getElementById("res__width");
+let res_height = document.getElementById("res__height");
+
+function updateResHeight() {
+    console.log("DAA");
+    res_height.value = parseInt(res_width.value * 3 / 4);
+}
+
+function updateResWidth() {
+    res_width.value = parseInt(res_height.value * 4 / 3);
+    
+}
+
+res_width.onchange = updateResHeight;
+res_height.onchange = updateResWidth;
+
+function refreshMenuInputs() {  
+    canvas.width = res_width.value;
+    canvas.height = res_height.value;
+    scaling_factor = canvas.width / 1200;
+    
     let colormode_selection = document.getElementById("colormode__select");
     colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
 
@@ -280,6 +297,8 @@ function refreshMenuInputs() {
 // If there is at least one that is empty, the user cannot generate a new image
 function isInputMenuEmpty() {
     return (
+        Number.isNaN(canvas.width) ||
+        Number.isNaN(canvas.height) ||
         Number.isNaN(color_intensity) ||
         Number.isNaN(red_weight) || 
         Number.isNaN(green_weight) || 
