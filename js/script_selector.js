@@ -26,6 +26,9 @@ document.getElementById("generate__button").addEventListener("click", e => {
     else if(selected_algorithm === "julia") {
         frac.generate(selected_algorithm, true);
     }  
+    else {
+        console.log("Not functioning yet");
+    }
 })
 
 // Used to update the selected algorithm whenever the user changes it
