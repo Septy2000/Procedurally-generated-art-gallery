@@ -16,7 +16,7 @@ let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex
 // Store a list of the fractals algorithms
 let fractal_algorithms = ["mandelbrot", "julia"];
 
-const canvas = document.getElementById('canvas1'); 
+const canvas = document.getElementById('canvas'); 
 
 // Decide what algorithm to run, depending on the user selection
 document.getElementById("generate__button").addEventListener("click", e => {
@@ -93,3 +93,30 @@ document.getElementById("save__button").addEventListener("click", function() {
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href = image;
 })
+
+
+import * as THREE from '../node_modules/three/build/three.module.js';
+// const canvas = document.getElementById('canvas'); 
+
+const scene = new THREE.Scene();
+
+const geometry = new THREE.TorusGeometry( .7, .2, 16, 100);
+
+const material = new THREE.MeshBasicMaterial();
+material.color = new THREE.Color(0xff0000);
+
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+
+const pointLight = new THREE.PointLight(0xffffff, 0.1);
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
+scene.add(pointLight);
+
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(800, 600);
+// document.body.appendChild(renderer.domElement);
+// renderer.setPixelRatio(Math.min(wi))

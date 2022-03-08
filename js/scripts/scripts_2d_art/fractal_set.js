@@ -1,6 +1,6 @@
 import * as pb from '../../progress_bar.js'
 
-const canvas = document.getElementById('canvas1'); 
+const canvas = document.getElementById('canvas'); 
 const ctx = canvas.getContext("2d");
 
 let RE_MIN = -2, RE_MAX = 1;
