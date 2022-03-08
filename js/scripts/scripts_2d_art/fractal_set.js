@@ -215,7 +215,7 @@ export function generate(alg, generatedFromButton) {
 
         // }
         if (isInputMenuEmpty()) {
-            alert("One of the input fields is empty!");
+            alert("One or more input fields are empty!");
             return;
         }
         RE_MIN = -2;
@@ -229,8 +229,6 @@ export function generate(alg, generatedFromButton) {
     }
     button_generate.disabled = true;
     isGenerated = false;
-
-    max_iterations = parseInt(document.getElementById("max__iterations").value);
 
     algorithm = alg;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -257,34 +255,25 @@ export function generate(alg, generatedFromButton) {
 function refreshMenuInputs() {    
     let colormode_selection = document.getElementById("colormode__select");
     colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
-    // console.log(colormode)
 
     let c_value_selection = document.getElementById("c__value__select");
     c_value = parseInt(c_value_selection.options[c_value_selection.selectedIndex].value);
-    // console.log(c_value + typeof c_value)
 
     color_intensity = parseInt(document.getElementById("color__intensity__value").value);
-    // console.log(color_intensity)
 
     red_weight = parseInt(document.getElementById("red__value").value);
-    // console.log(red_weight)
 
     green_weight = parseInt(document.getElementById("green__value").value);
-    // console.log(green_weight)
 
     blue_weight = parseInt(document.getElementById("blue__value").value);
-    // console.log(blue_weight)
 
     colors_number = parseInt(document.getElementById("colors__number__value").value);
-    // console.log(colors_number)
 
     re_value = parseFloat(document.getElementById("c__value__re").value);
-    // console.log(re_value)
 
     im_value = parseFloat(document.getElementById("c__value__im").value);
-    // console.log(im_value)
 
-    // console.log(max_iterations)
+    max_iterations = parseInt(document.getElementById("max__iterations").value);
 }
 
 // Checks if any of the inputs from menu is empty
@@ -297,7 +286,8 @@ function isInputMenuEmpty() {
         Number.isNaN(blue_weight) || 
         Number.isNaN(colors_number) || 
         Number.isNaN(re_value) || 
-        Number.isNaN(im_value)
+        Number.isNaN(im_value) ||
+        Number.isNaN(max_iterations)
         );
 }
 
@@ -309,7 +299,6 @@ function random(lower_bound, upper_bound) {
 
 
 // Coloring functions
-
 
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
     let color = parseInt(iterations * 255 / max_iterations)
