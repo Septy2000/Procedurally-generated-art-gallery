@@ -1,20 +1,18 @@
 // import * as THREE from './../node_modules/three/build/three.module.js';
 import * as THREE from './../../../node_modules/three/build/three.module.js';
 
-const canvas1 = document.getElementById('canvas'); 
-
 let scene = new THREE.Scene();
 
-let camera = new THREE.PerspectiveCamera(72, 800 / 600, 0.1, 1000)
-camera.position.z = 10;
+let camera = new THREE.PerspectiveCamera(72, 1200 / 900, 0.1, 1000)
+camera.position.z = 5;
 
 let renderer = new THREE.WebGLRenderer({
-    canvas: canvas1
-})
+    antialias: true,
+    canvas: document.getElementById("canvas__3d") 
+});
+renderer.setPixelRatio(1200 / 900);
 renderer.setClearColor("#e5e5e5");
-renderer.setSize(800, 600);
-// document.body.appendChild(renderer.domElement);
-
+renderer.setSize(1200, 900);
 
 let geometry = new THREE.SphereGeometry(1, 10, 10);
 let material = new THREE.MeshLambertMaterial({color: 0xFFCC00});
@@ -27,9 +25,5 @@ light.position.set(10, 0, 25);
 scene.add(light);
 
 export function generate() {
-    console.log("EE");
     renderer.render(scene, camera);
 }
-
-
-// renderer.setPixelRatio(Math.min(wi))

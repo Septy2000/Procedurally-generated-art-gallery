@@ -1,7 +1,7 @@
 import * as pb from '../../progress_bar.js'
 
-const canvas = document.getElementById('canvas'); 
-const ctx = canvas.getContext("2d");
+const canvas_2d = document.getElementById('canvas__2d'); 
+const ctx = canvas_2d.getContext("2d");
 
 let RE_MIN = -2, RE_MAX = 1;
 let IM_MIN = -1, IM_MAX = 1;
@@ -51,33 +51,33 @@ const COMPLEX_LIST = [
     {x: 0.355534, y: -0.337292}
 ]
 
-canvas.addEventListener('mousedown', e => {
+canvas_2d.addEventListener('mousedown', e => {
     if (e.button !== 0 || !isGenerated) return;
-    const rect = canvas.getBoundingClientRect();
+    const rect = canvas_2d.getBoundingClientRect();
     x_start = (e.clientX - rect.left) * scaling_factor;
     y_start = (e.clientY - rect.top) * scaling_factor;
 
     painting = true;
 
-    canvas.style.cursor = "crosshair";
+    canvas_2d.style.cursor = "crosshair";
     if("setLineDash" in ctx) {
         ctx.setLineDash([2,2]);
     }
     ctx.lineWidth = 3;
     ctx.strokeStyle = "white";
-    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    imageData = ctx.getImageData(0, 0, canvas_2d.width, canvas_2d.height);
     
 })
 
-canvas.addEventListener('mousemove', e => {
+canvas_2d.addEventListener('mousemove', e => {
     if (!painting) {
-        canvas.style.cursor = "default";
+        canvas_2d.style.cursor = "default";
         return;
     }
 
     ctx.putImageData(imageData, 0, 0);
 
-    const rect = canvas.getBoundingClientRect();
+    const rect = canvas_2d.getBoundingClientRect();
     let x_mouse = (e.clientX - rect.left) * scaling_factor;
     let y_mouse = (e.clientY - rect.top) * scaling_factor;
 
@@ -85,14 +85,14 @@ canvas.addEventListener('mousemove', e => {
 
 })
 
-canvas.addEventListener("mouseout", e => {
+canvas_2d.addEventListener("mouseout", e => {
     if (!painting) return;
     painting = false;
     ctx.putImageData(imageData, 0, 0);
 
 })
 
-canvas.addEventListener('mouseup', e => { 
+canvas_2d.addEventListener('mouseup', e => { 
     if (!painting) {
         return;
     }
@@ -102,7 +102,7 @@ canvas.addEventListener('mouseup', e => {
     zoom_history.push([RE_MIN, RE_MAX, IM_MIN, IM_MAX]);
 
 
-    const rect = canvas.getBoundingClientRect();
+    const rect = canvas_2d.getBoundingClientRect();
     let x_mouse = (e.clientX - rect.left) * scaling_factor;
     let y_mouse = (e.clientY - rect.top) * scaling_factor;
 
@@ -123,7 +123,7 @@ canvas.addEventListener('mouseup', e => {
     IM_MIN = temp_im_min;
     IM_MAX = temp_im_max;
 
-    canvas.style.cursor = "default";
+    canvas_2d.style.cursor = "default";
 
     button_undo.disabled = false;
     button_reset.disabled = false;
@@ -134,12 +134,12 @@ canvas.addEventListener('mouseup', e => {
 })
 
 const reRelativePoint = x => {
-    x = RE_MIN + (x / canvas.width) * (RE_MAX - RE_MIN);
+    x = RE_MIN + (x / canvas_2d.width) * (RE_MAX - RE_MIN);
     return x;
 }
 
 const imRelativePoint = y => {
-    y = IM_MIN + (y / canvas.height) * (IM_MAX - IM_MIN);
+    y = IM_MIN + (y / canvas_2d.height) * (IM_MAX - IM_MIN);
     return y;
 }
 
@@ -171,7 +171,7 @@ button_undo.addEventListener("click", function() {
 })
 
 function init() {
-    for (let col = 0; col < canvas.width; col++) {
+    for (let col = 0; col < canvas_2d.width; col++) {
         COLUMN_LIST[col] = col;
     }
     worker.postMessage({col: COLUMN_LIST.shift()});
@@ -188,8 +188,8 @@ function draw(data) {
     }
 
     const {col, columns_values} = data;
-    progress_bar.setValue((parseInt(col * 100 / (canvas.width - 1))));
-    for (let i = 0; i < canvas.height; i++) {
+    progress_bar.setValue((parseInt(col * 100 / (canvas_2d.width - 1))));
+    for (let i = 0; i < canvas_2d.height; i++) {
         const iterations = columns_values[i];
 
         if (colormode === "smooth__colors") {
@@ -228,13 +228,13 @@ export function generate(alg, generatedFromButton) {
     isGenerated = false;
 
     algorithm = alg;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas_2d.width, canvas_2d.height);
     if (worker) worker.terminate();
     worker = new Worker('../js/scripts/scripts_2d_art/fractal_worker.js');
     worker.postMessage({
         algorithm: alg,
-        width: canvas.width,
-        height: canvas.height,
+        width: canvas_2d.width,
+        height: canvas_2d.height,
         re_min: RE_MIN,
         re_max: RE_MAX,
         im_min: IM_MIN,
@@ -266,9 +266,9 @@ res_width.onchange = updateResHeight;
 res_height.onchange = updateResWidth;
 
 function refreshMenuInputs() {  
-    canvas.width = res_width.value;
-    canvas.height = res_height.value;
-    scaling_factor = canvas.width / 1200;
+    canvas_2d.width = res_width.value;
+    canvas_2d.height = res_height.value;
+    scaling_factor = canvas_2d.width / 1200;
     
     let colormode_selection = document.getElementById("colormode__select");
     colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
@@ -297,8 +297,8 @@ function refreshMenuInputs() {
 // If there is at least one that is empty, the user cannot generate a new image
 function isInputMenuEmpty() {
     return (
-        Number.isNaN(canvas.width) ||
-        Number.isNaN(canvas.height) ||
+        Number.isNaN(canvas_2d.width) ||
+        Number.isNaN(canvas_2d.height) ||
         Number.isNaN(color_intensity) ||
         Number.isNaN(red_weight) || 
         Number.isNaN(green_weight) || 

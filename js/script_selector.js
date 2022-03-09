@@ -16,39 +16,43 @@ let c_value_selection = document.getElementById("c__value__select");
 let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
 
 // Store a list of the fractals algorithms
+let aglorithms_2d = ["mandelbrot", "julia", "perlin"];
 let fractal_algorithms = ["mandelbrot", "julia"];
 
-const canvas1 = document.getElementById('canvas'); 
+const canvas_2d = document.getElementById("canvas__2d"); 
+const canvas_3d = document.getElementById("canvas__3d");
 
 // Decide what algorithm to run, depending on the user selection
 document.getElementById("generate__button").addEventListener("click", e => {
-    if(selected_algorithm === "mandelbrot") {
-        frac.generate(selected_algorithm, true);
-    }   
-    else if(selected_algorithm === "julia") {
-        frac.generate(selected_algorithm, true);
-    }  
+    if(aglorithms_2d.includes(selected_algorithm)) {
+        canvas_2d.classList.remove("hide");
+        canvas_3d.classList.add("hide");
+        if(fractal_algorithms.includes(selected_algorithm)) {
+            frac.generate(selected_algorithm, true);
+        }
+        else {
+            console.log("not yet perlin");
+        }
+    }
     else {
+        canvas_2d.classList.add("hide");
+        canvas_3d.classList.remove("hide");
         THREE.generate();
     }
-})
+
+});
 
 // Used to update the selected algorithm whenever the user changes it
 function update_selected_alg() {
     document.getElementById(`${selected_algorithm}`).classList.add("hide");
- 
     selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
+    document.getElementById("fractals").classList.add("hide");
 
-    if(!fractal_algorithms.includes(selected_algorithm)) {
-        document.getElementById("fractals").classList.add("hide");
-    }
-    else {
+    if(fractal_algorithms.includes(selected_algorithm)) {
         document.getElementById("fractals").classList.remove("hide");
-
-    }
+    }  
 
     document.getElementById(`${selected_algorithm}`).classList.remove("hide");
-
 }
 
 function update_selected_colormode() {

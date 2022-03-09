@@ -93,9 +93,6 @@ canvas {
     border-radius: 10px;
     width: 1200px;
     height: 900px;
-    background: #e4e5e9;
-    /* box-shadow: 1px 1px 20px red; */
-    float: left;
     display: block;
 }
 
