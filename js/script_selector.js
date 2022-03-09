@@ -1,4 +1,6 @@
 import * as frac from './scripts/scripts_2d_art/fractal_set.js';
+import * as THREE from './scripts/scripts_3d_art/test_3d.js';
+
 // Get the selected algorithm
 let algorithm_selection = document.getElementById("alg__select");
 let selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value;
@@ -27,7 +29,7 @@ document.getElementById("generate__button").addEventListener("click", e => {
         frac.generate(selected_algorithm, true);
     }  
     else {
-        console.log("Not functioning yet");
+        THREE.generate();
     }
 })
 
@@ -95,43 +97,3 @@ document.getElementById("save__button").addEventListener("click", function() {
 })
 
 
-import * as THREE from './../node_modules/three/build/three.module.js';
-// const canvas = document.getElementById('canvas'); 
-
-let scene = new THREE.Scene();
-
-let camera = new THREE.PerspectiveCamera(72, 800 / 600, 0.1, 1000)
-
-
-// material.color = new THREE.Color(0xff0000);
-
-// const sphere = new THREE.Mesh(geometry, material);
-// scene.add(sphere);
-
-// const pointLight = new THREE.PointLight(0xffffff, 0.1);
-// pointLight.position.x = 2;
-// pointLight.position.y = 3;
-// pointLight.position.z = 4;
-// scene.add(pointLight);
-
-let renderer = new THREE.WebGLRenderer({
-    antialias: true
-})
-renderer.setClearColor("#e5e5e5");
-renderer.setSize(800, 600);
-document.body.appendChild(renderer.domElement);
-
-
-let geometry = new THREE.SphereGeometry(1, 10, 10);
-let material = new THREE.MeshLambertMaterial({color: 0xFFCC00});
-let mesh = new THREE.Mesh(geometry, material);
-
-scene.add(mesh);
-
-var light = new THREE.PointLight(0xFFFFFF, 1, 500);
-light.position.set(10, 0, 25);
-scene.add(light);
-
-renderer.render(scene, camera);
-
-// renderer.setPixelRatio(Math.min(wi))
