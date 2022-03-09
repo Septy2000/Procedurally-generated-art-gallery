@@ -31,16 +31,25 @@ document.getElementById("generate__button").addEventListener("click", e => {
             frac.generate(selected_algorithm, true);
         }
         else {
-            console.log("not yet perlin");
+            // to come
         }
     }
     else {
         canvas_2d.classList.add("hide");
         canvas_3d.classList.remove("hide");
-        THREE.generate();
+        THREE.stopAnimate();
+        THREE.animate();
     }
 
 });
+
+// document.getElementById("generate__button").addEventListener("dblclick", e => {
+    
+   
+//     THREE.stopAnimate();
+
+
+// });
 
 // Used to update the selected algorithm whenever the user changes it
 function update_selected_alg() {
@@ -96,7 +105,7 @@ c_value_selection.onchange = update_selected_c_value;
 update_selected_c_value();
 
 document.getElementById("save__button").addEventListener("click", function() {
-    let image = canvas1.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    let image = canvas_2d.toDataURL("image/png").replace("image/png", "image/octet-stream");
     window.location.href = image;
 })
 

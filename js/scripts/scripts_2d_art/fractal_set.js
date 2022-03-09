@@ -1,4 +1,5 @@
-import * as pb from '../../progress_bar.js'
+import * as pb from '../../helper_scripts/progress_bar.js'
+import * as res from  '../../helper_scripts/resolution.js'
 
 const canvas_2d = document.getElementById('canvas__2d'); 
 const ctx = canvas_2d.getContext("2d");
@@ -36,7 +37,7 @@ let re_value, im_value;
 // Check if the image is fully generated 
 let isGenerated = false;
 
-const progress_bar = new pb.ProgressBar(document.querySelector('#progress__bar__container'), 0);
+const progress_bar = new pb.ProgressBar(0);
 
 let painting;
 let imageData;
@@ -67,7 +68,7 @@ canvas_2d.addEventListener('mousedown', e => {
     ctx.strokeStyle = "white";
     imageData = ctx.getImageData(0, 0, canvas_2d.width, canvas_2d.height);
     
-})
+});
 
 canvas_2d.addEventListener('mousemove', e => {
     if (!painting) {
@@ -83,14 +84,14 @@ canvas_2d.addEventListener('mousemove', e => {
 
     ctx.strokeRect(x_start, y_start, (x_mouse > x_start ? 1 : -1) * 4 / 3 * Math.abs((y_mouse - y_start)), y_mouse - y_start);
 
-})
+});
 
 canvas_2d.addEventListener("mouseout", e => {
     if (!painting) return;
     painting = false;
     ctx.putImageData(imageData, 0, 0);
 
-})
+});
 
 canvas_2d.addEventListener('mouseup', e => { 
     if (!painting) {
@@ -131,7 +132,7 @@ canvas_2d.addEventListener('mouseup', e => {
     generate(algorithm);
 
 
-})
+});
 
 const reRelativePoint = x => {
     x = RE_MIN + (x / canvas_2d.width) * (RE_MAX - RE_MIN);
@@ -249,25 +250,9 @@ export function generate(alg, generatedFromButton) {
     }
 }
 
-let res_width = document.getElementById("res__width");
-let res_height = document.getElementById("res__height");
-
-function updateResHeight() {
-    console.log("DAA");
-    res_height.value = parseInt(res_width.value * 3 / 4);
-}
-
-function updateResWidth() {
-    res_width.value = parseInt(res_height.value * 4 / 3);
-    
-}
-
-res_width.onchange = updateResHeight;
-res_height.onchange = updateResWidth;
-
 function refreshMenuInputs() {  
-    canvas_2d.width = res_width.value;
-    canvas_2d.height = res_height.value;
+    canvas_2d.width = res.width.value;
+    canvas_2d.height = res.height.value;
     scaling_factor = canvas_2d.width / 1200;
     
     let colormode_selection = document.getElementById("colormode__select");
