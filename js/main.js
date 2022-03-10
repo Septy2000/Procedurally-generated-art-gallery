@@ -118,7 +118,7 @@ document.getElementById("save__button").addEventListener("click", function() {
     // Extract the canvas data and convert it into a png file
     // Octet stream type represents a binary file
     let image = canvas_2d.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
-    // Create a hyperlink that acts as a download button
+    // Create a hyperlink that acts as a download link
     let download_elem = document.createElement("a");
     download_elem.download = "image.png";
     download_elem.href = image;
