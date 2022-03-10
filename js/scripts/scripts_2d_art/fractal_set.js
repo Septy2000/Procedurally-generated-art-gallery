@@ -209,13 +209,8 @@ function draw(data) {
 export function generate(alg, generatedFromButton) {
     if (generatedFromButton) {
         refreshMenuInputs();
-        // if (isMenuInputValid()) {
+        if (!isMenuInputValid()) return;
 
-        // }
-        if (isInputMenuEmpty()) {
-            alert("One or more input fields are empty!");
-            return;
-        }
         RE_MIN = -2;
         RE_MAX = 2;
         IM_MIN = -1.5;
@@ -278,22 +273,39 @@ function refreshMenuInputs() {
     max_iterations = parseInt(document.getElementById("max__iterations").value);
 }
 
-// Checks if any of the inputs from menu is empty
-// If there is at least one that is empty, the user cannot generate a new image
-function isInputMenuEmpty() {
-    return (
-        Number.isNaN(canvas_2d.width) ||
-        Number.isNaN(canvas_2d.height) ||
-        Number.isNaN(color_intensity) ||
-        Number.isNaN(red_weight) || 
-        Number.isNaN(green_weight) || 
-        Number.isNaN(blue_weight) || 
-        Number.isNaN(colors_number) || 
-        Number.isNaN(re_value) || 
-        Number.isNaN(im_value) ||
-        Number.isNaN(max_iterations)
-        );
+// Check if the input boxes from the menu UI are valid
+// Valid means not empty or within the valid range
+function isMenuInputValid() {
+
+    // canvas width and height are validated in resolution.js script
+
+    if (Number.isNaN(color_intensity) || color_intensity === 0) {
+        alert("Color intensity is invalid! This input requires an integer different than 0");
+        return false;
+    }
+    if (Number.isNaN(red_weight) || red_weight < 0) {
+        alert("Weight of red color (R) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(green_weight) || green_weight < 0) {
+        alert("Weight of green color (G) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(blue_weight) || blue_weight < 0) {
+        alert("Weight of blue color (B) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(colors_number) || colors_number < 2) {
+        alert("Number of colors is invalid! This input requires an integer greater than 1");
+        return false;
+    }
+    if (Number.isNaN(max_iterations) || max_iterations < 0) {
+        alert("Number of iterations is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    return true;
 }
+
 
 
 // Generate a random integer between a lower and an upper bound (inclusive)
