@@ -1,3 +1,5 @@
+import * as noise from './../../helper_scripts/noise.js'
+
 let INC, SCALING_FACTOR, COLUMNS, ROWS;
 let yoff = 0, xoff;
 

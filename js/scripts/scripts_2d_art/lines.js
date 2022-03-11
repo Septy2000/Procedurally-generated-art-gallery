@@ -1,6 +1,6 @@
 import * as pb from '../../helper_scripts/progress_bar.js'
 import * as res from  '../../helper_scripts/resolution.js'
-// import * as noise from './noise.js'
+
 // Store the canvas element adn context
 const canvas_2d = document.getElementById('canvas__2d'); 
 const ctx = canvas_2d.getContext("2d");
