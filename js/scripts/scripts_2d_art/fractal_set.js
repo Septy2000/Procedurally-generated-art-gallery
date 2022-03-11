@@ -260,7 +260,9 @@ function init_columns() {
 function draw(data) {
     // If the column list is not empty, send the next column to the worker
     if (COLUMN_LIST.length > 0) {
-        worker.postMessage({col: COLUMN_LIST.shift()});
+        worker.postMessage({
+            col: COLUMN_LIST.shift()
+        });
     }
     else {
         // If the column list is empty, mark the image as generated

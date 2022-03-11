@@ -31,10 +31,10 @@ onmessage = e => {
         for (let row = 0; row < HEIGHT; row++) {
 
             if (ALGORITHM === "mandelbrot") {
-                columns_values[row] = mandelbrot(relativePoint(col, row), 2);
+                columns_values[row] = mandelbrot(relativePoint(col, row));
             } 
             else if (ALGORITHM === "julia") {
-                columns_values[row] = julia(relativePoint(col, row), COMPLEX, 2);
+                columns_values[row] = julia(relativePoint(col, row), COMPLEX);
             }
         }
         // After calculating all the values for a column, send them back to the main thread
@@ -45,10 +45,9 @@ onmessage = e => {
 /**
  * This function applies the Mandelbrot function using the given complex number
  * @param {object} c a complex number with attributes x and y 
- * @param {*} power the power applied to the mandelbrot function 
  * @returns the number of iterations that the function reached without going towards infinity
  */
-function mandelbrot(c, power) {
+function mandelbrot(c) {
     // Initialise complex number z
     let z = {x: 0, y: 0 };
     // Iteration number
@@ -58,7 +57,7 @@ function mandelbrot(c, power) {
         // Complex number Z squared 
         // The minus exists because i^2 is -1
         z_powered = {
-            x: Math.pow(z.x, power) - Math.pow(z.y, power),
+            x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
             y: 2 * z.x * z.y
         }
 
@@ -77,10 +76,9 @@ return n;
  * This function applies the Julia function using the given complex number
  * @param {number} z a complex number with attributes x and y
  * @param {number} c a constant complex number with attributes x and y 
- * @param {number} power the power applied to the julia function
  * @returns the number of iterations that the function reached without going towards infinity
  */
-function julia(z, c, power) {
+function julia(z, c) {
     // iteration number
     let n = 0;
     let z_powered; 
@@ -88,7 +86,7 @@ function julia(z, c, power) {
         // Complex number Z squared 
         // The minus exists because i^2 is -1
         z_powered = {
-            x: Math.pow(z.x, power) - Math.pow(z.y, power),
+            x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
             y: 2 * z.x * z.y
         }
 
@@ -103,7 +101,6 @@ function julia(z, c, power) {
 return n;
 }
 
- 
 /**
  * Calculate the corresponding complex plane points using the points in canvas
  * @param {number} x point on real axis
