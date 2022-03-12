@@ -1,5 +1,5 @@
-import * as frac from './scripts/scripts_2d_art/fractal_set.js';
-import * as lines from './scripts/scripts_2d_art/lines.js'; 
+import * as frac from './scripts/scripts_2d_art/fractals/fractal_set.js';
+import * as perlin from './scripts/scripts_2d_art/perlin_noise/perlin.js'; 
 import * as THREE from './scripts/scripts_3d_art/test_3d.js';
 
 // Get the selected algorithm
@@ -17,7 +17,7 @@ let c_value_selection = document.getElementById("c__value__select");
 let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
 
 // Group algorithms by type
-let aglorithms_2d = ["mandelbrot", "julia", "lines"];
+let aglorithms_2d = ["mandelbrot", "julia", "perlin"];
 let fractal_algorithms = ["mandelbrot", "julia"];
 
 // Get both canvas elements
@@ -33,8 +33,8 @@ document.getElementById("generate__button").addEventListener("click", e => {
         if(fractal_algorithms.includes(selected_algorithm)) {
             frac.generate(selected_algorithm, true);
         }
-        else {
-            lines.generate(true);
+        else if (selected_algorithm === "perlin") {
+            perlin.generate(true);
         }
     }
     else {
@@ -48,7 +48,7 @@ document.getElementById("generate__button").addEventListener("click", e => {
 
 
 /**
- * Used to update the selected algorithm whenever the user changes it
+ * Used to update the selected algorithm and menu whenever the user changes it
  */
 function update_selected_alg() {
     // Hide the specific algorithm menu upon changing it
@@ -67,7 +67,7 @@ function update_selected_alg() {
 }
 
 /**
- * Update the colormode 
+ * Update the colormode and the menu
  */
 function update_selected_colormode() {
     // Hide previous colormode menu

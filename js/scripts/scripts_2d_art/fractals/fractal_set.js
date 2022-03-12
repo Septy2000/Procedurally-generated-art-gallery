@@ -1,5 +1,5 @@
-import * as pb from '../../helper_scripts/progress_bar.js'
-import * as res from  '../../helper_scripts/resolution.js'
+import * as pb from './../../../helper_scripts/progress_bar.js'
+import * as res from  './../../../helper_scripts/resolution.js'
 
 // Store the canvas element adn context
 const canvas_2d = document.getElementById('canvas__2d'); 
@@ -26,8 +26,10 @@ let zoom_history = [];
 // Worker for generating images on the worker thread
 let worker;
 
-// Stores the selected algorithm
-let algorithm;
+// Get the selected algorithm
+let algorithm_selection = document.getElementById("alg__select");
+let algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value;
+
 
 // List of canvas columns
 const COLUMN_LIST = [];
@@ -51,6 +53,8 @@ let re_value, im_value;
 // Check if the image is fully generated 
 let isGenerated = false;
 
+// Check if te image can generate, based on current algorithm
+let canGenerate = true;
 
 // Progress bar object
 const progress_bar = new pb.ProgressBar(0);
@@ -74,10 +78,21 @@ const COMPLEX_LIST = [
     {x: 0.355534, y: -0.337292}
 ]
 
+
+/**
+ * Used to update the selected algorithm whenever the user changes it
+ */
+algorithm_selection.addEventListener('change', e => {
+    algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
+    canGenerate = (["mandelbrot", "julia"].includes(algorithm)) ? true : false; 
+    console.log(canGenerate);
+
+})
+
 // Event for mouse click on canvas
 canvas_2d.addEventListener('mousedown', e => {
     // Check if other button than left click was pressed or the image has not finished generating yet
-    if (e.button !== 0 || !isGenerated) return;
+    if (e.button !== 0 || !isGenerated || !canGenerate) return;
     
     // Returns a DOMRect object with information about the canvas position relative to the window
     const rect = canvas_2d.getBoundingClientRect();
@@ -180,7 +195,7 @@ canvas_2d.addEventListener('mouseup', e => {
     button_undo.disabled = false;
     button_reset.disabled = false;
 
-    generate(algorithm);
+    generate();
 
 
 });
@@ -222,7 +237,7 @@ button_reset.addEventListener("click", function() {
     button_reset.disabled = true;
     button_undo.disabled = true;
 
-    generate(algorithm);
+    generate();
 })
 
 // Event for clicking the "Undo Zoom" button
@@ -239,7 +254,7 @@ button_undo.addEventListener("click", function() {
         button_undo.disabled = true;
         button_reset.disabled = true;
     }
-    generate(algorithm);
+    generate();
 })
 
 /**
@@ -296,10 +311,12 @@ function draw(data) {
 
 /**
  * Start generating the image.
- * @param {string} alg the current algorithm to use for generating the fractal
  * @param {boolean} generatedFromButton true if the generation is a result of the user clicking the "Generate" button
  */
-export function generate(alg, generatedFromButton) {
+export function generate(generatedFromButton = false) {
+    // Check if the generation can start
+    if (!canGenerate) return;
+
     // Check if the generation if from user action
     if (generatedFromButton) {
         // Update the parameters with the user input from the menu
@@ -326,19 +343,16 @@ export function generate(alg, generatedFromButton) {
     button_generate.disabled = true;
     isGenerated = false;
 
-    // Set the current algorithm to the one passed as parameter
-    algorithm = alg;
-
     // Clear canvas
     ctx.clearRect(0, 0, canvas_2d.width, canvas_2d.height);
 
     // Start a new worker and end a previous one
     if (worker) worker.terminate();
-    worker = new Worker('../js/scripts/scripts_2d_art/fractal_worker.js');
+    worker = new Worker('./js/scripts/scripts_2d_art/fractals/fractal_worker.js');
    
     // Pass parameters to the worker thread
     worker.postMessage({
-        algorithm: alg,
+        algorithm: algorithm,
         width: canvas_2d.width,
         height: canvas_2d.height,
         re_min: RE_MIN,

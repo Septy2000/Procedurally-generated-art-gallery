@@ -1,5 +1,5 @@
-import * as pb from '../../helper_scripts/progress_bar.js'
-import * as res from  '../../helper_scripts/resolution.js'
+import * as pb from './../../../helper_scripts/progress_bar.js'
+import * as res from  './../../../helper_scripts/resolution.js'
 
 // Store the canvas element adn context
 const canvas_2d = document.getElementById('canvas__2d'); 
@@ -7,8 +7,8 @@ const ctx = canvas_2d.getContext("2d");
 
 const button_generate = document.getElementById("generate__button")
 
-let inc = 0.02;
-let scaling_factor = 20;
+let inc = 0.03;
+let scaling_factor = 1;
 let columns, rows;
 let worker;
 const COLUMN_LIST = [];
@@ -42,11 +42,15 @@ function draw(data) {
     progress_bar.setValue((parseInt(col * 100 / (columns - 1))));
 
     for (let row = 0; row < rows; row++) {
-        const [x_end, y_end]  = column_values[row];
-        ctx.strokeStyle = color_HSL(1)
-        ctx.moveTo(col * scaling_factor, row * scaling_factor);
-        ctx.lineTo(x_end , y_end);
-        ctx.stroke();
+        const angle  = column_values[row];
+        // ctx.strokeStyle = color_HSL(1)
+        // ctx.moveTo(col * scaling_factor, row * scaling_factor);
+        // ctx.lineTo(x_end , y_end);
+        // ctx.stroke();
+        // ctx.rotate(angle);
+        ctx.fillStyle = color_HSL(Math.abs(angle) * 500 * 3)
+        ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
+
     }   
 }
 
@@ -62,7 +66,7 @@ function draw(data) {
     }
 
     if (worker) worker.terminate();
-    worker = new Worker('../js/scripts/scripts_2d_art/perlin_worker.js', {type: "module"});
+    worker = new Worker('./js/scripts/scripts_2d_art/perlin_noise/perlin_worker.js', {type: "module"});
    
     worker.postMessage({
         inc_param: inc,

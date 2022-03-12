@@ -78,7 +78,7 @@ export function seed(seed) {
   }
 };
 
-seed(0);
+// seed(1);
 
 /*
 for(var i=0; i<256; i++) {
