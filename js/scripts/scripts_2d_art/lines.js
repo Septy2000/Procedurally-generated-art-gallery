@@ -7,7 +7,7 @@ const ctx = canvas_2d.getContext("2d");
 
 const button_generate = document.getElementById("generate__button")
 
-let inc = 0.01;
+let inc = 0.02;
 let scaling_factor = 20;
 let columns, rows;
 let worker;
@@ -42,7 +42,6 @@ function draw(data) {
     progress_bar.setValue((parseInt(col * 100 / (columns - 1))));
 
     for (let row = 0; row < rows; row++) {
-        // console.log(columns_values[row]);
         const [x_end, y_end]  = column_values[row];
         ctx.strokeStyle = color_HSL(1)
         ctx.moveTo(col * scaling_factor, row * scaling_factor);
@@ -63,7 +62,7 @@ function draw(data) {
     }
 
     if (worker) worker.terminate();
-    worker = new Worker('../js/scripts/scripts_2d_art/perlin_worker.js');
+    worker = new Worker('../js/scripts/scripts_2d_art/perlin_worker.js', {type: "module"});
    
     worker.postMessage({
         inc_param: inc,

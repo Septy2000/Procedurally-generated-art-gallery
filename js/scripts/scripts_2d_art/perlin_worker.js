@@ -31,7 +31,7 @@ onmessage = e => {
 }
 
 function compute_end_point(col, row, xoff, yoff) {
-    let angle = noise.perlin2(xoff, yoff) * 2 * Math.PI;
+    let angle = noise.perlin2(xoff, yoff) * Math.random() * 2 * Math.PI;
     let x_end = col * SCALING_FACTOR + SCALING_FACTOR * Math.cos(angle);
     let y_end = row * SCALING_FACTOR + SCALING_FACTOR * Math.sin(angle)
     return [x_end, y_end];
