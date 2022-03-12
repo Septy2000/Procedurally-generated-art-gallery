@@ -106,6 +106,7 @@
                                     <option value="5">0.355534 - 0.337292i</option>
                                     <option value="-1">Custom</option>
                                 </select>
+
                                 <br><br>
                                 
                                 <div id="c__value__custom" class="hide">
@@ -119,7 +120,20 @@
                         </div>                 
                     
                         <div id="perlin" class="hide">
-                            <div></div>
+                            <label for="perlin__scale">Scale</label><br>
+                            <input id="perlin__scale" type="number" value="1">
+                            <br><br>
+                            <label for="perlin__intensity">Intensity</label><br>
+                            <input id="perlin__intensity" type="number" value="2">
+                            <br><br>
+                            <label for="perlin__increment"></label>Increment<br>
+                            <input id="perlin__increment" type="number" value="0.03">
+                            <br><br>
+                            <label for="perlin__seed">Seed</label><br>
+                            <input id="perlin__seed" type="number">
+                            <br><br>
+                            <label>Current seed:</label><br>
+                            <label id="perlin__current__seed"></label>
                         </div>
 
                         <div id="test__3d" class="hide">

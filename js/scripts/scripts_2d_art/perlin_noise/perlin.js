@@ -5,11 +5,16 @@ import * as res from  './../../../helper_scripts/resolution.js'
 const canvas_2d = document.getElementById('canvas__2d'); 
 const ctx = canvas_2d.getContext("2d");
 
+// Buttons
 const button_generate = document.getElementById("generate__button")
 
-let inc = 0.03;
-let scaling_factor = 1;
+// Menu inputs
+let increment, scaling_factor, intensity, seed;
+
+// Number of columns and rows after scale
 let columns, rows;
+
+// Worker for generating images on the worker thread
 let worker;
 const COLUMN_LIST = [];
 
@@ -48,7 +53,7 @@ function draw(data) {
         // ctx.lineTo(x_end , y_end);
         // ctx.stroke();
         // ctx.rotate(angle);
-        ctx.fillStyle = color_HSL(Math.abs(angle) * 500 * 3)
+        ctx.fillStyle = color_HSL(Math.abs(angle) * 500 * intensity)
         ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
 
     }   
@@ -59,8 +64,17 @@ function draw(data) {
  * @param {boolean} generatedFromButton true if the generation is a result of the user clicking the "Generate" button
  */
  export function generate(generatedFromButton) {
+    if (!isMenuInputValid()) return;
     if (generatedFromButton) {
-        refreshResolution()
+        refreshMenuInputs();
+
+        if (Number.isNaN(seed)) {
+            seed = random(Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+            console.log(seed);
+        }
+
+        document.getElementById("perlin__current__seed").innerHTML = seed;
+
         columns = Math.floor(canvas_2d.width / scaling_factor);
         rows = Math.floor(canvas_2d.height / scaling_factor);
     }
@@ -69,8 +83,9 @@ function draw(data) {
     worker = new Worker('./js/scripts/scripts_2d_art/perlin_noise/perlin_worker.js', {type: "module"});
    
     worker.postMessage({
-        inc_param: inc,
+        increment_param: increment,
         scaling_factor_param: scaling_factor,
+        seed_param: seed,
         columns_param: columns,
         rows_param: rows,
         isSettingUp: true
@@ -99,9 +114,40 @@ function color_HSL(number) {
 
 
 /**
- * Update canvas width and height with the user input from the menu
+ * Update the parameters with the user inputs from the menu
  */
-function refreshResolution() {
+function refreshMenuInputs() {
     canvas_2d.width = res.width.value;
     canvas_2d.height = res.height.value;
+
+    scaling_factor = parseInt(document.getElementById("perlin__scale").value);
+
+    intensity = parseFloat(document.getElementById("perlin__intensity").value);
+
+    increment = parseFloat(document.getElementById("perlin__increment").value);
+
+    seed = parseInt(document.getElementById("perlin__seed").value);
+}
+
+
+/**
+ * Check if the input boxes from the menu UI are valid
+ * Valid means not empty or within the valid range
+ * @returns true if all the inputs are valid
+ */
+function isMenuInputValid() {
+    if (Number.isNaN(scaling_factor) || scaling_factor <= 0) {
+        alert("Scaling factor is invalid! This input requires an integer bigger than 0");
+        return false;
+    }
+    if (Number.isNaN(intensity) || intensity < 0) {
+        alert("Intensity is invalid! This input requires a number bigger than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(increment)) {
+        alert("Increment value is empty");
+        return false;
+    }
+
+    return true;
 }

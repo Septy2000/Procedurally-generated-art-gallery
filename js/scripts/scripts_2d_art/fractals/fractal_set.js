@@ -85,8 +85,6 @@ const COMPLEX_LIST = [
 algorithm_selection.addEventListener('change', e => {
     algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
     canGenerate = (["mandelbrot", "julia"].includes(algorithm)) ? true : false; 
-    console.log(canGenerate);
-
 })
 
 // Event for mouse click on canvas
