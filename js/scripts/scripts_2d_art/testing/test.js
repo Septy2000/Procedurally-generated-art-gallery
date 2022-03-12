@@ -33,12 +33,7 @@ function init_columns() {
     worker.postMessage({col: COLUMN_LIST.shift()});
 }
 
-/**
- * Apply colors on the canvas to the corresponding column, based on the column values
- * @param {object} data 
- */
 function draw(data) {
-    // If the column list is not empty, send the next column to the worker
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({
             col: COLUMN_LIST.shift()
@@ -47,18 +42,18 @@ function draw(data) {
     else {
         button_generate.disabled = false;
     }
-    // Extract the column index and its values
     const {col, column_values} = data;
-
     // Set the progress bar percentage to the curent column index relative to the total columns
     progress_bar.setValue((parseInt(col * 100 / (columns - 1))));
 
-    // Iterate through each point on the column to draw on
     for (let row = 0; row < rows; row++) {
-        const perlin_noise  = column_values[row];
-        // Get the absolute value of perlin noise and multiply by 360 so have a number in hue range,
-        // because the value is too low to make a difference in color
-        ctx.fillStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
+        const angle  = column_values[row];
+        // ctx.strokeStyle = color_HSL(1)
+        // ctx.moveTo(col * scaling_factor, row * scaling_factor);
+        // ctx.lineTo(x_end , y_end);
+        // ctx.stroke();
+        // ctx.rotate(angle);
+        ctx.fillStyle = color_HSL(Math.abs(angle) * 500 * intensity)
         ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
 
     }   
@@ -111,11 +106,6 @@ function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
 
-/**
- * Creates and returns a HSL color based on the given input
- * @param {number} number 
- * @returns HSL color
- */
 function color_HSL(number) {
     return `hsl(${number}, 100%, 50%)`
 

@@ -1,7 +1,7 @@
 import * as pb from './../../../helper_scripts/progress_bar.js'
 import * as res from  './../../../helper_scripts/resolution.js'
 
-// Store the canvas element adn context
+// Store the canvas element and context
 const canvas_2d = document.getElementById('canvas__2d'); 
 const ctx = canvas_2d.getContext("2d");
 
@@ -82,7 +82,7 @@ const COMPLEX_LIST = [
 /**
  * Used to update the selected algorithm whenever the user changes it
  */
-algorithm_selection.addEventListener('change', e => {
+algorithm_selection.addEventListener('change', () => {
     algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
     canGenerate = (["mandelbrot", "julia"].includes(algorithm)) ? true : false; 
 })
