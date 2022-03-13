@@ -9,11 +9,10 @@ const ctx = canvas_2d.getContext("2d");
 const button_generate = document.getElementById("generate__button")
 
 // Menu inputs
-let zoom_out, scaling_factor, intensity, seed;
+let zoom_out = 0.05, scaling_factor = 4, intensity = 2, seed;
 
 // Number of columns and rows after scale
 let columns, rows;
-
 // Worker for generating images on the worker thread
 let worker;
 const COLUMN_LIST = [];
@@ -47,14 +46,22 @@ function draw(data) {
     progress_bar.setValue((parseInt(col * 100 / (columns - 1))));
 
     for (let row = 0; row < rows; row++) {
-        const angle  = column_values[row];
-        // ctx.strokeStyle = color_HSL(1)
-        // ctx.moveTo(col * scaling_factor, row * scaling_factor);
-        // ctx.lineTo(x_end , y_end);
-        // ctx.stroke();
-        // ctx.rotate(angle);
-        ctx.fillStyle = color_HSL(Math.abs(angle) * 500 * intensity)
-        ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
+        let [x_end, y_end, noise_res, angle] = column_values[row];
+
+        // Black tubes effect scale = 1
+        // ctx.strokeStyle = `black`;
+
+        // 3D effect
+        
+        ctx.strokeStyle = `rgb(${noise_res * 255},${noise_res * 255},${noise_res * 255})`
+
+        // Color
+        // ctx.strokeStyle = color_HSL(Math.abs(noise_res) * 360 * intensity)
+
+        ctx.beginPath();
+        ctx.moveTo(col * scaling_factor, row * scaling_factor);
+        ctx.lineTo(x_end, y_end);
+        ctx.stroke();
 
     }   
 }
@@ -64,22 +71,22 @@ function draw(data) {
  * @param {boolean} generatedFromButton true if the generation is a result of the user clicking the "Generate" button
  */
  export function generate(generatedFromButton) {
-    
     if (generatedFromButton) {
+        seed = random(1, 1000);
         refreshMenuInputs();
         if (!isMenuInputValid()) return;
-        if (Number.isNaN(seed)) {
-            seed = random(Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
-        }
+        // if (Number.isNaN(seed)) {
+        //     seed = random(Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+        // }
 
-        document.getElementById("perlin__current__seed").innerHTML = seed;
+        // document.getElementById("perlin__current__seed").innerHTML = seed;
 
         columns = Math.floor(canvas_2d.width / scaling_factor);
         rows = Math.floor(canvas_2d.height / scaling_factor);
     }
 
     if (worker) worker.terminate();
-    worker = new Worker('./js/scripts/scripts_2d_art/perlin_noise/perlin_worker.js', {type: "module"});
+    worker = new Worker('./js/scripts/scripts_2d_art/testing/test_worker.js', {type: "module"});
    
     worker.postMessage({
         zoom_out_param: zoom_out,
@@ -119,13 +126,13 @@ function refreshMenuInputs() {
     canvas_2d.width = res.width.value;
     canvas_2d.height = res.height.value;
 
-    scaling_factor = parseInt(document.getElementById("perlin__scale").value);
+    // scaling_factor = parseInt(document.getElementById("perlin__scale").value);
 
-    intensity = parseFloat(document.getElementById("perlin__intensity").value);
+    // intensity = parseFloat(document.getElementById("perlin__intensity").value);
 
-    zoom_out = parseFloat(document.getElementById("perlin__zoomout").value) / 100;
+    // zoom_out = parseFloat(document.getElementById("perlin__zoomout").value) / 100;
 
-    seed = parseInt(document.getElementById("perlin__seed").value);
+    // seed = parseInt(document.getElementById("perlin__seed").value);
 }
 
 
@@ -135,18 +142,18 @@ function refreshMenuInputs() {
  * @returns true if all the inputs are valid
  */
 function isMenuInputValid() {
-    if (Number.isNaN(scaling_factor) || scaling_factor <= 0) {
-        alert("Scaling factor is invalid! This input requires an integer bigger than 0");
-        return false;
-    }
-    if (Number.isNaN(intensity) || intensity <= 0) {
-        alert("Intensity is invalid! This input requires a number bigger than to 0");
-        return false;
-    }
-    if (Number.isNaN(zoom_out) || zoom_out <= 0) {
-        alert("Zoom out value is invalid! This input requires a number bigger than 0");
-        return false;
-    }
+    // if (Number.isNaN(scaling_factor) || scaling_factor <= 0) {
+    //     alert("Scaling factor is invalid! This input requires an integer bigger than 0");
+    //     return false;
+    // }
+    // if (Number.isNaN(intensity) || intensity <= 0) {
+    //     alert("Intensity is invalid! This input requires a number bigger than to 0");
+    //     return false;
+    // }
+    // if (Number.isNaN(zoom_out) || zoom_out <= 0) {
+    //     alert("Zoom out value is invalid! This input requires a number bigger than 0");
+    //     return false;
+    // }
 
     return true;
 }

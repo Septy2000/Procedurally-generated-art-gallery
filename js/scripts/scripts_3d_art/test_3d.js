@@ -32,7 +32,7 @@ renderer.setClearColor("#e5e5e5");
 
 
 // Geometry 
-geometry = new THREE.PlaneBufferGeometry(3, 3, 64, 64)
+geometry = new THREE.PlaneBufferGeometry()
 material = new THREE.MeshStandardMaterial({
     color: 'green'
     // map: texture

@@ -1,5 +1,6 @@
 import * as frac from './scripts/scripts_2d_art/fractals/fractal_set.js';
 import * as perlin from './scripts/scripts_2d_art/perlin_noise/perlin.js'; 
+import * as test from './scripts/scripts_2d_art/testing/test.js'
 import * as THREE from './scripts/scripts_3d_art/test_3d.js';
 
 // Get the selected algorithm
@@ -17,7 +18,7 @@ let c_value_selection = document.getElementById("c__value__select");
 let selected_c_value = c_value_selection.options[c_value_selection.selectedIndex].value;
 
 // Group algorithms by type
-let aglorithms_2d = ["mandelbrot", "julia", "perlin"];
+let aglorithms_2d = ["mandelbrot", "julia", "perlin", "test__2d"];
 let fractal_algorithms = ["mandelbrot", "julia"];
 
 // Get both canvas elements
@@ -35,6 +36,9 @@ document.getElementById("generate__button").addEventListener("click", e => {
         }
         else if (selected_algorithm === "perlin") {
             perlin.generate(true);
+        }
+        else {
+            test.generate(true);
         }
     }
     else {

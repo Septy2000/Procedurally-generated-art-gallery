@@ -1,8 +1,7 @@
 import * as noise from './../../../helper_scripts/noise.js'
 
 let ZOOM_OUT, SCALING_FACTOR, COLUMNS, ROWS;
-let yoff = 0, xoff;
-let seed = random(1, 10000);
+let yoff, xoff;
 onmessage = e => {
     const { isSettingUp } = e.data;
     if (isSettingUp) {
@@ -31,11 +30,11 @@ onmessage = e => {
 }
 
 function compute_end_point(col, row, xoff, yoff) {
-    let angle = noise.perlin2(xoff, yoff) // * Math.PI / 180 ;
-    // let x_end = col * SCALING_FACTOR + SCALING_FACTOR * Math.cos(angle);
-    // let y_end = row * SCALING_FACTOR + SCALING_FACTOR * Math.sin(angle)
-    // return [x_end, y_end];
-    return angle;
+    let noise_res = noise.perlin2(xoff, yoff);
+    let angle = Math.abs(noise_res) * 2 * Math.PI; 
+    let x_end = col * SCALING_FACTOR + SCALING_FACTOR * Math.cos(angle); 
+    let y_end = row * SCALING_FACTOR + SCALING_FACTOR * Math.sin(angle); 
+    return [x_end, y_end, noise_res, angle];
 }
 
 function random(lower_bound, upper_bound) {
