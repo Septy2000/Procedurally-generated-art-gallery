@@ -319,7 +319,7 @@ export function generate(generatedFromButton = false) {
     if (generatedFromButton) {
         // Update the parameters with the user input from the menu
         refreshMenuInputs();
-
+        
         // If the parameters are not valid, cancel the generation of a new image
         if (!isMenuInputValid()) return;
 

@@ -56,8 +56,7 @@ function draw(data) {
     // Iterate through each point on the column to draw on
     for (let row = 0; row < rows; row++) {
         const perlin_noise  = column_values[row];
-        // Get the absolute value of perlin noise and multiply by 360 so have a number in hue range,
-        // because the value is too low to make a difference in color
+        // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
         ctx.fillStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
         ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
 
@@ -69,23 +68,31 @@ function draw(data) {
  * @param {boolean} generatedFromButton true if the generation is a result of the user clicking the "Generate" button
  */
  export function generate(generatedFromButton) {
-    
+    // Check if the generation if from user action
     if (generatedFromButton) {
+        // Update the parameters with the user input from the menu
         refreshMenuInputs();
+
+        // If the parameters are not valid, cancel the generation of a new image
         if (!isMenuInputValid()) return;
+
+        // If there is no seed input by the user, generate a random one
         if (Number.isNaN(seed)) {
             seed = random(Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
         }
 
         document.getElementById("perlin__current__seed").innerHTML = seed;
 
+        // Calculate the new column and row sizes according to the scaling factor 
         columns = Math.floor(canvas_2d.width / scaling_factor);
         rows = Math.floor(canvas_2d.height / scaling_factor);
     }
 
+    // Start a new worker and end a previous one
     if (worker) worker.terminate();
     worker = new Worker('./js/scripts/scripts_2d_art/perlin_noise/perlin_worker.js', {type: "module"});
    
+    // Pass parameters to the worker thread
     worker.postMessage({
         zoom_out_param: zoom_out,
         scaling_factor_param: scaling_factor,
@@ -94,22 +101,29 @@ function draw(data) {
         rows_param: rows,
         isSettingUp: true
     })
+    // Create columns list
     init_columns();
 
+    // Start a new worker and end a previous one
     button_generate.disabled = true;
+    
+    // When worker returns a message, draw on the canvas
     worker.onmessage = function(e) {
         draw(e.data);
     }
 }
-   
 
 
-
-
-// Generate a random integer between a lower and an upper bound (inclusive)
+/**
+ * Generate a random integer between the lower and upper bound (inclusive)
+ * @param {number} lower_bound 
+ * @param {number} upper_bound 
+ * @returns random number 
+ */
 function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
+
 
 /**
  * Creates and returns a HSL color based on the given input
