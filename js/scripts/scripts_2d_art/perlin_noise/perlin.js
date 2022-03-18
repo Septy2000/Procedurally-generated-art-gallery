@@ -164,7 +164,7 @@ function isMenuInputValid() {
         return false;
     }
     if (Number.isNaN(intensity) || intensity <= 0) {
-        alert("Intensity is invalid! This input requires a number bigger than to 0");
+        alert("Intensity value is invalid! This input requires a number bigger than 0");
         return false;
     }
     if (Number.isNaN(zoom_out) || zoom_out <= 0) {

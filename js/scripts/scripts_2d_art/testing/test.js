@@ -9,7 +9,7 @@ const ctx = canvas_2d.getContext("2d");
 const button_generate = document.getElementById("generate__button")
 
 // Menu inputs
-let zoom_out = 0.05, scaling_factor = 4, intensity = 2, seed;
+let zoom_out = 0.04, scaling_factor = 4, intensity = 2, seed;
 
 // Number of columns and rows after scale
 let columns, rows;

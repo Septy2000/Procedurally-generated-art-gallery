@@ -10,8 +10,6 @@
     background-color: #e4e5e9;
 }
 
-
-
 a {
     font-size: 25px;
     color: #282d30;
@@ -40,7 +38,7 @@ header {
 
 .nav__bar a:hover {
     color: grey;
-    text-decoration: underline grey;
+    /* text-decoration: underline grey; */
 }
 
 button {
