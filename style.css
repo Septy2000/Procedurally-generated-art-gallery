@@ -41,12 +41,16 @@ header {
     /* text-decoration: underline grey; */
 }
 
+.rounded {
+    border-radius: 10px;
+}
+
 button {
     /* display: inline-block; */
     width:  45%;
     font-size: 20px;
     color: #fffdf0;
-    padding: 5px 5px;
+    padding: 5px;
     background-color: rgba(0, 136, 169, 1);
     border: none;
     border-radius: 20px;
@@ -59,12 +63,12 @@ button:hover {
 }
 
 button:active {
-    background-color: rgba(179, 8, 185, 0.788);
+    background-color: rgba(22, 85, 143, 0.788);
 
 }
 
 button:disabled {
-    background-color: rgba(0, 83, 104, 0.8);
+    background-color: rgba(0, 61, 77, 0.8);
     cursor:not-allowed;
 
 }
@@ -73,7 +77,6 @@ button:disabled {
 #container {
     /* background-color: linear-gradient(white, blue); */
     background-color: #818185;
-    border-radius: 10px;
     width: 1600px;
     padding: 10px;
     margin-left: auto;
@@ -88,7 +91,6 @@ button:disabled {
 }
 
 canvas {
-    border-radius: 10px;
     width: 1200px;
     height: 900px;
     display: block;
@@ -96,7 +98,6 @@ canvas {
 
 #menu__frame {
     overflow: hidden;
-    border-radius: 10px;
     margin-left: 10px;
     width: 100%;
 }
@@ -142,7 +143,6 @@ optgroup {
 #progress__bar__container {
     height: 10px;
     background-color: red;
-    border-radius: 20px;
 }
 
 #progress__bar__percentage {
@@ -154,7 +154,6 @@ optgroup {
 
 #progress__bar {
     background-color: green;
-    border-radius: 20px;
     height: 100%;
     width: 0%;
 }
