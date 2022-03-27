@@ -2,10 +2,10 @@ let WIDTH, HEIGHT, RE_MIN, RE_MAX, IM_MIN, IM_MAX, MAX_ITERATIONS, ALGORITHM, CO
 
 // When the worker receives a message
 onmessage = e => {
-    const { isSettingUp } = e.data;
+    const { isInitialising } = e.data;
     // Check if this is the first time this worker receives a message
     // If it is, initialise all variables
-    if (isSettingUp) {
+    if (isInitialising) {
         const { algorithm, width, height, re_min, re_max, im_min, im_max, max_iter, complex } = e.data;
 
         ALGORITHM = algorithm;
@@ -31,10 +31,10 @@ onmessage = e => {
         for (let row = 0; row < HEIGHT; row++) {
 
             if (ALGORITHM === "mandelbrot") {
-                columns_values[row] = mandelbrot(relativePoint(col, row));
+                columns_values[row] = mandelbrot(complexPlanePoint(col, row));
             } 
             else if (ALGORITHM === "julia") {
-                columns_values[row] = julia(relativePoint(col, row), COMPLEX);
+                columns_values[row] = julia(complexPlanePoint(col, row), COMPLEX);
             }
         }
         // After calculating all the values for a column, send them back to the main thread
@@ -52,19 +52,19 @@ function mandelbrot(c) {
     let z = {x: 0, y: 0 };
     // Iteration number
     let n = 0;
-    let z_powered; 
+    let z_sqr; 
     do {
         // Complex number Z squared 
         // The minus exists because i^2 is -1
-        z_powered = {
+        z_sqr = {
             x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
             y: 2 * z.x * z.y
         }
 
         // Complex number Z with added C (i.e z^2 + c)
         z = {
-            x: z_powered.x + c.x,
-            y: z_powered.y + c.y
+            x: z_sqr.x + c.x,
+            y: z_sqr.y + c.y
         }
         n += 1;
         // Repeat until the point passes the threshold or reaches maximum iterations
@@ -81,19 +81,19 @@ return n;
 function julia(z, c) {
     // iteration number
     let n = 0;
-    let z_powered; 
+    let z_sqr; 
     do {
         // Complex number Z squared 
         // The minus exists because i^2 is -1
-        z_powered = {
+        z_sqr = {
             x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
             y: 2 * z.x * z.y
         }
 
         // Complex number Z with added C (i.e z^2 + c)
         z = {
-            x: z_powered.x + c.x,
-            y: z_powered.y + c.y
+            x: z_sqr.x + c.x,
+            y: z_sqr.y + c.y
         }
         n += 1;
     // Repeat until the point passes the threshold or reaches maximum iterations
@@ -107,7 +107,7 @@ return n;
  * @param {number} y point on complex axis
  * @returns object containing x and y values on the complex plane
  */
-const relativePoint = (x, y) => {
+function complexPlanePoint(x, y) {
     x = RE_MIN + (x / WIDTH) * (RE_MAX - RE_MIN);
     y = IM_MIN + (y / HEIGHT) * (IM_MAX - IM_MIN);
     return { x, y }

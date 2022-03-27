@@ -38,7 +38,6 @@ header {
 
 .nav__bar a:hover {
     color: grey;
-    /* text-decoration: underline grey; */
 }
 
 .rounded {
@@ -46,7 +45,6 @@ header {
 }
 
 button {
-    /* display: inline-block; */
     width:  45%;
     font-size: 20px;
     color: #fffdf0;
@@ -75,7 +73,6 @@ button:disabled {
 
 
 #container {
-    /* background-color: linear-gradient(white, blue); */
     background-color: #818185;
     width: 1600px;
     padding: 10px;

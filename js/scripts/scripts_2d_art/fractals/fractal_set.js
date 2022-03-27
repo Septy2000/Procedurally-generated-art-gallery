@@ -175,15 +175,15 @@ canvas_2d.addEventListener('mouseup', e => {
     let y_end = y_mouse;
 
     // Update the real set values
-    let temp_re_min = Math.min(reRelativePoint(x_start), reRelativePoint(x_end));
-    let temp_re_max = Math.max(reRelativePoint(x_start), reRelativePoint(x_end));
+    let temp_re_min = Math.min(reComplexPlanePoint(x_start), reComplexPlanePoint(x_end));
+    let temp_re_max = Math.max(reComplexPlanePoint(x_start), reComplexPlanePoint(x_end));
 
     RE_MIN = temp_re_min;
     RE_MAX = temp_re_max;
     
     // Update the imaginary set values
-    let temp_im_min = Math.min(imRelativePoint(y_start), imRelativePoint(y_end));
-    let temp_im_max = Math.max(imRelativePoint(y_start), imRelativePoint(y_end));
+    let temp_im_min = Math.min(imComplexPlanePoint(y_start), imComplexPlanePoint(y_end));
+    let temp_im_max = Math.max(imComplexPlanePoint(y_start), imComplexPlanePoint(y_end));
     IM_MIN = temp_im_min;
     IM_MAX = temp_im_max;
 
@@ -204,7 +204,7 @@ canvas_2d.addEventListener('mouseup', e => {
  * @param {number} x a point on canvas
  * @returns {number} The point on real axis relative to the canvas 
  */
-function reRelativePoint(x) {
+function reComplexPlanePoint(x) {
     x = RE_MIN + (x / canvas_2d.width) * (RE_MAX - RE_MIN);
     return x;
 }
@@ -214,7 +214,7 @@ function reRelativePoint(x) {
  * @param {number} y a point on canvas
  * @returns {number} The point on imaginary axis relative to the canvas 
  */
-function imRelativePoint(y) {
+function imComplexPlanePoint(y) {
     y = IM_MIN + (y / canvas_2d.height) * (IM_MAX - IM_MIN);
     return y;
 }
@@ -240,7 +240,7 @@ button_reset.addEventListener("click", function() {
 
 // Event for clicking the "Undo Zoom" button
 button_undo.addEventListener("click", function() {
-    // Extract the last zooming real and imaginary sets values and make them current values
+    // Extract the last zoom real and imaginary sets values and make them current values
     const [re_min_prev, re_max_prev, im_min_prev, im_max_prev] = zoom_history.pop();
     RE_MIN = re_min_prev;
     RE_MAX = re_max_prev;
@@ -266,6 +266,9 @@ function init_columns() {
     worker.postMessage({col: COLUMN_LIST.shift()});
 }
 
+
+let startTime, endTime;
+
 /**
  * Apply colors on the canvas to the corresponding column, based on the column values
  * @param {object} data  
@@ -281,6 +284,8 @@ function draw(data) {
         // If the column list is empty, mark the image as generated
         isGenerated = true;
         button_generate.disabled = false;
+        endTime = performance.now();
+        console.log(endTime - startTime);
     }
     // Extract the column index and its values
     const {col, columns_values} = data;
@@ -358,7 +363,7 @@ export function generate(generatedFromButton = false) {
         im_min: IM_MIN,
         im_max: IM_MAX,
         max_iter: max_iterations,
-        isSettingUp: true,
+        isInitialising: true,
         // If the user selected "Custom" complex number for Julia sets, get those values instead
         complex : (c_value !== -1) ? COMPLEX_LIST[c_value] : {x: re_value, y: im_value}
     })
@@ -366,6 +371,7 @@ export function generate(generatedFromButton = false) {
     init_columns();
 
     // When worker returns a message, draw on the canvas
+    startTime = performance.now();
     worker.onmessage = function(e) {
         draw(e.data);
     }
@@ -466,7 +472,8 @@ function random(lower_bound, upper_bound) {
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
     // Represent the number of iterations as a value 0 - 255 
     let color = parseInt(iterations * 255 / max_iterations)
-    return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`
+    // console.log(color * r_weight, color * g_weight, color * b_weight);
+    return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`;
 
 }
 
@@ -493,7 +500,7 @@ function color_HSL(iterations) {
     // Set the hue of the color based on the iterations number
     // Increasing the color intensity makes the colors pop more and adds more colors overall
     let hue = color_intensity * 360 * (iterations / max_iterations);
-    return `hsl(${hue}, 100%, 50%)`
+    return `hsl(${parseInt(hue)}, 100%, 50%)`
 
 }
 

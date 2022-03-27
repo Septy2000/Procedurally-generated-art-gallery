@@ -5,10 +5,10 @@ let y_off, x_off;
 
 // When the worker receives a message
 onmessage = e => {
-    const { isSettingUp } = e.data;
+    const { isInitialising } = e.data;
     // Check if this is the first time this worker receives a message
     // If it is, initialise all variables
-    if (isSettingUp) {
+    if (isInitialising) {
         const { zoom_out_param, scaling_factor_param, seed_param, columns_param, rows_param } = e.data;
 
         ZOOM_OUT = zoom_out_param;

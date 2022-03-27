@@ -26,13 +26,13 @@ const canvas_2d = document.getElementById("canvas__2d");
 const canvas_3d = document.getElementById("canvas__3d");
 
 // Decide what algorithm to run, based on user selection
-document.getElementById("generate__button").addEventListener("click", e => {
+document.getElementById("generate__button").addEventListener("click", () => {
     if(aglorithms_2d.includes(selected_algorithm)) {
         // If the algorithm is 2D, hide the 3D canvas and reveal the 2D one
         canvas_2d.classList.remove("hide");
         canvas_3d.classList.add("hide");
         if(fractal_algorithms.includes(selected_algorithm)) {
-            frac.generate(selected_algorithm, true);
+            frac.generate(true);
         }
         else if (selected_algorithm === "perlin") {
             perlin.generate(true);
@@ -59,6 +59,7 @@ function update_selected_alg() {
     document.getElementById(`${selected_algorithm}`).classList.add("hide");
     // Hide the fractals menu
     document.getElementById("fractals").classList.add("hide");
+
     selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
 
     // If the algorithm is Mandelbrot / Julia, show fractals menu
@@ -119,10 +120,10 @@ update_selected_colormode();
 update_selected_c_value();
 
 // Save the canvas as an JPG file when pressing the "Save Image" button
-document.getElementById("save__button").addEventListener("click", function() {
+document.getElementById("save__button").addEventListener("click", () => {
     // Extract the canvas data and convert it into a png file
     // Octet stream type represents a binary file
-    let image = canvas_2d.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
+    let image = canvas_2d.toDataURL("image/png", 1.0);
     // Create a hyperlink that acts as a download link
     let download_elem = document.createElement("a");
     download_elem.download = "image.png";

@@ -99,7 +99,7 @@ function draw(data) {
         seed_param: seed,
         columns_param: columns,
         rows_param: rows,
-        isSettingUp: true
+        isInitialising: true
     })
     // Create columns list
     init_columns();
