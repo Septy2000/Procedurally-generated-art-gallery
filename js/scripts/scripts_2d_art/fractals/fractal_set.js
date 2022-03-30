@@ -266,7 +266,7 @@ function init_columns() {
     worker.postMessage({col: COLUMN_LIST.shift()});
 }
 
-
+// Variables used to store the start and end time of an image generation
 let startTime, endTime;
 
 /**
@@ -284,8 +284,9 @@ function draw(data) {
         // If the column list is empty, mark the image as generated
         isGenerated = true;
         button_generate.disabled = false;
+        // Register the end time of generation
         endTime = performance.now();
-        console.log(endTime - startTime);
+        // console.log(endTime - startTime);
     }
     // Extract the column index and its values
     const {col, columns_values} = data;
@@ -308,7 +309,10 @@ function draw(data) {
         else {
             ctx.fillStyle = color_HEX(iterations, colors);
         }
-        ctx.fillRect(col, i, 1, 1);
+        let rect_width = (scaling_factor < 1) ? (1 / scaling_factor) : 1;
+        let rect_height = (scaling_factor < 1) ? (1 / scaling_factor) : 1;
+
+        ctx.fillRect(col, i, rect_width, rect_height);
     }
 }
 
@@ -364,14 +368,16 @@ export function generate(generatedFromButton = false) {
         im_max: IM_MAX,
         max_iter: max_iterations,
         isInitialising: true,
-        // If the user selected "Custom" complex number for Julia sets, get those values instead
+        // If the user selected the "Custom" complex number option for Julia sets, get those values instead
         complex : (c_value !== -1) ? COMPLEX_LIST[c_value] : {x: re_value, y: im_value}
     })
     // Create columns list
     init_columns();
 
-    // When worker returns a message, draw on the canvas
+    // Register the start time of the generation
     startTime = performance.now();
+  
+    // When worker returns a message, draw on the canvas
     worker.onmessage = function(e) {
         draw(e.data);
     }
@@ -472,7 +478,6 @@ function random(lower_bound, upper_bound) {
 function color_RGB(iterations, r_weight, g_weight, b_weight)  {
     // Represent the number of iterations as a value 0 - 255 
     let color = parseInt(iterations * 255 / max_iterations)
-    // console.log(color * r_weight, color * g_weight, color * b_weight);
     return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`;
 
 }

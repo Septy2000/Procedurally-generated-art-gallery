@@ -130,4 +130,3 @@ document.getElementById("save__button").addEventListener("click", () => {
     download_elem.href = image;
     download_elem.click();
 })
-

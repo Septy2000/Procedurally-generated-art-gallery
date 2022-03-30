@@ -7,12 +7,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #e4e5e9;
+    background-color:  #e4e5e9;
+}
+
+header, header *{
+    background-color: #333333;
+}
+
+html, body {
+    background-color: antiquewhite;
 }
 
 a {
     font-size: 25px;
-    color: #282d30;
+    color: #e4e5e9;
 }
 
 header {
@@ -74,6 +82,7 @@ button:disabled {
 
 #container {
     background-color: #818185;
+
     width: 1600px;
     padding: 10px;
     margin-left: auto;
