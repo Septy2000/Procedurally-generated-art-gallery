@@ -87,6 +87,7 @@ algorithm_selection.addEventListener('change', () => {
     canGenerate = (["mandelbrot", "julia"].includes(algorithm)) ? true : false; 
 })
 
+
 // Event for mouse click on canvas
 canvas_2d.addEventListener('mousedown', e => {
     // Check if other button than left click was pressed or the image has not finished generating yet
@@ -117,6 +118,7 @@ canvas_2d.addEventListener('mousedown', e => {
     
 });
 
+
 // Event for moving mouse on canvas
 canvas_2d.addEventListener('mousemove', e => {
     // Only continue if the user has pressed left click first (i.e. if zooming)
@@ -142,6 +144,7 @@ canvas_2d.addEventListener('mousemove', e => {
 
 });
 
+
 // Event for moving the cursor out of the canvas area
 canvas_2d.addEventListener("mouseout", e => {
     // Only continue if the user is in the process of zooming
@@ -152,6 +155,7 @@ canvas_2d.addEventListener("mouseout", e => {
     ctx.putImageData(canvas_data, 0, 0);
 
 });
+
 
 // Event for releasing left click button
 canvas_2d.addEventListener('mouseup', e => { 
@@ -209,6 +213,7 @@ function reComplexPlanePoint(x) {
     return x;
 }
 
+
 /**
  * Returns the position on imaginary axis based on where it is on the canvas
  * @param {number} y a point on canvas
@@ -218,6 +223,7 @@ function imComplexPlanePoint(y) {
     y = IM_MIN + (y / canvas_2d.height) * (IM_MAX - IM_MIN);
     return y;
 }
+
 
 // Event for clicking the "Reset Zoom" button
 button_reset.addEventListener("click", function() {
@@ -238,6 +244,7 @@ button_reset.addEventListener("click", function() {
     generate();
 })
 
+
 // Event for clicking the "Undo Zoom" button
 button_undo.addEventListener("click", function() {
     // Extract the last zoom real and imaginary sets values and make them current values
@@ -255,6 +262,7 @@ button_undo.addEventListener("click", function() {
     generate();
 })
 
+
 /**
  * Initialise the column list and post the columns to the worker thread one by one
  */
@@ -266,8 +274,10 @@ function init_columns() {
     worker.postMessage({col: COLUMN_LIST.shift()});
 }
 
+
 // Variables used to store the start and end time of an image generation
 let startTime, endTime;
+
 
 /**
  * Apply colors on the canvas to the corresponding column, based on the column values
@@ -309,12 +319,15 @@ function draw(data) {
         else {
             ctx.fillStyle = color_HEX(iterations, colors);
         }
+
+        // Modify the width and height of each rectangle so that it fits the image if the resolution is lower than the displayed canvas
         let rect_width = (scaling_factor < 1) ? (1 / scaling_factor) : 1;
         let rect_height = (scaling_factor < 1) ? (1 / scaling_factor) : 1;
 
         ctx.fillRect(col, i, rect_width, rect_height);
     }
 }
+
 
 /**
  * Start generating the image.

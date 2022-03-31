@@ -58,14 +58,17 @@ function draw(data) {
     for (let row = 0; row < rows; row++) {
         let [x_end, y_end, perlin_noise]  = column_values[row];
        
+        // Color the image based on the user selection
         if (colormode === "smooth__colors") {
             // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
             ctx.strokeStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
         }
         else {
+            // Multiply each value by 100 to make the weights noticeable, because noise values are very low
             ctx.strokeStyle = `rgb(${perlin_noise * red_weight * 100},${perlin_noise * green_weight * 100},${perlin_noise * blue_weight * 100})`
         }
 
+        // Draw the line
         ctx.beginPath();
         ctx.moveTo(col * scaling_factor, row * scaling_factor);
         ctx.lineTo(x_end, y_end);
