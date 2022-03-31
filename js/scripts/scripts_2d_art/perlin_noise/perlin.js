@@ -9,6 +9,7 @@ const ctx = canvas_2d.getContext("2d");
 const button_generate = document.getElementById("generate__button")
 
 // Menu inputs
+let colormode, red_weight, green_weight, blue_weight;
 let zoom_out, scaling_factor, intensity, seed;
 
 // Number of columns and rows after scale
@@ -57,18 +58,18 @@ function draw(data) {
     for (let row = 0; row < rows; row++) {
         let [x_end, y_end, perlin_noise]  = column_values[row];
        
-        // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
-        // ctx.strokeStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
-        
-        ctx.strokeStyle = `rgb(${perlin_noise * 12123},${perlin_noise * 4121},${perlin_noise * 12413})`
+        if (colormode === "smooth__colors") {
+            // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
+            ctx.strokeStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
+        }
+        else {
+            ctx.strokeStyle = `rgb(${perlin_noise * red_weight * 100},${perlin_noise * green_weight * 100},${perlin_noise * blue_weight * 100})`
+        }
 
         ctx.beginPath();
         ctx.moveTo(col * scaling_factor, row * scaling_factor);
         ctx.lineTo(x_end, y_end);
         ctx.stroke();
-
-
-        // ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
 
     }   
 }
@@ -125,33 +126,20 @@ function draw(data) {
 
 
 /**
- * Generate a random integer between the lower and upper bound (inclusive)
- * @param {number} lower_bound 
- * @param {number} upper_bound 
- * @returns random number 
- */
-function random(lower_bound, upper_bound) {
-    return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
-}
-
-
-/**
- * Creates and returns a HSL color based on the given input
- * @param {number} number 
- * @returns HSL color
- */
-function color_HSL(number) {
-    return `hsl(${number}, 100%, 50%)`
-
-}
-
-
-/**
  * Update the parameters with the user inputs from the menu
  */
 function refreshMenuInputs() {
     canvas_2d.width = res.width.value;
     canvas_2d.height = res.height.value;
+
+    let colormode_selection = document.getElementById("colormode__select__perlin");
+    colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
+
+    red_weight = parseInt(document.getElementById("red__value__perlin").value);
+
+    green_weight = parseInt(document.getElementById("green__value__perlin").value);
+
+    blue_weight = parseInt(document.getElementById("blue__value__perlin").value);
 
     scaling_factor = parseInt(document.getElementById("perlin__scale").value);
 
@@ -169,6 +157,18 @@ function refreshMenuInputs() {
  * @returns true if all the inputs are valid
  */
 function isMenuInputValid() {
+    if (Number.isNaN(red_weight) || red_weight < 0) {
+        alert("Weight of red color (R) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(green_weight) || green_weight < 0) {
+        alert("Weight of green color (G) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
+    if (Number.isNaN(blue_weight) || blue_weight < 0) {
+        alert("Weight of blue color (B) is invalid! This input requires an integer greater than or equal to 0");
+        return false;
+    }
     if (Number.isNaN(scaling_factor) || scaling_factor <= 0) {
         alert("Scaling factor is invalid! This input requires an integer bigger than 0");
         return false;
@@ -183,4 +183,26 @@ function isMenuInputValid() {
     }
 
     return true;
+}
+
+
+/**
+ * Generate a random integer between the lower and upper bound (inclusive)
+ * @param {number} lower_bound 
+ * @param {number} upper_bound 
+ * @returns random number 
+ */
+ function random(lower_bound, upper_bound) {
+    return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
+}
+
+
+/**
+ * Creates and returns a HSL color based on the given input
+ * @param {number} number 
+ * @returns HSL color
+ */
+function color_HSL(number) {
+    return `hsl(${number}, 100%, 50%)`
+
 }

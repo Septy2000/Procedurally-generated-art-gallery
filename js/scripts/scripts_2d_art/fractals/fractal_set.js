@@ -392,7 +392,7 @@ function refreshMenuInputs() {
     // Update the scaling factor 
     scaling_factor = canvas_2d.width / 1200;
     
-    let colormode_selection = document.getElementById("colormode__select");
+    let colormode_selection = document.getElementById("colormode__select__fractals");
     colormode = colormode_selection.options[colormode_selection.selectedIndex].value;
 
     let c_value_selection = document.getElementById("c__value__select");
@@ -400,11 +400,11 @@ function refreshMenuInputs() {
 
     color_intensity = parseInt(document.getElementById("color__intensity__value").value);
 
-    red_weight = parseInt(document.getElementById("red__value").value);
+    red_weight = parseInt(document.getElementById("red__value__fractals").value);
 
-    green_weight = parseInt(document.getElementById("green__value").value);
+    green_weight = parseInt(document.getElementById("green__value__fractals").value);
 
-    blue_weight = parseInt(document.getElementById("blue__value").value);
+    blue_weight = parseInt(document.getElementById("blue__value__fractals").value);
 
     colors_number = parseInt(document.getElementById("colors__number__value").value);
 

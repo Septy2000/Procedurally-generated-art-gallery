@@ -24,19 +24,17 @@
             <div id="menu__frame" class="rounded">
                 <div id="menu">
                     <div id="menu__static">
-                        <label for="alg__select">Select algorithm:</label>
+                        <label for="alg__select">Select algorithm:</label><br>
                         <select name="Algorithm" id="alg__select">
                             <optgroup label="2D Algorithms">
                                 <option value="mandelbrot">Mandelbrot Set</option>
                                 <option value="julia">Julia Set</option>
-                                <option value="perlin">Perlin noise coloring</option>
-                                <option value="test__2d">Test</option>
-                            </optgroup>
-                            <optgroup label="3D Algorithms">
-                                <option value="test__3d">Test 3D</option>
+                                <option value="perlin">Perlin Noise</option>
                             </optgroup>
                         </select>
+
                         <br><br>
+                        
                         <label>Resolution:</label><br>
                         <div class="center">
                             <label for="res__width">w:</label>
@@ -45,117 +43,154 @@
                             <label for="res__height">h:</label>
                             <input type="number" id="res__height" class="res__input" value="600">
                         </div>
+    
                     </div>
+
                     <div id="menu__alg">
-                        <div id="fractals">
-                            <div class="center button__padding">
-                                <button id="reset__zoom__button">Reset Zoom</button>
-                                <button id="undo__zoom__button">Undo Zoom</button>
-                            </div>
-                            <br>
-                            <label for="colormode__select">Color Mode:</label>
-                            <br>
-                            <select name="Color Mode" id="colormode__select">
+                        <div id="fractals__buttons__container" class="center button__padding hide">
+                            <button id="reset__zoom__button">Reset Zoom</button>
+                            <button id="undo__zoom__button">Undo Zoom</button>
+                            <br><br>
+                        </div>
+
+                       
+                        <div id="fractals__colormode__select__container" class="hide">
+                            <label for="colormode__select__fractals">Color Mode:</label><br> 
+                            <select id="colormode__select__fractals" name="Color Mode">
                                 <option value="smooth__colors">Smooth</option>
                                 <option value="black__and__white">Black and White</option>    
                                 <option value="rand__colors">Random colors</option>
                             </select>
-
                             <br><br>
+                        </div>
+                        
 
-                            <div id="colors__intensity" class="hide">
-                                <label for="color__intensity__select">Color Intensity:</label>
-                                <br>
-                                <input type="number" id="color__intensity__value"  value="1">
-                                <br><br>
-                            </div>
+                        <div id="fractals__colors__intensity__container" class="hide">
+                            <label for="color__intensity__select">Color Intensity:</label><br>
+                            <input type="number" id="color__intensity__value"  value="1">
+                            <br><br>
+                        </div>
 
-                            <div id="colors__weight" class="hide center">
-                                <label for="red__value">R:</label>
-                                <input type="number" id="red__value" class="rgb__input" value="1">
-                                <!-- <br> -->
-                                <label for="green__value">G:</label>
-                                <input type="number" id="green__value" class="rgb__input" value="1">
-                                <!-- <br> -->
-                                <label for="blue__value">B:</label>
-                                <input type="number" id="blue__value" class="rgb__input" value="1">
-                                <br><br>
-                            </div>
 
-                            <div id="colors__number" class="hide">
-                                <label for="colors__number">Number of colors:</label>
-                                <br>
-                                <input type="number" id="colors__number__value" value="16">
-                                <br><br>
-                            </div>
+                        <div id="fractals__colors__weight__container" class="hide center">
+                            <label for="red__value">R:</label>
+                            <input type="number" id="red__value__fractals" class="rgb__input" value="1">
+                            <!-- <br> -->
+                            <label for="green__value">G:</label>
+                            <input type="number" id="green__value__fractals" class="rgb__input" value="1">
+                            <!-- <br> -->
+                            <label for="blue__value">B:</label>
+                            <input type="number" id="blue__value__fractals" class="rgb__input" value="1">
+                            <br><br>
+                        </div>
 
+                        <div id="fractals__colors__number__container" class="hide">
+                            <label for="colors__number__value">Number of colors:</label><br>
+                            <input type="number" id="colors__number__value" value="16">
+                            <br><br>
+                        </div>
+
+
+                        <div id="fractals__iterations__container" class="hide">
                             <label for="max__iterations">Iterations:</label>
                             <input id="max__iterations" type="number" value="500">
-
-                            <div id="mandelbrot" class="hide">
-                            </div>
-                           
-                            <div id="julia" class="hide">
-                                <br>
-                                <label for="c__value__select">Value for C</label>
-                                <select name="Value for C" id="c__value__select">
-                                    <option value="0">0.355 + 0.355i</option>
-                                    <option value="1">0 + 0.8i</option>
-                                    <option value="2">0.37 + 0.1i</option>
-                                    <option value="3">-0.54 + 0.54i</option>
-                                    <option value="4">-0.4 - 0.59i</option>
-                                    <option value="5">0.355534 - 0.337292i</option>
-                                    <option value="-1">Custom</option>
-                                </select>
-
-                                <br><br>
-                                
-                                <div id="c__value__custom" class="hide">
-                                    <label for="">Value for real part:</label><br>
-                                    <input id="c__value__re" type="number" value="0.0">
-                                    <br><br>
-                                    <label for="">Value for imaginary part: (without "i")</label><br>
-                                    <input id="c__value__im" type="number" value="0.0">
-                                </div>
-                            </div>
-                        </div>                 
-                    
-                        <div id="perlin" class="hide">
-                            <label for="perlin__scale">Scale</label><br>
-                            <input id="perlin__scale" type="number" value="1">
                             <br><br>
+                        </div>
+                        
+                        <div id="fractals__cvalue__select__container" class="hide">
+                            <label for="c__value__select">Value for C</label>
+                            <select name="Value for C" id="c__value__select">
+                                <option value="0">0.355 + 0.355i</option>
+                                <option value="1">0 + 0.8i</option>
+                                <option value="2">0.37 + 0.1i</option>
+                                <option value="3">-0.54 + 0.54i</option>
+                                <option value="4">-0.4 - 0.59i</option>
+                                <option value="5">0.355534 - 0.337292i</option>
+                                <option value="-1">Custom</option>
+                            </select>
+                            <br><br>
+                        </div>
+                       
+                        
+                        <div id="fractals__cvalue__input__container" class="hide">
+                            <label for="">Value for real part:</label><br>
+                            <input id="c__value__re" type="number" value="0.0">
+                            <br><br>
+                            <label for="">Value for imaginary part: (without "i")</label><br>
+                            <input id="c__value__im" type="number" value="0.0">
+                        </div>
+            
+
+                        <div id="perlin__colormode__select__container" class="hide">
+                            <label for="colormode__select__perlin">Color Mode:</label><br>
+                            <select name="Color Mode" id="colormode__select__perlin">
+                                <option value="smooth__colors">Smooth</option>
+                                <option value="black__and__white">Black and White</option>    
+                            </select>
+                            <br><br>
+                        </div>
+                        
+
+                        <div id="perlin__colors__intensity__container" class="hide">
                             <label for="perlin__intensity">Intensity</label><br>
                             <input id="perlin__intensity" type="number" value="2">
                             <br><br>
+                        </div>
+
+
+                        <div id="perlin__colors__weight__container" class="hide center">
+                            <label for="red__value__perlin">R:</label>
+                            <input type="number" id="red__value__perlin" class="rgb__input" value="1">
+                            <!-- <br> -->
+                            <label for="green__value__perlin">G:</label>
+                            <input type="number" id="green__value__perlin" class="rgb__input" value="1">
+                            <!-- <br> -->
+                            <label for="blue__value__perlin">B:</label>
+                            <input type="number" id="blue__value__perlin" class="rgb__input" value="1">
+                            <br><br>
+                        </div>
+
+
+                        <div id="perlin__scale__container" class="hide">
+                            <label for="perlin__scale">Scale</label><br>
+                            <input id="perlin__scale" type="number" value="1">
+                            <br><br>
+                        </div>
+                        
+ 
+                        <div id="perlin__zoomout__container" class="hide">
                             <label for="perlin__zoomout"></label>Zoom Out<br>
                             <input id="perlin__zoomout" type="number" value="2">
                             <br><br>
+                        </div>
+                        
+
+                        <div id="perlin__seed__input__container" class="hide">
                             <label for="perlin__seed">Seed</label><br>
                             <input id="perlin__seed" type="number" placeholder="Leave empty for random seed">
                             <br><br>
+                        </div>
+                        
+
+                        <div id="perlin__seed__output__container" class="hide">
                             <label>Current seed:</label><br>
                             <label id="perlin__current__seed"></label>
+                            <br><br>
                         </div>
-
-                        <div id="test__2d" class="hide">
-                            <div>TEST_2D</div>
-                        </div>
-
-                        <div id="test__3d" class="hide">
-                        </div>
+                    
                     </div>
-
 
                     <div id="buttons__bar" class="center button__padding">
                         <div id="progress__bar__percentage">0%</div> 
                         <div id="progress__bar__container" class="rounded">
                             <div id="progress__bar" class="rounded"></div>
                         </div>
+
                         <br>
+
                         <button id="generate__button">Generate</button>
                         <button id="save__button">Save Image</button>
                         
-                        <br> 
                     </div>
             </div>
         </div>   
