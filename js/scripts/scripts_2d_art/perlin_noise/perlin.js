@@ -55,10 +55,20 @@ function draw(data) {
 
     // Iterate through each point on the column to draw on
     for (let row = 0; row < rows; row++) {
-        const perlin_noise  = column_values[row];
+        let [x_end, y_end, perlin_noise]  = column_values[row];
+       
         // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
-        ctx.fillStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
-        ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
+        // ctx.strokeStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
+        
+        ctx.strokeStyle = `rgb(${perlin_noise * 12123},${perlin_noise * 4121},${perlin_noise * 12413})`
+
+        ctx.beginPath();
+        ctx.moveTo(col * scaling_factor, row * scaling_factor);
+        ctx.lineTo(x_end, y_end);
+        ctx.stroke();
+
+
+        // ctx.fillRect(col * scaling_factor, row * scaling_factor, scaling_factor, scaling_factor);
 
     }   
 }
