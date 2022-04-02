@@ -7,7 +7,7 @@ let selected_algorithm = algorithm_selection.options[algorithm_selection.selecte
 
 // Get the color mode for fractals
 let colormode_selection_fractals = document.getElementById("colormode__select__fractals");
-let selected_colormode__fractals = colormode_selection_fractals.options[colormode_selection_fractals.selectedIndex].value;
+let selected_colormode_fractals = colormode_selection_fractals.options[colormode_selection_fractals.selectedIndex].value;
 let current_colormode_menu_fractals;
 
 // Get the color mode for perlin
@@ -82,8 +82,8 @@ function updateSelections() {
     selected_algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value; 
 
     // Update selected fractal algorithm colormode
-    selected_colormode__fractals = colormode_selection_fractals.options[colormode_selection_fractals.selectedIndex].value;
-    setColormodeMenuFractals(selected_colormode__fractals);
+    selected_colormode_fractals = colormode_selection_fractals.options[colormode_selection_fractals.selectedIndex].value;
+    setColormodeMenuFractals(selected_colormode_fractals);
 
     // Update selected perlin noise algorithm colormode
     selected_colormode_perlin = colormode_selection_perlin.options[colormode_selection_perlin.selectedIndex].value;
