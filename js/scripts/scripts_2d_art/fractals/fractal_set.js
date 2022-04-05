@@ -108,7 +108,7 @@ canvas_2d.addEventListener('mousedown', e => {
     canvas_2d.style.cursor = "crosshair";
 
     // set how frequent the dashes are
-    ctx.setLineDash([3, 3]);
+    ctx.setLineDash([5, 7]);
     ctx.lineWidth = 3;
     // set the color of the dashed lines
     ctx.strokeStyle = "white";
@@ -123,7 +123,6 @@ canvas_2d.addEventListener('mousedown', e => {
 canvas_2d.addEventListener('mousemove', e => {
     // Only continue if the user has pressed left click first (i.e. if zooming)
     if (!isZooming) {
-        canvas_2d.style.cursor = "default";
         return;
     }
 
@@ -146,12 +145,14 @@ canvas_2d.addEventListener('mousemove', e => {
 
 
 // Event for moving the cursor out of the canvas area
-canvas_2d.addEventListener("mouseout", e => {
+canvas_2d.addEventListener("mouseout", () => {
     // Only continue if the user is in the process of zooming
-    if (!isZooming) return;
-
+    if (!isZooming) {
+        return;
+    }
     // Erase any rectangle and cancel zooming when the user moves the mouse out of the canvas
     isZooming = false;
+    canvas_2d.style.cursor = "default";
     ctx.putImageData(canvas_data, 0, 0);
 
 });
@@ -314,10 +315,10 @@ function draw(data) {
             ctx.fillStyle = color_HSL(iterations);
         }
         else if (colormode === "black__and__white") {
-            ctx.fillStyle = color_RGB(iterations, red_weight, green_weight, blue_weight);
+            ctx.fillStyle = color_RGB(iterations);
         }
         else {
-            ctx.fillStyle = color_HEX(iterations, colors);
+            ctx.fillStyle = color_random(iterations);
         }
 
         // Modify the width and height of each rectangle so that it fits the image if the resolution is lower than the displayed canvas
@@ -356,8 +357,8 @@ export function generate(generatedFromButton = false) {
         button_undo.disabled = true;
         button_reset.disabled = true;
 
-        // Create the color palette
-        colors = new Array(colors_number).fill(0).map((_, i) => i === 0 ? '#000' : `#${((1 << 24) * Math.random() | 0).toString(16)}`);
+        // Create the random color palette
+        colors = new Array(colors_number).fill(0).map(_ => random(0,360));
     }
     // Disable the "Generate" button while generating 
     button_generate.disabled = true;
@@ -455,8 +456,8 @@ function isMenuInputValid() {
         alert("Weight of blue color (B) is invalid! This input requires an integer greater than or equal to 0");
         return false;
     }
-    if (Number.isNaN(colors_number) || colors_number < 2) {
-        alert("Number of colors is invalid! This input requires an integer greater than 1");
+    if (Number.isNaN(colors_number) || colors_number < 1) {
+        alert("Number of colors is invalid! This input requires an integer greater than 0");
         return false;
     }
     if (Number.isNaN(max_iterations) || max_iterations < 0) {
@@ -483,26 +484,25 @@ function random(lower_bound, upper_bound) {
 /**
  * Return a RGB color based on the number of iterations and the user RGB weights.
  * @param {number} iterations 
- * @param {number} r_weight 
- * @param {number} g_weight 
- * @param {number} b_weight 
  * @returns RGB color
  */
-function color_RGB(iterations, r_weight, g_weight, b_weight)  {
+function color_RGB(iterations)  {
     // Represent the number of iterations as a value 0 - 255 
-    let color = parseInt(iterations * 255 / max_iterations)
-    return `rgb(${color * r_weight}, ${color * g_weight}, ${color * b_weight})`;
+    let color = parseInt(255 * (iterations / max_iterations))
+    return `rgb(${color * red_weight}, ${color * green_weight}, ${color * blue_weight})`;
 
 }
 
 /**
- * Return a HEX color based on iterations and color palette
+ * Return an HSL random color based on iterations and color palette
  * @param {number} iterations 
- * @param {Array} colors 
- * @returns HEX color
+ * @returns HSL color
  */
-function color_HEX(iterations, colors) {
-    return colors[(iterations === max_iterations) ? 0 : (iterations % colors.length - 1) + 1]
+function color_random(iterations) {
+    if (iterations === max_iterations) {
+        return 'black';
+    }
+    return `hsl(${colors[iterations % (colors.length)]}, 100%, 50%)`
 }
 
 /**
