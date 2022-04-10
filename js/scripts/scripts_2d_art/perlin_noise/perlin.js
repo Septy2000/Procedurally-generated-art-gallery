@@ -214,7 +214,7 @@ canvas_perlin_gallery.height = 450;
 let perlin_images_list = [];
 
 // Number of images with Perlin noise
-let perlin_images_number = 5;
+let perlin_images_number = 8;
 
 
 /**
@@ -232,6 +232,8 @@ export function initialiseImagesPerlin() {
  * Place a random image on the corresponding canvas
  */
 export function drawGallery() {  
+    ctx_perlin_gallery.clearRect(0, 0, canvas_perlin_gallery.width, canvas_perlin_gallery.height)
+
     let number = random(0, perlin_images_number - 1);
     ctx_perlin_gallery.drawImage(perlin_images_list[number], 0, 0);
 }

@@ -557,7 +557,7 @@ export function initialiseImagesMandelbrot() {
 let julia_images_list = [];
 
 // Number of images with the Julia set
-let julia_images_number = 5;
+let julia_images_number = 26;
 
 
 /**
@@ -576,10 +576,14 @@ export function initialiseImagesJulia() {
  */
 export function drawGallery(alg) {  
     if (alg === "mandelbrot") {
+        ctx_mandelbrot_gallery.clearRect(0, 0, canvas_mandelbrot_gallery.width, canvas_mandelbrot_gallery.height)
+
         let number = random(0, mandelbrot_images_number - 1);
         ctx_mandelbrot_gallery.drawImage(mandelbrot_images_list[number], 0, 0);
     }
     else {
+        ctx_julia_gallery.clearRect(0, 0, canvas_julia_gallery.width, canvas_julia_gallery.height)
+
         let number = random(0, julia_images_number - 1);
         ctx_julia_gallery.drawImage(julia_images_list[number], 0, 0);
     }
