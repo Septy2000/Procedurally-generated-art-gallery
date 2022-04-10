@@ -478,7 +478,6 @@ function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
 
-
 // Coloring functions
 
 /**
@@ -522,6 +521,7 @@ function color_HSL(iterations) {
 
 }
 
+// The part below handles the gallery
 
 // Get the Mandelbrot canvas element from the gallery
 let canvas_mandelbrot_gallery = document.getElementById('gallery__mandelbrot__canvas'); 
@@ -535,121 +535,52 @@ let ctx_julia_gallery = canvas_julia_gallery.getContext("2d");
 canvas_julia_gallery.width = 600;
 canvas_julia_gallery.height = 450;
 
-// {re_min: , re_max: , im_min: , im_max: },
-let mandelbrot_ares = [
-    {re_min: -2, re_max: 2, im_min: -1.5, im_max: 1.5}
-]
+// Array to store the images, for easier access
+let mandelbrot_images_list = [];
 
-let julia_ares = [
-    {re_min: -2, re_max: 2, im_min: -1.5, im_max: 1.5}
-]
+// Number of images with the Mandelbrot set
+let mandelbrot_images_number = 40;
 
 
-export function generateGallery(alg) {
-
-    // Clear canvas
-    if (alg === "mandelbrot") {
-        ctx_mandelbrot_gallery.clearRect(0, 0, canvas_mandelbrot_gallery.width, canvas_mandelbrot_gallery.height);
-    }
-    else {
-        ctx_julia_gallery.clearRect(0, 0, canvas_julia_gallery.width, canvas_julia_gallery.height);
-    }
-
-    // Start a new worker and end a previous one
-    if (worker) worker.terminate();
-    worker = new Worker('./js/scripts/scripts_2d_art/fractals/fractal_worker.js');
-
-    // Pass parameters to the worker thread
-    worker.postMessage({
-        algorithm: alg,
-        width: canvas_mandelbrot_gallery.width,
-        height: canvas_mandelbrot_gallery.height,
-        re_min: -2,
-        re_max: 2,
-        im_min: -1.5,
-        im_max: 1.5,
-        max_iter: 300,
-        isInitialising: true,
-        // If the user selected the "Custom" complex number option for Julia sets, get those values instead
-        complex : COMPLEX_LIST[2]
-    })
-    // Create columns list
-    initColumnsGallery(canvas_mandelbrot_gallery.width);
-
-    // When worker returns a message, draw on the canvas
-    worker.onmessage = function(e) {
-        drawGallery(e.data, alg);
+/**
+ * Initialise the list with Mandelbrot set images
+ */
+export function initialiseImagesMandelbrot() {
+    for (let i = 0; i < mandelbrot_images_number; i++) {
+        let mandelbrot_image = new Image();
+        mandelbrot_image.src = `images/mandelbrot_images/image${i}.png`;
+        mandelbrot_images_list.push(mandelbrot_image);
     }
 }
 
-function drawGallery(data, alg) {
-    // If the column list is not empty, send the next column to the worker
-    if (COLUMN_LIST.length > 0) {
-        worker.postMessage({
-            col: COLUMN_LIST.shift()
-        });
-    }
-    else {
-        let image = new Image();
-        let image_array = [];
-        image.src = "./../../../gold-frame.png";
-        image_array.push(image);
-        ctx_julia_gallery.drawImage(image_array[0], 0, 0);
-    }
+// Array to store the images, for easier access
+let julia_images_list = [];
 
-    // Extract the column index and its values
-    const {col, columns_values} = data;
-    // Iterate through each point on the column to draw on
-    for (let i = 0; i < canvas_mandelbrot_gallery.height; i++) {
-        // Extract the iterations number of each point
-        const iterations = columns_values[i];
-        // // Select the coloring mode based on the user selection
-        // if (colormode === "smooth__colors") {
-        //     ctx.fillStyle = color_HSL(iterations);
-        // }
-        // else if (colormode === "black__and__white") {
-        //     ctx.fillStyle = color_RGB(iterations);
-        // }
-        // else {
-        //     ctx.fillStyle = color_random(iterations);
-        // }
+// Number of images with the Julia set
+let julia_images_number = 5;
 
-        if (alg === "mandelbrot") {
-            if (iterations === 300) {
-                ctx_mandelbrot_gallery.fillStyle = `black`;
-            }
-            else {
-                let color_int = 1;
-                let hue = color_int * 360 * (iterations / 300);
-                ctx_mandelbrot_gallery.fillStyle =  `hsl(${parseInt(hue)}, 100%, 50%)`
-            }
-           
-            ctx_mandelbrot_gallery.fillRect(col, i, 1, 1);
-        }
-        else {
-            if (iterations === 300) {
-                ctx_julia_gallery.fillStyle = `black`;
-            }
-            else {
-                let color_int = 1;
-                let hue = color_int * 360 * (iterations / 300);
-                ctx_julia_gallery.fillStyle =  `hsl(${parseInt(hue)}, 100%, 50%)`
-            }
-           
-            ctx_julia_gallery.fillRect(col, i, 1, 1);
-        }
-        
-        
+
+/**
+ * Initialise the list with Julia set images
+ */
+export function initialiseImagesJulia() {
+    for (let i = 0; i < julia_images_number; i++) {
+        let julia_image = new Image();
+        julia_image.src = `images/julia_images/image${i}.png`;
+        julia_images_list.push(julia_image);
     }
 }
 
 /**
- * Initialise the column list and post the columns to the worker thread one by one
+ * Place a random image on the corresponding canvas
  */
- function initColumnsGallery(width) {
-    for (let col = 0; col < width; col++) {
-        COLUMN_LIST[col] = col;
+export function drawGallery(alg) {  
+    if (alg === "mandelbrot") {
+        let number = random(0, mandelbrot_images_number - 1);
+        ctx_mandelbrot_gallery.drawImage(mandelbrot_images_list[number], 0, 0);
     }
-    // Extract the first column in the list and pass it to the worker thread
-    worker.postMessage({col: COLUMN_LIST.shift()});
+    else {
+        let number = random(0, julia_images_number - 1);
+        ctx_julia_gallery.drawImage(julia_images_list[number], 0, 0);
+    }
 }

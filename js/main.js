@@ -25,32 +25,36 @@ let fractal_algorithms = ["mandelbrot", "julia"];
 // Get the canvas element
 const canvas_2d = document.getElementById("canvas__2d"); 
 
-let selected_page = "generator";
 
+// Initialise the images list for each algorithm
+fractal.initialiseImagesMandelbrot();
+fractal.initialiseImagesJulia();
+perlin.initialiseImagesPerlin();
+
+// Initialise the variables connected to the drop-down menus.
+updateSelections();
+
+// Change page content when the user click a page button
 document.getElementById("generator__page__button").addEventListener("click", () => {
-    selected_page = "generator";
+
     document.getElementById("generator__container").classList.remove("hide");
     document.getElementById("gallery__container").classList.add("hide");
 
 
 })
 
+
+// Change page content when the user click a page button
 document.getElementById("gallery__page__button").addEventListener("click", () => {
-    selected_page = "gallery";
     document.getElementById("gallery__container").classList.remove("hide");
     document.getElementById("generator__container").classList.add("hide");
-    init_gallery_images();
 
+    // Draw the images for each algorithm
+    fractal.drawGallery("mandelbrot");
+    fractal.drawGallery("julia");
+    perlin.drawGallery();
 })
 
-
-function init_gallery_images() {
-    fractal.generateGallery("mandelbrot");
-    fractal.generateGallery("julia");
-}
-
-// Initialise the variables connected to the drop-down menus.
-updateSelections();
 
 // Start generating the image when the "Generate" button is pressed, based on the selected algorithm
 document.getElementById("generate__button").addEventListener("click", () => {
@@ -178,6 +182,8 @@ colormode_selection_fractals.onchange = updateSelections;
 colormode_selection_perlin.onchange = updateSelections;
 c_value_selection.onchange = updateSelections;
 
+// Increment the counter on the image name
+let image_counter = 0;
 
 // Save the canvas as an JPG file when pressing the "Save Image" button
 document.getElementById("save__button").addEventListener("click", () => {
@@ -186,7 +192,8 @@ document.getElementById("save__button").addEventListener("click", () => {
     let image = canvas_2d.toDataURL("image/png", 1.0);
     // Create a hyperlink that acts as a download link
     let download_elem = document.createElement("a");
-    download_elem.download = "image.png";
+    download_elem.download = `image${image_counter}.png`;
+    image_counter += 1;
     download_elem.href = image;
     download_elem.click();
 })

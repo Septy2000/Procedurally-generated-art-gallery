@@ -199,3 +199,39 @@ function isMenuInputValid() {
  function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
 }
+
+
+
+// The part below handles the gallery
+
+// Get the Perlin noise canvas element from the gallery
+let canvas_perlin_gallery = document.getElementById('gallery__perlin__canvas'); 
+let ctx_perlin_gallery = canvas_perlin_gallery.getContext("2d");
+canvas_perlin_gallery.width = 600;
+canvas_perlin_gallery.height = 450;
+
+// Array to store the images, for easier access
+let perlin_images_list = [];
+
+// Number of images with Perlin noise
+let perlin_images_number = 5;
+
+
+/**
+ * Initialise the list with Perlin noise images
+ */
+export function initialiseImagesPerlin() {
+    for (let i = 0; i < perlin_images_number; i++) {
+        let perlin_image = new Image();
+        perlin_image.src = `images/perlin_images/image${i}.png`;
+        perlin_images_list.push(perlin_image);
+    }
+}
+
+/**
+ * Place a random image on the corresponding canvas
+ */
+export function drawGallery() {  
+    let number = random(0, perlin_images_number - 1);
+    ctx_perlin_gallery.drawImage(perlin_images_list[number], 0, 0);
+}
