@@ -2,8 +2,8 @@ import * as pb from './../../../helper_scripts/progress_bar.js'
 import * as res from  './../../../helper_scripts/resolution.js'
 
 // Store the canvas element and context
-const canvas_2d = document.getElementById('canvas__2d'); 
-const ctx = canvas_2d.getContext("2d");
+let canvas_2d = document.getElementById('canvas__2d'); 
+let ctx = canvas_2d.getContext("2d");
 
 // Default values for the real and imaginary sets
 let RE_MIN_default = -2, RE_MAX_default = 2;
@@ -29,7 +29,6 @@ let worker;
 // Get the selected algorithm
 let algorithm_selection = document.getElementById("alg__select");
 let algorithm = algorithm_selection.options[algorithm_selection.selectedIndex].value;
-
 
 // List of canvas columns
 const COLUMN_LIST = [];
@@ -397,6 +396,7 @@ export function generate(generatedFromButton = false) {
     }
 }
 
+
 /**
  * Update the parameters with the user inputs from the menu
  */
@@ -524,3 +524,72 @@ function color_HSL(iterations) {
 
 
 
+let canvas_2d_gallery;
+let ctx_gallery;
+
+export function generateGallery() {
+    canvas_2d_gallery = document.getElementById('canvas__2d__gallery'); 
+    ctx_gallery = canvas_2d_gallery.getContext("2d");
+
+
+    // Clear canvas
+    ctx_gallery.clearRect(0, 0, 800, 600);
+
+     // Start a new worker and end a previous one
+     if (worker) worker.terminate();
+     worker = new Worker('./js/scripts/scripts_2d_art/fractals/fractal_worker.js');
+    
+     // Pass parameters to the worker thread
+     worker.postMessage({
+         algorithm: "mandelbrot",
+         width: 800,
+         height: 600,
+         re_min: -2,
+         re_max: 2,
+         im_min: -1.5,
+         im_max: 1.5,
+         max_iter: 300,
+         isInitialising: true,
+         // If the user selected the "Custom" complex number option for Julia sets, get those values instead
+         complex : COMPLEX_LIST[2]
+     })
+     // Create columns list
+     init_columns();
+   
+     // When worker returns a message, draw on the canvas
+     worker.onmessage = function(e) {
+         drawGallery(e.data);
+     }
+}
+
+function drawGallery(data) {
+    // If the column list is not empty, send the next column to the worker
+    if (COLUMN_LIST.length > 0) {
+        worker.postMessage({
+            col: COLUMN_LIST.shift()
+        });
+    }
+
+    // Extract the column index and its values
+    const {col, columns_values} = data;
+    
+    // Iterate through each point on the column to draw on
+    for (let i = 0; i < 600; i++) {
+        // Extract the iterations number of each point
+        const iterations = columns_values[i];
+
+        // // Select the coloring mode based on the user selection
+        // if (colormode === "smooth__colors") {
+        //     ctx.fillStyle = color_HSL(iterations);
+        // }
+        // else if (colormode === "black__and__white") {
+        //     ctx.fillStyle = color_RGB(iterations);
+        // }
+        // else {
+        //     ctx.fillStyle = color_random(iterations);
+        // }
+
+        ctx_gallery.fillStyle = color_HSL(iterations);
+        ctx_gallery.fillRect(col, i, 1.5, 1.5);
+    }
+}

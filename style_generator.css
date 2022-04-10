@@ -21,6 +21,7 @@ html, body {
 a {
     font-size: 25px;
     color: #e4e5e9;
+    cursor: pointer;
 }
 
 header {
@@ -31,21 +32,27 @@ header {
     margin-bottom: 75px;
 }
 
+nav button {
+    background-color: #333333;
+}
+
+nav button:hover{
+    background-color: #333333;
+    color: rgb(165, 165, 165)
+}
+
+nav button:active {
+    background-color: #333333;
+}
+
+.nav__bar {
+    cursor: default;
+}
+
 .nav__bar li {
     display: inline-block;
     padding: 0px 20px;
 
-}
-
-.nav__bar a {
-    transition: all 0.3s;
-}
-.nav__bar a:link {
-    text-decoration: none;
-}
-
-.nav__bar a:hover {
-    color: grey;
 }
 
 .rounded {
@@ -178,4 +185,72 @@ optgroup {
 
 .button__padding {
     padding: 10px;
+}
+
+/* Style for gallery */
+
+#flex__gallery__container {
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    
+}
+
+#gallery__canvas__container {
+    padding: 15px;
+    background-color: #818185;
+    box-shadow: 20px 20px 50px grey;
+    display: flex;
+
+}
+
+.alg__container {
+    background-color: antiquewhite;
+    display: block;
+    
+}
+
+.description {
+    
+    margin-top: 20px;
+    background-color: antiquewhite;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.canvas__container {
+    border: 10px solid transparent;
+    border-image: url(gold-frame.png) 10 round;
+    background-color: antiquewhite;
+    /* padding: 10px; */
+    /* border-radius: 10px; */
+}
+
+#gallery__container canvas {
+    width: 600px;
+    height: 450px;
+
+}
+
+h4, p {
+    padding: 10px;
+    background-color: antiquewhite;
+}
+
+h4 {
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+}
+
+p {
+    font-size: 22px;
+    border-radius: 0 0 10px 10px;
+
+}
+
+.limit {
+    width: 620px;
+    word-wrap: break-word;
 }

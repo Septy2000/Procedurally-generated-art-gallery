@@ -10,8 +10,8 @@
     <header>
         <nav>
             <ul class="nav__bar">   
-                <li><a href="./index.html">Generator</a></li>
-                <li><a href="./pages/gallery/gallery.html">Gallery</a></li>
+                <li><button id="generator__anchor">Generator</button></li>
+                <li><button id="gallery__anchor">Gallery</button></li>
             </ul>
         </nav>
     </header>
@@ -193,6 +193,46 @@
                     </div>
             </div>
         </div>   
+        </div>
+
+    </div>
+    <div id="gallery__container" class="hide">
+        <div id="flex__gallery__container" class="hide rounded">
+           
+            <div id="mandelbrot__canvas__container" class="center rounded alg__container">
+                <div class="canvas__container">
+                    <canvas id="gallery__mandelbrot__canvas" class=""></canvas>
+                </div>
+
+                <div class="description">
+                    <h4>Mandelbrot Set</h4>
+                    <p class="limit">orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                </div>
+            </div>   
+
+            <div id="julia__canvas__container" class="center rounded alg__container">
+                <div class="canvas__container">
+                    <canvas id="gallery__julia__canvas" class=""></canvas>
+                </div>
+                
+                <div class="description">
+                    <h4>Julia Set</h4>
+                    <p class="limit">Description</p>
+                </div>
+            </div> 
+
+            <div id="perlin__canvas__container" class="center rounded alg__container">
+                <div class="canvas__container">
+                    <canvas id="gallery__perlin__canvas" class=""></canvas>
+                </div>
+
+                <div class="description">
+                    <h4>Perlin Noise</h4>
+                    <p class="limit">Description</p>
+                </div>
+            </div> 
+
+        </div>
     </div>
     <script type="module" src="./js/generator.js"></script>
 </body>

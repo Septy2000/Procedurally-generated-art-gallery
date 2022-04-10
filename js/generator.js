@@ -25,6 +25,27 @@ let fractal_algorithms = ["mandelbrot", "julia"];
 // Get the canvas element
 const canvas_2d = document.getElementById("canvas__2d"); 
 
+let selected_page = "generator";
+
+document.getElementById("generator__anchor").addEventListener("click", () => {
+    selected_page = "generator";
+    document.getElementById("container").classList.remove("hide");
+    document.getElementById("gallery__container").classList.add("hide");
+
+    console.log(selected_page);
+})
+
+document.getElementById("gallery__anchor").addEventListener("click", () => {
+    selected_page = "gallery";
+    document.getElementById("gallery__container").classList.remove("hide");
+    document.getElementById("container").classList.add("hide");
+    console.log(selected_page);
+
+})
+
+
+
+
 // Initialise the variables connected to the drop-down menus.
 updateSelections();
 
