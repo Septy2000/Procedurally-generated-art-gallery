@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:500');
 /* Used to override default browser settings*/
 * {
-    font-size: 20px;
     font-weight: 500;
     font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color:  #e4e5e9;
+    /* background-color:  #f5f5f5; */
 }
 
 header, header *{
@@ -21,6 +20,16 @@ html, body {
 a {
     font-size: 25px;
     color: #e4e5e9;
+}
+
+h4 {
+    font-size: 30px;
+    /* border-top: 10px solid #818185; */
+    padding: 10px;
+}
+
+p {
+    font-size: 25px;
 }
 
 header {
@@ -48,18 +57,16 @@ header {
     color: grey;
 }
 
-.rounded {
-    border-radius: 10px;
-}
+
 
 button {
-    width:  45%;
-    font-size: 20px;
+    width:  80px;
+    font-size: 50px;
     color: #fffdf0;
-    padding: 5px;
+    padding: 10px;
     background-color: rgba(0, 136, 169, 1);
     border: none;
-    border-radius: 20px;
+    border-radius: 100px;
     cursor: pointer;
     transition: all 0.3s ease 0s;
 }
@@ -80,96 +87,47 @@ button:disabled {
 }
 
 
-#container {
-    background-color: #818185;
-
-    width: 1600px;
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 20px 20px 50px grey;
-}
-
 #flex__container {
-    background-color: #818185;
+    background-color: antiquewhite;
     display: flex;
-    width: 100%;   
+    justify-content: space-between;
+    align-items: center;
 }
 
+#canvas__container {
+    padding: 15px;
+    /* background-color: #818185; */
+    box-shadow: 20px 20px 50px grey;
+    display: flex;
+
+}
+
+#previous__button__container {
+    padding-left: 30px;
+    background-color: antiquewhite;
+}
+
+#next__button__container {
+    padding-right: 30px;
+    background-color: antiquewhite;
+
+}
+
+.description {
+    margin-left: 50px;
+    background-color: antiquewhite;
+}
 canvas {
     width: 1200px;
     height: 900px;
     display: block;
+    background-color: #f5f5f5;
 }
 
-#menu__frame {
-    overflow: hidden;
-    margin-left: 10px;
-    width: 100%;
-}
 
-#menu {
-    display:flex;
-    flex-direction: column;
-    padding: 10px;
-    height: 100%;
-
-}
-
-#menu * {
-    flex: 1;
-}
-
-#menu__static {
-    flex: 0 1 0%;
-    padding: 10px;
-}
-
-select, input {
-    border-radius: 5px;
-    width: 100%;
-}
-
-.res__input {
-    width: 38%;
-}
-
-optgroup {
-    font-weight: bold;
-}
-
-#menu__alg {
-    padding: 10px;
-}
 
 .hide {
     display: none;
-}
-
-#progress__bar__container {
-    height: 10px;
-    background-color: red;
-}
-
-#progress__bar__percentage {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#progress__bar {
-    background-color: green;
-    height: 100%;
-    width: 0%;
-}
-
-#buttons__bar {
-    flex: 0 1 0%;
-}
-
-.rgb__input {
-    width: 24%;
 }
 
 .center {
@@ -178,4 +136,8 @@ optgroup {
 
 .button__padding {
     padding: 10px;
+}
+
+.rounded {
+    border-radius: 10px;
 }

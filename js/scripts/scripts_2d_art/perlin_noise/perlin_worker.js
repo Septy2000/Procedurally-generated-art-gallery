@@ -43,9 +43,14 @@ onmessage = e => {
  * @returns a list containing end points x and y and the perlin noise
  */
 function computeEndPoints(col, row) {
-    let perlin_noise = noise.perlin2(x_change, y_change);
-    let angle = Math.abs(perlin_noise) * 2 * Math.PI;
-    let x_end = col * SCALING_FACTOR + SCALING_FACTOR * Math.cos(angle); 
-    let y_end = row * SCALING_FACTOR + SCALING_FACTOR * Math.sin(angle); 
+    let perlin_noise = noise.perlin2(y_change, x_change);
+    // console.log(perlin_noise)
+    let angle = perlin_noise * 2 * Math.PI;
+    // let x_end = col * SCALING_FACTOR + SCALING_FACTOR * Math.cos(angle); 
+    let x_end = SCALING_FACTOR * (col + Math.cos(angle));
+    // let y_end = row * SCALING_FACTOR + SCALING_FACTOR * Math.sin(angle); 
+    let y_end = SCALING_FACTOR * (row + Math.sin(angle)); 
+
+    
     return [x_end, y_end, perlin_noise];
 }

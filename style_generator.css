@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500');
+/* Used to override default browser settings*/
+* {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color:  #f5f5f5;
+}
+
+header, header *{
+    background-color: #333333;
+}
+
+html, body {
+    background-color: antiquewhite;
+}
+
+a {
+    font-size: 25px;
+    color: #e4e5e9;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 30px 10%;
+    margin-bottom: 75px;
+}
+
+.nav__bar li {
+    display: inline-block;
+    padding: 0px 20px;
+
+}
+
+.nav__bar a {
+    transition: all 0.3s;
+}
+.nav__bar a:link {
+    text-decoration: none;
+}
+
+.nav__bar a:hover {
+    color: grey;
+}
+
+.rounded {
+    border-radius: 10px;
+}
+
+button {
+    width:  45%;
+    font-size: 20px;
+    color: #fffdf0;
+    padding: 5px;
+    background-color: rgba(0, 136, 169, 1);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+button:hover {
+    background-color: rgba(0, 136, 169, 0.8);
+}
+
+button:active {
+    background-color: rgba(22, 85, 143, 0.788);
+
+}
+
+button:disabled {
+    background-color: rgba(0, 61, 77, 0.8);
+    cursor:not-allowed;
+
+}
+
+
+#container {
+    background-color: #818185;
+
+    width: 1600px;
+    padding: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 20px 20px 50px grey;
+}
+
+#flex__container {
+    background-color: #818185;
+    display: flex;
+    width: 100%;   
+}
+
+canvas {
+    width: 1200px;
+    height: 900px;
+    display: block;
+}
+
+#menu__frame {
+    overflow: hidden;
+    margin-left: 10px;
+    width: 100%;
+}
+
+#menu {
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 100%;
+
+}
+
+#menu * {
+    flex: 1;
+}
+
+#menu__static {
+    flex: 0 1 0%;
+    padding: 10px;
+}
+
+select, input {
+    border-radius: 5px;
+    width: 100%;
+}
+
+.res__input {
+    width: 38%;
+}
+
+optgroup {
+    font-weight: bold;
+}
+
+#menu__alg {
+    padding: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+#progress__bar__container {
+    height: 10px;
+    background-color: red;
+}
+
+#progress__bar__percentage {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#progress__bar {
+    background-color: green;
+    height: 100%;
+    width: 0%;
+}
+
+#buttons__bar {
+    flex: 0 1 0%;
+}
+
+.rgb__input {
+    width: 24%;
+}
+
+.center {
+    text-align: center;
+}
+
+.button__padding {
+    padding: 10px;
+}

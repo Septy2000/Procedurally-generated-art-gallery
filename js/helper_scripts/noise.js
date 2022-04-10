@@ -1,5 +1,9 @@
-// Not my code
-// Taken from: https://github.com/josephg/noisejs
+/* 
+* This code is taken from the following repository: https://github.com/josephg/noisejs
+* Inside the mentioned repository, the ISC license states that the following code can be
+* used, copied and modified as pleased. 
+* The following code has been modified to suit my needs for the project.
+*/
 
 /*
  * A speed-improved perlin and simplex noise algorithms for 2D.
@@ -78,13 +82,6 @@ export function seed(seed) {
   }
 };
 
-// seed(1);
-
-/*
-for(var i=0; i<256; i++) {
-  perm[i] = perm[i + 256] = p[i];
-  gradP[i] = gradP[i + 256] = grad3[perm[i] % 12];
-}*/
 
 // Skewing and unskewing factors for 2, 3, and 4 dimensions
 var F2 = 0.5*(Math.sqrt(3)-1);

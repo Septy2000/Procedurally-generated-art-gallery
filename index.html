@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Generator | Procedurally Generated Art Gallery</title>
+    <link rel="stylesheet" href="./style_generator.css">
 </head>
 <body> 
     <header>
         <nav>
             <ul class="nav__bar">   
-                <li><a href="./index.html">Main Page</a></li>
-                <li><a href="./pages/about.html">About Algorithms</a></li>
+                <li><a href="./index.html">Generator</a></li>
+                <li><a href="./pages/gallery/gallery.html">Gallery</a></li>
             </ul>
         </nav>
     </header>
 
     <div id="container" class="rounded">
         <div id="flex__container">
-            <canvas id="canvas__3d" class="hide rounded"></canvas>
             <canvas id="canvas__2d" class="rounded"></canvas>
 
             <div id="menu__frame" class="rounded">
@@ -133,7 +132,7 @@
 
                         <div id="perlin__colors__intensity__container" class="hide">
                             <label for="perlin__intensity">Intensity</label><br>
-                            <input id="perlin__intensity" type="number" value="2">
+                            <input id="perlin__intensity" type="number" value="3">
                             <br><br>
                         </div>
 
@@ -195,6 +194,6 @@
             </div>
         </div>   
     </div>
-    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/generator.js"></script>
 </body>
 </html>

@@ -61,11 +61,12 @@ function draw(data) {
         // Color the image based on the user selection
         if (colormode === "smooth__colors") {
             // Get the absolute value of perlin noise and multiply by 360 the number is in hue range
-            ctx.strokeStyle = color_HSL(Math.abs(perlin_noise) * 360 * intensity)
+            ctx.strokeStyle = `hsl(${Math.abs(perlin_noise) * 360 * intensity}, 100%, 50%)`;
         }
         else {
-            // Multiply each value by 100 to make the weights noticeable, because noise values are very low
-            ctx.strokeStyle = `rgb(${perlin_noise * red_weight * 100},${perlin_noise * green_weight * 100},${perlin_noise * blue_weight * 100})`
+            // Multiply each value by 255 to get a value in RGB range
+            let abs_noise = Math.abs(perlin_noise);
+            ctx.strokeStyle = `rgb(${abs_noise * red_weight * 255},${abs_noise * green_weight * 255},${abs_noise * blue_weight * 255})`
         }
 
         // Draw the line
@@ -140,11 +141,11 @@ function refreshMenuInputs() {
 
     red_weight = parseInt(document.getElementById("red__value__perlin").value);
 
-    green_weight = parseInt(document.getElementById("green__value__perlin").value);
+    green_weight = parseFloat(document.getElementById("green__value__perlin").value);
 
-    blue_weight = parseInt(document.getElementById("blue__value__perlin").value);
+    blue_weight = parseFloat(document.getElementById("blue__value__perlin").value);
 
-    scaling_factor = parseInt(document.getElementById("perlin__scale").value);
+    scaling_factor = parseFloat(document.getElementById("perlin__scale").value);
 
     intensity = parseFloat(document.getElementById("perlin__intensity").value);
 
@@ -176,8 +177,8 @@ function isMenuInputValid() {
         alert("Scaling factor is invalid! This input requires an integer bigger than 0");
         return false;
     }
-    if (Number.isNaN(intensity) || intensity <= 0) {
-        alert("Intensity value is invalid! This input requires a number bigger than 0");
+    if (Number.isNaN(intensity) || intensity === 0) {
+        alert("Intensity value is invalid! This input requires a number different than 0");
         return false;
     }
     if (Number.isNaN(zoom_out) || zoom_out <= 0) {
@@ -197,15 +198,4 @@ function isMenuInputValid() {
  */
  function random(lower_bound, upper_bound) {
     return Math.floor(Math.random() * (upper_bound - lower_bound + 1)) + lower_bound;
-}
-
-
-/**
- * Creates and returns a HSL color based on the given input
- * @param {number} number 
- * @returns HSL color
- */
-function color_HSL(number) {
-    return `hsl(${number}, 100%, 50%)`
-
 }

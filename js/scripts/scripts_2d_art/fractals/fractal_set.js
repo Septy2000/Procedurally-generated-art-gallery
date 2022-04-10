@@ -502,7 +502,7 @@ function color_random(iterations) {
     if (iterations === max_iterations) {
         return 'black';
     }
-    return `hsl(${colors[iterations % (colors.length)]}, 100%, 50%)`
+    return `hsl(${colors[iterations % colors.length]}, 100%, 50%)`
 }
 
 /**

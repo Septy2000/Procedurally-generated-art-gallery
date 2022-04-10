@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Procedurally Generated Art Gallery</title>
+    <link rel="stylesheet" href="./style_gallery.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav__bar">   
+                <li><a href="./../../index.html">Generator</a></li>
+                <li><a href="./gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="flex__container" class="rounded">
+        <div id="previous__button__container">
+            <button> < </button>
+        </div>
+        <div id="canvas__container" class="center rounded">
+            <canvas id="canvas__2d" class="rounded"></canvas>
+
+            <div class="description">
+                <h4>TITLE</h4>
+                <p>Description</p>
+            </div>
+
+            <div class="description hide">
+                <h4>TITLE</h4>
+                <p>Description</p>
+            </div>
+
+            <div class="description hide">
+                <h4>TITLE</h4>
+                <p>Description</p>
+            </div>
+        </div>   
+        <div id="next__button__container">
+            <button> > </button>
+        </div>
+
+    </div>
+    <script type="module" src="./../../js/gallery.js"></script>
+</body>
+</html>
