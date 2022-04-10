@@ -27,24 +27,27 @@ const canvas_2d = document.getElementById("canvas__2d");
 
 let selected_page = "generator";
 
-document.getElementById("generator__anchor").addEventListener("click", () => {
+document.getElementById("generator__page__button").addEventListener("click", () => {
     selected_page = "generator";
-    document.getElementById("container").classList.remove("hide");
+    document.getElementById("generator__container").classList.remove("hide");
     document.getElementById("gallery__container").classList.add("hide");
 
-    console.log(selected_page);
+
 })
 
-document.getElementById("gallery__anchor").addEventListener("click", () => {
+document.getElementById("gallery__page__button").addEventListener("click", () => {
     selected_page = "gallery";
     document.getElementById("gallery__container").classList.remove("hide");
-    document.getElementById("container").classList.add("hide");
-    console.log(selected_page);
+    document.getElementById("generator__container").classList.add("hide");
+    init_gallery_images();
 
 })
 
 
-
+function init_gallery_images() {
+    fractal.generateGallery("mandelbrot");
+    fractal.generateGallery("julia");
+}
 
 // Initialise the variables connected to the drop-down menus.
 updateSelections();

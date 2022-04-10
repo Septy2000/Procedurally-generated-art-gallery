@@ -87,7 +87,7 @@ button:disabled {
 }
 
 
-#container {
+#generator__container {
     background-color: #818185;
 
     width: 1600px;
@@ -97,7 +97,7 @@ button:disabled {
     box-shadow: 20px 20px 50px grey;
 }
 
-#flex__container {
+#flex__generator__container {
     background-color: #818185;
     display: flex;
     width: 100%;   
@@ -223,8 +223,6 @@ optgroup {
     border: 10px solid transparent;
     border-image: url(gold-frame.png) 10 round;
     background-color: antiquewhite;
-    /* padding: 10px; */
-    /* border-radius: 10px; */
 }
 
 #gallery__container canvas {

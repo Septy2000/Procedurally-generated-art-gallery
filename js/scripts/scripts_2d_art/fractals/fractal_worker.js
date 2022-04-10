@@ -12,12 +12,12 @@ onmessage = e => {
 
         WIDTH = width;
         HEIGHT = height;
-
+        
         RE_MIN = re_min;
         RE_MAX = re_max;
         IM_MIN = im_min;
         IM_MAX = im_max;
-
+        
         MAX_ITERATIONS = max_iter;
 
         COMPLEX = complex;

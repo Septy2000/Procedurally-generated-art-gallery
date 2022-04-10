@@ -266,7 +266,7 @@ button_undo.addEventListener("click", function() {
 /**
  * Initialise the column list and post the columns to the worker thread one by one
  */
-function init_columns() {
+function initColumns() {
     for (let col = 0; col < canvas_2d.width; col++) {
         COLUMN_LIST[col] = col;
     }
@@ -385,7 +385,7 @@ export function generate(generatedFromButton = false) {
         complex : (c_value !== -1) ? COMPLEX_LIST[c_value] : {x: re_value, y: im_value}
     })
     // Create columns list
-    init_columns();
+    initColumns();
 
     // Register the start time of the generation
     startTime = performance.now();
@@ -523,61 +523,86 @@ function color_HSL(iterations) {
 }
 
 
+// Get the Mandelbrot canvas element from the gallery
+let canvas_mandelbrot_gallery = document.getElementById('gallery__mandelbrot__canvas'); 
+let ctx_mandelbrot_gallery = canvas_mandelbrot_gallery.getContext("2d");
+canvas_mandelbrot_gallery.width = 600;
+canvas_mandelbrot_gallery.height = 450;
 
-let canvas_2d_gallery;
-let ctx_gallery;
+// Get the Julia canvas element from the gallery
+let canvas_julia_gallery = document.getElementById('gallery__julia__canvas'); 
+let ctx_julia_gallery = canvas_julia_gallery.getContext("2d");
+canvas_julia_gallery.width = 600;
+canvas_julia_gallery.height = 450;
 
-export function generateGallery() {
-    canvas_2d_gallery = document.getElementById('canvas__2d__gallery'); 
-    ctx_gallery = canvas_2d_gallery.getContext("2d");
+// {re_min: , re_max: , im_min: , im_max: },
+let mandelbrot_ares = [
+    {re_min: -2, re_max: 2, im_min: -1.5, im_max: 1.5}
+]
 
+let julia_ares = [
+    {re_min: -2, re_max: 2, im_min: -1.5, im_max: 1.5}
+]
+
+
+export function generateGallery(alg) {
 
     // Clear canvas
-    ctx_gallery.clearRect(0, 0, 800, 600);
+    if (alg === "mandelbrot") {
+        ctx_mandelbrot_gallery.clearRect(0, 0, canvas_mandelbrot_gallery.width, canvas_mandelbrot_gallery.height);
+    }
+    else {
+        ctx_julia_gallery.clearRect(0, 0, canvas_julia_gallery.width, canvas_julia_gallery.height);
+    }
 
-     // Start a new worker and end a previous one
-     if (worker) worker.terminate();
-     worker = new Worker('./js/scripts/scripts_2d_art/fractals/fractal_worker.js');
-    
-     // Pass parameters to the worker thread
-     worker.postMessage({
-         algorithm: "mandelbrot",
-         width: 800,
-         height: 600,
-         re_min: -2,
-         re_max: 2,
-         im_min: -1.5,
-         im_max: 1.5,
-         max_iter: 300,
-         isInitialising: true,
-         // If the user selected the "Custom" complex number option for Julia sets, get those values instead
-         complex : COMPLEX_LIST[2]
-     })
-     // Create columns list
-     init_columns();
-   
-     // When worker returns a message, draw on the canvas
-     worker.onmessage = function(e) {
-         drawGallery(e.data);
-     }
+    // Start a new worker and end a previous one
+    if (worker) worker.terminate();
+    worker = new Worker('./js/scripts/scripts_2d_art/fractals/fractal_worker.js');
+
+    // Pass parameters to the worker thread
+    worker.postMessage({
+        algorithm: alg,
+        width: canvas_mandelbrot_gallery.width,
+        height: canvas_mandelbrot_gallery.height,
+        re_min: -2,
+        re_max: 2,
+        im_min: -1.5,
+        im_max: 1.5,
+        max_iter: 300,
+        isInitialising: true,
+        // If the user selected the "Custom" complex number option for Julia sets, get those values instead
+        complex : COMPLEX_LIST[2]
+    })
+    // Create columns list
+    initColumnsGallery(canvas_mandelbrot_gallery.width);
+
+    // When worker returns a message, draw on the canvas
+    worker.onmessage = function(e) {
+        drawGallery(e.data, alg);
+    }
 }
 
-function drawGallery(data) {
+function drawGallery(data, alg) {
     // If the column list is not empty, send the next column to the worker
     if (COLUMN_LIST.length > 0) {
         worker.postMessage({
             col: COLUMN_LIST.shift()
         });
     }
+    else {
+        let image = new Image();
+        let image_array = [];
+        image.src = "./../../../gold-frame.png";
+        image_array.push(image);
+        ctx_julia_gallery.drawImage(image_array[0], 0, 0);
+    }
 
     // Extract the column index and its values
     const {col, columns_values} = data;
-    
     // Iterate through each point on the column to draw on
-    for (let i = 0; i < 600; i++) {
+    for (let i = 0; i < canvas_mandelbrot_gallery.height; i++) {
         // Extract the iterations number of each point
         const iterations = columns_values[i];
-
         // // Select the coloring mode based on the user selection
         // if (colormode === "smooth__colors") {
         //     ctx.fillStyle = color_HSL(iterations);
@@ -589,7 +614,42 @@ function drawGallery(data) {
         //     ctx.fillStyle = color_random(iterations);
         // }
 
-        ctx_gallery.fillStyle = color_HSL(iterations);
-        ctx_gallery.fillRect(col, i, 1.5, 1.5);
+        if (alg === "mandelbrot") {
+            if (iterations === 300) {
+                ctx_mandelbrot_gallery.fillStyle = `black`;
+            }
+            else {
+                let color_int = 1;
+                let hue = color_int * 360 * (iterations / 300);
+                ctx_mandelbrot_gallery.fillStyle =  `hsl(${parseInt(hue)}, 100%, 50%)`
+            }
+           
+            ctx_mandelbrot_gallery.fillRect(col, i, 1, 1);
+        }
+        else {
+            if (iterations === 300) {
+                ctx_julia_gallery.fillStyle = `black`;
+            }
+            else {
+                let color_int = 1;
+                let hue = color_int * 360 * (iterations / 300);
+                ctx_julia_gallery.fillStyle =  `hsl(${parseInt(hue)}, 100%, 50%)`
+            }
+           
+            ctx_julia_gallery.fillRect(col, i, 1, 1);
+        }
+        
+        
     }
+}
+
+/**
+ * Initialise the column list and post the columns to the worker thread one by one
+ */
+ function initColumnsGallery(width) {
+    for (let col = 0; col < width; col++) {
+        COLUMN_LIST[col] = col;
+    }
+    // Extract the first column in the list and pass it to the worker thread
+    worker.postMessage({col: COLUMN_LIST.shift()});
 }
