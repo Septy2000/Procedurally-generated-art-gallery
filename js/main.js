@@ -185,7 +185,7 @@ c_value_selection.onchange = updateSelections;
 // Increment the counter on the image name
 let image_counter = 0;
 
-// Save the canvas as an JPG file when pressing the "Save Image" button
+// Save the canvas as a PNG file when pressing the "Save Image" button
 document.getElementById("save__button").addEventListener("click", () => {
     // Extract the canvas data and convert it into a png file
     // Octet stream type represents a binary file

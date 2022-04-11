@@ -588,3 +588,38 @@ export function drawGallery(alg) {
         ctx_julia_gallery.drawImage(julia_images_list[number], 0, 0);
     }
 }
+
+// When the "Change Image" button is pressed, change the image on the Mandelbrot set canvas on the gallery page
+document.getElementById("change__image__mandelbrot").addEventListener("click", () => {
+    drawGallery("mandelbrot");
+});
+
+
+// When the "Change Image" button is pressed, change the image on the Julia set canvas on the gallery page
+document.getElementById("change__image__julia").addEventListener("click", () => {
+    drawGallery("julia");
+});
+
+// Save the Mandelbrot set canvas image as a PNG file when pressing the "Save Image" button
+document.getElementById("save__image__mandelbrot").addEventListener("click", () => {
+    // Extract the canvas data and convert it into a png file
+    // Octet stream type represents a binary file
+    let image = canvas_mandelbrot_gallery.toDataURL("image/png", 1.0);
+    // Create a hyperlink that acts as a download link
+    let download_elem = document.createElement("a");
+    download_elem.download = `mandelbrot_image.png`;
+    download_elem.href = image;
+    download_elem.click();
+});
+
+// Save the Julia set canvas image as an PNG file when pressing the "Save Image" button
+document.getElementById("save__image__julia").addEventListener("click", () => {
+    // Extract the canvas data and convert it into a png file
+    // Octet stream type represents a binary file
+    let image = canvas_julia_gallery.toDataURL("image/png", 1.0);
+    // Create a hyperlink that acts as a download link
+    let download_elem = document.createElement("a");
+    download_elem.download = `julia_image.png`;
+    download_elem.href = image;
+    download_elem.click();
+});

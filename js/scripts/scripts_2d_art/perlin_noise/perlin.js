@@ -237,3 +237,23 @@ export function drawGallery() {
     let number = random(0, perlin_images_number - 1);
     ctx_perlin_gallery.drawImage(perlin_images_list[number], 0, 0);
 }
+
+
+// When the "Change Image" button is pressed, change the image on the Perlin noise canvas on the gallery page
+document.getElementById("change__image__perlin").addEventListener("click", () => {
+    drawGallery();
+});
+
+
+// Save the Perlin noise canvas image as a PNG file when pressing the "Save Image" button
+document.getElementById("save__image__perlin").addEventListener("click", () => {
+    // Extract the canvas data and convert it into a png file
+    // Octet stream type represents a binary file
+    let image = canvas_perlin_gallery.toDataURL("image/png", 1.0);
+    // Create a hyperlink that acts as a download link
+    let download_elem = document.createElement("a");
+    download_elem.download = `perlin_image.png`;
+    download_elem.href = image;
+    download_elem.click();
+});
+

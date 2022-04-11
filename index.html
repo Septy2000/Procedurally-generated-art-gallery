@@ -198,37 +198,65 @@
     </div>
     <div id="gallery__container" class="hide">
         <div id="flex__gallery__container" class="hide rounded">
-           
             <div id="mandelbrot__canvas__container" class="center rounded alg__container">
+
                 <div class="canvas__container">
                     <canvas id="gallery__mandelbrot__canvas" class=""></canvas>
                 </div>
 
+                <button id="change__image__mandelbrot">Change Image</button>
+                <button id="save__image__mandelbrot">Save Image</button>
+
                 <div class="description">
                     <h4>Mandelbrot Set</h4>
-                    <p class="limit">Description</p>
+                    <p class="limit">
+                        The Mandelbrot set is one of the most popular fractals in mathematics. 
+                        It is named after Benoit Mandelbrot, a Polish-French-American mathematician who, in year 1980, obtained high quality visualisations of the set.
+                        The Mandelbrot set can be explained with the equation <i>Z</i><sub><i>n</i>+1</sub> = <i>Z</i><sub><i>n</i></sub><sup>2</sup>+<i>c</i>, where "Z" and "c" are complex numbers and "n" is a positive integer.
+                        Starting with <i>Z</i><sub>0</sub> = 0, "c" is in the Mandelbrot set if the absolute value of <i>Z</i><sub>n</sub> never becomes larger than a certain threshold, no matter how large "n" gets.
+                         The Mandelbrot set can be represented with colours, each point being coloured based on how fast it goes towards infinity. The final result is an image of the entire set, 
+                         which can be explored by zooming into it. 
+                    </p>
+                    <!-- Text taken and modified from the following sources: https://en.wikipedia.org/wiki/Mandelbrot_set | https://simple.wikipedia.org/wiki/Mandelbrot_set -->
                 </div>
             </div>   
+
 
             <div id="julia__canvas__container" class="center rounded alg__container">
                 <div class="canvas__container">
                     <canvas id="gallery__julia__canvas" class=""></canvas>
                 </div>
                 
+                <button id="change__image__julia">Change Image</button>
+                <button id="save__image__julia">Save Image</button>
+
                 <div class="description">
                     <h4>Julia Set</h4>
-                    <p class="limit">Description</p>
+                    <p class="limit">The Julia set is a fractal that is closely related to the Mandelbrot set. It is named after the French mathematician Gaston Julia, who investigated its properties in 1915 and released a famous paper in 1918.
+                        Applying the same formula as in the Mandelbrot set, <i>Z</i><sub><i>n</i>+1</sub> = <i>Z</i><sub><i>n</i></sub><sup>2</sup>+<i>c</i>, results in interesting fractal images that can be explored.
+                        The difference between the two sets is what numbers within the formula are changed. To obtain Mandelbrot, the value of <i>Z</i><sub>0</sub> starts at 0 and the value of "c" is taken from the complex plane.
+                        For the Julia set, the complex number "c" is constant and <i>Z</i><sub>0</sub> takes values from the complex plane. To change how a Julia set fractal looks, a different complex number can be assigned to "c".
+                    </p>
+                    <!-- Text taken and modified from the following sources: http://paulbourke.net/fractals/juliaset/ -->
                 </div>
             </div> 
+
 
             <div id="perlin__canvas__container" class="center rounded alg__container">
                 <div class="canvas__container">
                     <canvas id="gallery__perlin__canvas" class=""></canvas>
                 </div>
 
+                <button id="change__image__perlin">Change Image</button>
+                <button id="save__image__perlin">Save Image</button>
+
                 <div class="description">
                     <h4>Perlin Noise</h4>
-                    <p class="limit">Description</p>
+                    <p class="limit">Perlin noise is a powerful algorithm that is used often is procedural content generation. It is mostly use by visual effects artists to increase the appearence of realism in computer graphics.
+                        The algorithms was developed by Ken Perlin in 1983, as the result of his frustration with the "machine-like" look of computer-generated imagery at the time. 
+                        Compared to generating totally random patterns, Perlin noise creates values that change more smoothly. When applied to textures and computer art, the resultant image has a much more "natural" and "organic" look.
+
+                    </p>
                 </div>
             </div> 
 
