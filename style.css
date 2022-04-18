@@ -2,7 +2,6 @@
 /* Used to override default browser settings*/
 * {
     font-size: 20px;
-    font-weight: 500;
     font-family: "Montserrat", sans-serif;
     margin: 0;
     padding: 0;
@@ -30,6 +29,7 @@ header {
     align-items: center;
     padding: 30px 10%;
     margin-bottom: 75px;
+    min-width: 1600px;
 }
 
 nav button {
