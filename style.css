@@ -218,8 +218,8 @@ optgroup {
 }
 
 .canvas__container {
-    border: 10px solid transparent;
-    border-image: url(gold-frame.png) 10 round;
+    border: 12px solid #705301;
+    border-radius: 5px;
     background-color: antiquewhite;
 }
 
