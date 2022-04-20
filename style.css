@@ -17,12 +17,6 @@ html, body {
     background-color: antiquewhite;
 }
 
-a {
-    font-size: 25px;
-    color: #e4e5e9;
-    cursor: pointer;
-}
-
 header {
     display: flex;
     justify-content: flex-end;
@@ -32,21 +26,18 @@ header {
     min-width: 1600px;
 }
 
-nav button {
+header button {
+    font-size: 25px;
     background-color: #333333;
 }
 
-nav button:hover{
+header button:hover{
     background-color: #333333;
     color: rgb(165, 165, 165)
 }
 
-nav button:active {
+header button:active {
     background-color: #333333;
-}
-
-.nav__bar {
-    cursor: default;
 }
 
 .nav__bar li {
