@@ -1,5 +1,5 @@
 /* 
-* This code is taken from the following repository: https://github.com/josephg/noisejs
+* This code is not my own creation is taken from the following repository: https://github.com/josephg/noisejs
 * Inside the mentioned repository, the ISC license states that the following code can be
 * used, copied and modified as pleased. 
 * The following code has been modified to suit my needs for the project.

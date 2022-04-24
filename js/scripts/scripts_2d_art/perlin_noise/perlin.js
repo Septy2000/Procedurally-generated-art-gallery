@@ -214,7 +214,7 @@ canvas_perlin_gallery.height = 450;
 let perlin_images_list = [];
 
 // Number of images with Perlin noise
-let perlin_images_number = 8;
+let perlin_images_number = 15;
 
 
 /**

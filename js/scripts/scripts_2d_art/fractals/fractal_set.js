@@ -539,7 +539,7 @@ canvas_julia_gallery.height = 450;
 let mandelbrot_images_list = [];
 
 // Number of images with the Mandelbrot set
-let mandelbrot_images_number = 40;
+let mandelbrot_images_number = 81;
 
 
 /**
@@ -557,7 +557,7 @@ export function initialiseImagesMandelbrot() {
 let julia_images_list = [];
 
 // Number of images with the Julia set
-let julia_images_number = 26;
+let julia_images_number = 33;
 
 
 /**
